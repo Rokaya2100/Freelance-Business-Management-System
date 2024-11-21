@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -19,6 +20,7 @@ class AdminController extends Controller
             return view('404');
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

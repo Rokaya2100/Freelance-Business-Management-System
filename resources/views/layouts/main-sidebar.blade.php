@@ -30,9 +30,9 @@
 					</li>
                     <li class="side-item side-item-category">Sections</li>
 					<li class="slide">
-						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">Categories</span><i class="angle fe fe-chevron-down"></i></a>
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">Sections</span><i class="angle fe fe-chevron-down"></i></a>
 						<ul class="slide-menu">
-                            <li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}">Sections</a></li>
+                            <li><a class="slide-item" href="{{ route('sections.index') }}">Sections List</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}">Sections Archive </a></li>
                         </ul>
 					</li>
@@ -56,7 +56,7 @@
 							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}">Projects Archive </a></li>
                         </ul>
 					</li>
-                   
+
                     <li class="side-item side-item-category">Contracts</li>
 					<li class="slide">
 						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">Contracts</span><i class="angle fe fe-chevron-down"></i></a>
@@ -79,7 +79,7 @@
                             <li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}">Users Stats</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}">Contracts and Rates Stats</a></li>
                         </ul>
-					</li>                
+					</li>
                     <li class="side-item side-item-category">Rates</li>
 					<li class="slide">
 						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">Rates</span><i class="angle fe fe-chevron-down"></i></a>
@@ -92,7 +92,8 @@
 					<li class="slide">
 						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">Rates</span><i class="angle fe fe-chevron-down"></i></a>
 						<ul class="slide-menu">
-                            <li><a class="slide-item" href="{{ url('/' . $page='cards') }}"></a></li>
+                            <li><a class="slide-item" href="{{ url('/' . $page='icons') }}">icons</a></li>
+                            <li><a class="slide-item" href="{{ url('/' . $page='cards') }}">cards</a></li>
                         </ul>
 					</li>
 
