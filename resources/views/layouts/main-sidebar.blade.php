@@ -2,7 +2,7 @@
 		<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 		<aside class="app-sidebar sidebar-scroll">
 			<div class="main-sidebar-header active">
-                <h2 class="m-auto" style="color: blue">SkillsPhere</h2>
+                <h2 class="m-auto" style="color: rgb(0,123,255)">SkillsPhere</h2>
                 <div>
                     <a href=""><img alt="logo" style="width: 32px" class="" src="{{URL::asset('assets/img/brand/favicon.png')}}"></a>
                 </div>
@@ -18,8 +18,8 @@
 							<img alt="user-img" class="avatar avatar-xl brround" src="{{URL::asset('assets/img/faces/6.jpg')}}"><span class="avatar-status profile-status bg-green"></span>
 						</div>
 						<div class="user-info">
-							<h4 class="font-weight-semibold mt-3 mb-0">{{-- {{Auth::user()->name}} --}}Rokaya kobish</h4>
-							<span class="mb-0 text-muted">{{-- {{Auth::user()->email}} --}}rokaya123@gmail.com</span>
+							<h4 class="font-weight-semibold mt-3 mb-0">{{Auth::user()->name}}</h4>
+							<span class="mb-0 text-muted">{{Auth::user()->email}}</span>
 						</div>
 					</div>
 				</div>
