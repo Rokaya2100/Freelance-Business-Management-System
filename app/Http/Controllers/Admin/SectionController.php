@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SectionRequest;
 use Illuminate\Http\Request;
+use App\Models\Section;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Requests\StoreSectionRequest;
 
 class SectionController extends Controller
 {
@@ -12,7 +16,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return view('admin.sections.index');
+        $sections = Section::latest()->paginate(10);
+        return view('admin.sections.index', compact('sections'));
     }
 
     /**
@@ -20,15 +25,19 @@ class SectionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.sections.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SectionRequest $request)
     {
-        //
+        Section::create($request->validated());
+
+        return redirect()
+            ->route('sections.index')
+            ->with('success', 'Section created successfully');
     }
 
     /**
@@ -36,7 +45,8 @@ class SectionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        return view('admin.sections.show', compact('section'));
     }
 
     /**
@@ -44,22 +54,52 @@ class SectionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        return view('admin.sections.edit', compact('section'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SectionRequest $request, Section $section)
     {
-        //
+        $section->update($request->validated());
+        return redirect()
+            ->route('sections.index')
+            ->with('success', 'Section updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Section $section)
     {
-        //
+        if ($section->projects()->exists()) {
+            return redirect()
+                ->route('sections.index')
+                ->with('error', 'Cannot delete section that has associated projects');
+        }
+
+        $section->delete();
+
+        return redirect()
+            ->route('sections.index')
+            ->with('success', 'Section deleted successfully');
+    }
+
+    public function restore($id)
+    {
+        $section = Section::withTrashed()->findOrFail($id);
+        $section->restore();
+
+        return redirect()
+            ->route('sections.index')
+            ->with('success', 'Section restored successfully');
+    }
+
+    public function trashed()
+    {
+        $sections = Section::onlyTrashed()->paginate(10);
+        return view('admin.sections.trashed', compact('sections'));
     }
 }
