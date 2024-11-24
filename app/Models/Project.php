@@ -10,6 +10,7 @@ use App\Models\Contract;
 use App\Models\Portfolio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Project extends Model
@@ -41,7 +42,7 @@ class Project extends Model
     public function reporte(){
         return $this->hasOne(Report::class);
     }
-    public function reviews(): MorphMany
+    public function reviews(): MorphMany 
     {
         return $this->morphMany(Review::class ,'reviewable');
     }

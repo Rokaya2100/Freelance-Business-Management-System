@@ -53,19 +53,14 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'country' => ['string', 'max:255'],
             'role' =>['required','in:client,freelancer'],
-            'image' => ['mimes:jpg,jpeg,png', 'max:2048' ],
+            'image' => ['mimes:jpg,jpeg,png', 'max:2048'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
+        $path = null;
         if(request()->hasFile('image')){
             $file=request()->file('image');
             $path=uploadImage($file,'profiles','public');
