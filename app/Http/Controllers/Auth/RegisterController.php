@@ -66,6 +66,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $path = null;
         if(request()->hasFile('image')){
             $file=request()->file('image');
             $path=uploadImage($file,'profiles','public');

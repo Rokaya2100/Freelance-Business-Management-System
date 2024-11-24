@@ -93,7 +93,7 @@ class SectionController extends Controller
         $section->restore();
 
         return redirect()
-            ->route('sections.index')
+            ->route('sections.trashed')
             ->with('success', 'Section restored successfully');
     }
 
