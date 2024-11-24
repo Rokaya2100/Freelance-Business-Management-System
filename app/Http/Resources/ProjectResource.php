@@ -24,6 +24,8 @@ class ProjectResource extends JsonResource
             'portfolio_id'=> $this->portfolio_id,
             'user_id'=> $this->user_id,
             'section_id'=> $this->section_id,
+            'independent_attachments'=> $this->independent_attachments,
+            'customer_attachments'=> $this->customer_attachments,
         ];
     }
 }

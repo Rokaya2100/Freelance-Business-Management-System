@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('description');
-            $table->text('skills');
+            $table->json('skills');
             $table->softDeletes();
             $table->timestamps();
         });

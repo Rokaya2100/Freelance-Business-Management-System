@@ -11,6 +11,11 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::get('/sections', [SectionController::class,'index'])->name('sections.index');
+
+Route::resource('sections', SectionController::class);
+Route::get('sections/trashed', [SectionController::class, 'trashed'])->name('sections.trashed');
+Route::post('sections/{id}/restore', [SectionController::class, 'restore'])->name('sections.restore');
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/{page}', [AdminController::class,'index']);

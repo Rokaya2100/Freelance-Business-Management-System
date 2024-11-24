@@ -24,7 +24,9 @@ class Project extends Model
         'delivery_date',
         'portfolio_id',
         'user_id',
-        'section_id'
+        'section_id',
+        'customer_attachments',
+        'independent_attachments'
     ];
 
     public function users(){
@@ -42,7 +44,7 @@ class Project extends Model
     public function reporte(){
         return $this->hasOne(Report::class);
     }
-    public function reviews(): MorphMany 
+    public function reviews(): MorphMany
     {
         return $this->morphMany(Review::class ,'reviewable');
     }
