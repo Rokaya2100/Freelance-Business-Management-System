@@ -5,6 +5,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Traits\jsonTrait;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Controllers\Api\AuthController;
@@ -35,7 +36,7 @@ class ProjectController extends Controller
         $project->delivery_date = $request->delivery_date;
         $project->portfolio_id = $request->portfolio_id;
         $project->section_id = $request->section_id;
-        $project->user_id =  $request->user_id;
+        $project->user_id =  Auth::id();
         $project->independent_attachments =   $path_independent_attachments;
         $project->customer_attachments =   $path_customer_attachments ;
         $project->save();
@@ -67,7 +68,7 @@ class ProjectController extends Controller
         $project->delivery_date = $request->delivery_date;
         $project->portfolio_id = $request->portfolio_id;
         $project->section_id = $request->section_id;
-        $project->user_id =  $request->user_id;
+        $project->user_id =  Auth::id();
         $project->independent_attachments =   $path_independent_attachments;
         $project->customer_attachments =   $path_customer_attachments ;
         $project->save();
