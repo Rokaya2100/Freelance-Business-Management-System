@@ -38,7 +38,7 @@ Route::put('/offers/{offer}', [OfferController::class, 'update'])->middleware(['
 
  Route::post('/offers/{id}/restore', [OfferController::class, 'restore']);
  Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete']);
- Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])->middleware( ['checkFreeLancer']);
+ Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])->middleware(['checkFreeLancer']);
 
 Route::apiResource('/offers',OfferController::class);
 
