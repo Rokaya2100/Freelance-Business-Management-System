@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Offer;
+use App\Models\Review;
+use App\Models\Contract;
+use App\Models\Portfolio;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,9 +25,30 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'country',
+        'role',
+        'image',
+        'last_seen',
         'password',
     ];
 
+    public function projects(){
+        return $this->hasMany(Project::class);
+    }
+    public function contracts(){
+        return $this->hasMany(Contract::class);
+    }
+
+    public function portfolio(){
+        return $this->hasOne(Portfolio::class);
+    }
+    public function offers(){
+        return $this->hanMany(Offer::class);
+    }
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class ,'reviewable');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
