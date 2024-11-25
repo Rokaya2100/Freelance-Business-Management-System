@@ -53,7 +53,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Section</button>
+                        <button type="submit" class="btn btn-success col-md-3" style="border-radius: 0%">Update Section</button>
                     </form>
                 </div>
             </div>
