@@ -9,58 +9,63 @@
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
 @endsection
 @section('page-header')
-				<!-- breadcrumb -->
-				<div class="breadcrumb-header justify-content-between">
-					<div class="my-auto">
-						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Sections Archive</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0"> / Sections Archive List</span>
-						</div>
-					</div>
-				</div>
-				<!-- breadcrumb -->
+    <!-- breadcrumb -->
+    <div class="breadcrumb-header justify-content-between">
+        <div class="my-auto">
+            <div class="d-flex">
+                <h4 class="content-title mb-0 my-auto">Users Archive</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0"> /
+                    Users Archive List</span>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb -->
 @endsection
 @section('content')
-				<!-- row -->
-				<div class="row">
-                    <div class="col-xl-12">
-						<div class="card">
-							<div class="card-header">
-								<div class="d-flex justify-content-between">
-									<h4 class="card-title mg-b-0">SECTIONS Archive TABLE</h4>
-                                </div>
-							</div>
-							<div class="card-body">
-								<div class="table">
-									<table class="table text-md-nowrap" id="example10">
-										<thead>
-											<tr>
-												<th class="wd-15p border-bottom-0">ID</th>
-                                                <th class="wd-15p border-bottom-0">Name</th>
-												<th class="wd-15p border-bottom-0">Description</th>
-                                                <th class="wd-15p border-bottom-0">Add Date</th>
-                                                <th class="wd-15p border-bottom-0">Delete Date</th>
-                                            	<th class="border-bottom-0"></th>
-											</tr>
-										</thead>
-										<tbody>
-											@foreach($sections as $section)
-												<tr>
-													<td>{{ $section->id }}</td>
-													<td>{{ $section->name }}</td>
-													<td>{{ $section->description }}</td>
-													<td>{{ $section->created_at->format('d/m/Y') }}</td>
-													<td>{{ $section->deleted_at->format('d/m/Y') }}</td>
-													<td>
-														<form action="{{ route('sections.restore', $section->id) }}" method="POST">
-															@csrf
-															<button type="submit" class="btn btn-success btn-with-icon btn-block">
-																<i class="typcn typcn-cloud-storage-outline "></i> Restore
-															</button>
-														</form>
-													</td>
-												</tr>
-											@endforeach
-                                            @if (session('success'))
+    <!-- row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title mg-b-0">USERS ARCHIVE TABLE</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table">
+                        <table class="table text-md-nowrap" id="example10">
+                            <thead>
+                                <tr>
+                                    <th class="wd-15p border-bottom-0">ID</th>
+                                    <th class="wd-15p border-bottom-0">Name</th>
+                                    <th class="wd-15p border-bottom-0">Email</th>
+                                    <th class="wd-15p border-bottom-0">Role</th>
+                                    <th class="wd-15p border-bottom-0">Created At</th>
+                                    <th class="wd-15p border-bottom-0">Delete Date</th>
+                                    <th class="border-bottom-0"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>
+                                            <h6>{{ $user->role }}</h6>
+                                        </td>
+                                        <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ $user->deleted_at->format('d/m/Y') }}</td>
+                                        <td>
+                                            <form action="{{ route('users.restore', $user->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-with-icon btn-block">
+                                                    <i class="typcn typcn-cloud-storage-outline "></i> Restore
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @if (session('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         {{ session('success') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -76,18 +81,18 @@
                                         </button>
                                     </div>
                                 @endif
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- row closed -->
-			</div>
-			<!-- Container closed -->
-		</div>
-		<!-- main-content closed -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- row closed -->
+    </div>
+    <!-- Container closed -->
+    </div>
+    <!-- main-content closed -->
 @endsection
 @section('js')
     <!-- Internal Data tables -->
@@ -111,8 +116,8 @@
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
     <script>
         $('#example10').DataTable({
-            columnDefs:[{
-                orderable:false, targets:[5]
+            columnDefs: [{
+                orderable: false,targets: [6]
             }]
         });
     </script>

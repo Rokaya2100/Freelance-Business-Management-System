@@ -8,7 +8,8 @@
             <div class="d-flex">
                 <a href="{{ route('sections.index') }}" class="text-dark content-title mb-0 my-auto">
                     <h4>Sections</h4>
-                </a><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Add Section</span>
+                </a>
+                <span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Add Section</span>
             </div>
         </div>
     </div>
@@ -51,7 +52,7 @@
                                     </span>
                                 @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary">Add Sections</button>
+                        <button type="submit" class="btn btn-primary col-md-3" style="border-radius: 0%">Add Sections</button>
                     </form>
                 </div>
             </div>
