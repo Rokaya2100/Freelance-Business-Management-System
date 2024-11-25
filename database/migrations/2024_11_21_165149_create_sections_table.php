@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->Text('description');
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
