@@ -27,15 +27,19 @@ Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
 //offer api
-Route::post('/offers/{project}', [OfferController::class, 'store'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function(){
 
-Route::put('/offers/status/{offer}', [OfferController::class, 'updateStatus'])->middleware('auth:sanctum');
-Route::put('/offers/{offer}', [OfferController::class, 'update'])->middleware(['checkFreeLancer','auth:sanctum',]);
- Route::get('/offers/show/{offer}', [OfferController::class, 'show'])->middleware('auth:sanctum');
- Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers'])->middleware('auth:sanctum');
+ Route::post('/offers/{project}', [OfferController::class, 'store']);
 
- Route::post('/offers/{id}/restore', [OfferController::class, 'restore'])->middleware('auth:sanctum');
- Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware('auth:sanctum');
- Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])->middleware( ['checkFreeLancer','auth:sanctum',]);
+Route::put('/offers/status/{offer}', [OfferController::class, 'updateStatus']);
+Route::put('/offers/{offer}', [OfferController::class, 'update'])->middleware(['checkFreeLancer']);
+ Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
+ Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
 
-Route::apiResource('/offers',OfferController::class)->middleware('auth:sanctum');
+ Route::post('/offers/{id}/restore', [OfferController::class, 'restore']);
+ Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete']);
+ Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])->middleware( ['checkFreeLancer']);
+
+Route::apiResource('/offers',OfferController::class);
+
+});
