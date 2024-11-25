@@ -58,12 +58,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
         $image = null;
@@ -79,6 +73,5 @@ class RegisterController extends Controller
             'image'    => $image ,
             'password' => Hash::make($data['password']),
         ]);
-
    }
 }

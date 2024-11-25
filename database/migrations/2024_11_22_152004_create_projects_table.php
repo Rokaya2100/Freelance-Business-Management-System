@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->enum('status' ,['completed','20%','50%','80%','pending'])->default('pending');
             $table->text('description');
+            $table->string('independent_attachments')->nullable();
+            $table->string('customer_attachments')->nullable();
             $table->dateTime('exp_delivery_date');
             $table->dateTime('delivery_date');
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
@@ -26,9 +28,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('projects');
