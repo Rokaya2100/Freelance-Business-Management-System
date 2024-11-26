@@ -72,7 +72,7 @@
 													<td>{{ $section->created_at->format('d/m/Y') }}</td>
 
 													<td>
-														<form action="{{ route('admin.sections.restore', $section->id) }}" method="POST">
+														<form action="{{ route('sections.restore', $section->id) }}" method="POST">
 															@csrf
 															<button type="submit" class="btn btn-success btn-with-icon btn-block">
 																<i class="typcn typcn-edit"></i> Restore

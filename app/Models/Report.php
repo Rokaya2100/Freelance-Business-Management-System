@@ -15,7 +15,7 @@ class Report extends Model
         'description',
         'file_path'
     ];
-   public function projects(){
+   public function project(){
     return $this->belongsTo(Project::class);
    }
 }

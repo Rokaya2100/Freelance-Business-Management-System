@@ -13,34 +13,37 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">Sections</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Sections
+                <h4 class="content-title mb-0 my-auto">Reports</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Reports
                     List</span>
             </div>
         </div>
 
     </div>
-    <!-- breadcrumb -->
+
 @endsection
 @section('content')
     <!-- row -->
+
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">SECTIONS TABLE</h4>
-                        <a href="{{ route('sections.create') }}"
-                            class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i
-                                class="typcn typcn-plus"></i> ADD SECTION</a> </td>
+                        <h4 class="card-title mg-b-0">REPORTS TABLE</h4>
+                        <a href="{{ route('reports.excel') }}"
+                            class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2">
+                            <i class="far fa-arrow-alt-circle-down"></i>
+                            Export All Reports</a></td>
                     </div>
                 </div>
+
                 <div class="card-body">
                     <div class="table">
-                        <table class="table text-md-nowrap" id="example1">
+                        <table class="table mg-b-0 text-md-nowrap" id="example1">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
-                                    <th class="wd-15p border-bottom-0">Name</th>
+                                    <th class="wd-15p border-bottom-0">Project Name</th>
                                     <th class="wd-15p border-bottom-0">Description</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
                                     <th class="border-bottom-0"></th>
@@ -49,23 +52,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sections as $section)
+                                @foreach ($reports as $report)
                                     <tr>
-                                        <td>{{ $section->id }}</td>
-                                        <td>{{ $section->name }}</td>
-                                        <td>{{ $section->description }}</td>
-                                        <td>{{ $section->created_at }}</td>
-                                        {{-- <td>
-                                            <button class="btn btn-primary btn-with-icon btn-block"><i
-                                                    class="typcn typcn-eye-outline"></i> Show</button>
-                                        </td> --}}
-                                        <td>
-                                            <a href="{{ route('sections.edit', $section->id) }}"
-                                                class="btn btn-success btn-with-icon btn-block"><i
-                                                    class="typcn typcn-edit"></i> Edit</a>
+                                        <td>{{ $report->id }}</td>
+                                        <td>{{ $report->project->name}}</td>
+                                        <td>{{ $report->description}}</td>
+                                        <td>{{ $report->created_at}}</td>
+                                         <td>
+                                            <a href="{{route('reports.show',$report->id)}}" class="btn btn-primary btn-with-icon btn-block"><i
+                                                    class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
                                         <td>
-                                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST"
+                                            <a href="{{route('reports.oneExcel',$report->id)}}"
+                                                class="btn btn-secondary btn-with-icon btn-block">
+                                                <i class="far fa-arrow-alt-circle-down"></i>
+                                                Export Report</a>
+                                        </td>
+                                        <td>
+                                            <form action="{{route('reports.destroy',$report->id)}}" method="POST"
                                                 style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')

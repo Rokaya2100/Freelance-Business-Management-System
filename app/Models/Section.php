@@ -16,6 +16,6 @@ class Section extends Model
 
     public function projects(): HasMany
     {
-        return $this->hasMany(Projects::class);
+        return $this->hasMany(Project::class);
     }
 }
