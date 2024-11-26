@@ -8,7 +8,6 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Traits\jsonTrait;
 use App\Http\Requests\OfferRequest;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
 
@@ -16,7 +15,7 @@ class OfferController extends Controller
 {
     use jsonTrait;
 
-    public function index(Request $request){
+    public function index(){
 
         $offers = Offer::paginate(5);
         if($offers->isEmpty()){
