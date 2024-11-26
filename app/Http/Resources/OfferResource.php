@@ -15,8 +15,9 @@ class OfferResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+           
             'id'          =>$this->id,
-            'project_id'      =>$this->project_id,
+            'project_id'   =>$this->project_id,
             'user_id'      =>$this->user_id,
             'description' =>$this->description,
             'period'      =>$this->period,

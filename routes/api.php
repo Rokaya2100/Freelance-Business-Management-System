@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\checkFreeLancer;
+use App\Http\Middleware\CheckFreelancers;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OfferController;
 
@@ -30,16 +31,18 @@ Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctu
 Route::middleware('auth:sanctum')->group(function(){
 
  Route::post('/offers/{project}', [OfferController::class, 'store']);
+ Route::post('/offers/{id}/restore', [OfferController::class, 'restore'])->middleware(['CheckFreelancers']);
 
-Route::put('/offers/status/{offer}', [OfferController::class, 'updateStatus']);
-Route::put('/offers/{offer}', [OfferController::class, 'update'])->middleware(['checkFreeLancer']);
+
+Route::put('/offers/status/{id}', [OfferController::class, 'updateStatus']);
+Route::put('/offers/{id}', [OfferController::class, 'update'])->middleware(['CheckFreelancers']);
+
  Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
  Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
 
- Route::post('/offers/{id}/restore', [OfferController::class, 'restore']);
- Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete']);
- Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])->middleware(['checkFreeLancer']);
+ Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware(['CheckFreelancers']);
+ Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
 
-Route::apiResource('/offers',OfferController::class);
+Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
 
 });

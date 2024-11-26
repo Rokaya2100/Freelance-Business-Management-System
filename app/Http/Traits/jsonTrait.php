@@ -8,7 +8,7 @@ public function jsonResponse(int $status=200,$message='success',$data=null): Jso
     return response()->json([
         'status'=>$status,
         'message'=>$message,
-        'data'=>$data
+        'data'=>$data,
     ]);
 }
 }

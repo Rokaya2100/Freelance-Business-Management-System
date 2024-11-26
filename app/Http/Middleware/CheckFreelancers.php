@@ -2,14 +2,15 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Traits\jsonTrait;
 use Closure;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use App\Models\Offer;
+use Illuminate\Http\Request;
+use App\Http\Traits\jsonTrait;
+use Symfony\Component\HttpFoundation\Response;
 
-class checkFreeLancer
-{ use jsonTrait;
+class CheckFreelancers
+{
+    use jsonTrait;
     /**
      * Handle an incoming request.
      *
@@ -17,17 +18,18 @@ class checkFreeLancer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $offer = $request->route('offer');
+        $offerId = $request->route('id');
+         $offer=Offer::withTrashed()->findOrfail($offerId);
 
-        if (!$offer) {
-            return $this->jsonResponse(404, 'Offer not found', null);
-        }
 
         // Check if the freelancer is the owner of the offer
         if ($offer->user_id === auth()->user()->id) {
-            return $next($request); // Allow the request to proceed
+
+         return $next($request); // Allow the request to proceed
         } else {
-            return $this->jsonResponse(403, 'Forbidden', null); // Forbidden response
+             return $this->jsonResponse(403, 'you must be the owner of this offer to do it', null); // Forbidden response
+
         }
+
     }
 }
