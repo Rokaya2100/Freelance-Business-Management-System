@@ -16,7 +16,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::with(['client', 'freelancer','section'])->get();
-        return view('admin.projects.index', compact('projects'));
+        return view('projects.index', compact('projects'));
     }
 
 
@@ -24,7 +24,7 @@ class ProjectController extends Controller
     public function create(){
 
     $sections = Section::all();
-    return view('admin.projects.create',compact('sections'));
+    return view('projects.create',compact('sections'));
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class ProjectController extends Controller
     return redirect()->route('projects.index')->with('error', 'You can not modify the project because it is Under implementation.');
     }
     $expectedDeliveryDate = Carbon::parse($project->exp_delivery_date);
-    return view('admin.projects.edit', compact('project','expectedDeliveryDate'));
+    return view('projects.edit', compact('project','expectedDeliveryDate'));
     }
 
 
@@ -66,7 +66,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = Project::with(['client', 'freelancer'])->find($id);
-        return view('admin.projects.show', compact('project'));
+        return view('projects.show', compact('project'));
     }
 
     public function destroy(Project $project)
@@ -88,7 +88,7 @@ class ProjectController extends Controller
     public function trashed()
     {
     $projects = Project::onlyTrashed()->paginate(10);
-    return view('admin.projects.trashed', compact('projects'));
+    return view('projects.trashed', compact('projects'));
     }
 
     public function restore($id)
