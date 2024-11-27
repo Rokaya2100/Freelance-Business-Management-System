@@ -2,26 +2,21 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\SectionController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('auth.login');
 });
 Auth::routes();
 
+
+Route::get('projects/trashed', [ProjectController::class, 'trashed'])->name('projects.trashed');
+Route::post('projects/{id}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+Route::resource('projects', ProjectController::class);
 
 Route::get('sections/trashed', [SectionController::class, 'trashed'])->name('sections.trashed');
 Route::post('sections/{id}/restore', [SectionController::class, 'restore'])->name('sections.restore');
