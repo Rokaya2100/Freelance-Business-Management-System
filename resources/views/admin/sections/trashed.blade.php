@@ -31,7 +31,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table">
-									<table class="table text-md-nowrap" id="example1">
+									<table class="table text-md-nowrap" id="example10">
 										<thead>
 											<tr>
 												<th class="wd-15p border-bottom-0">ID</th>
@@ -112,7 +112,7 @@
     <script>
         $('#example10').DataTable({
             columnDefs:[{
-                orderable:false, targets:[4,5]
+                orderable:false, targets:[5]
             }]
         });
     </script>
