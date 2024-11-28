@@ -2,28 +2,35 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Project;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Contract extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
-        'user_id',
-        'project_id',
-        'status',
-        'end_date',
-        'price',
-        'is_paid'
+        'is_paid',
     ];
 
-    public function users(){
-        return $this->belongsTo(User::class);
-    }
-    public function projects(){
+    // public function users(){
+    //     return $this->belongsTo(User::class);
+    // }
+    public function project()
+    {
         return $this->belongsTo(Project::class);
     }
+
+    public function freelancer()
+    {
+        return $this->belongsTo(User::class, 'freelancer_id');
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'client_id');
+    }
+
 }
