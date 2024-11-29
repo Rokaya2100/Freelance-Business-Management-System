@@ -32,13 +32,14 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function projects(){
+
+
+    public function project(){
         return $this->hasMany(Project::class);
     }
     public function contracts(){
         return $this->hasMany(Contract::class);
     }
-
     public function portfolio(){
         return $this->hasOne(Portfolio::class);
     }

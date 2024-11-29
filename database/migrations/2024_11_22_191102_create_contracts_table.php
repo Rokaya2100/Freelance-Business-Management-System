@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('status',['in_progress', 'expired '])->default('in_progress');
-            $table->dateTime('end_date');
             $table->float('price');
             $table->boolean('is_paid');
             $table->softDeletes();
