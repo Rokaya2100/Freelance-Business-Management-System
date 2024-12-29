@@ -31,27 +31,25 @@
 							</div>
 							<div class="card-body">
 								<div class="table">
-									<table class="table text-md-nowrap" id="example10">
+									<table class="table text-md-nowrap" id="example1">
 										<thead>
 											<tr>
 												<th class="wd-15p border-bottom-0">ID</th>
-                                                <th class="wd-15p border-bottom-0">Name</th>
-												<th class="wd-15p border-bottom-0">Description</th>
+                                                <th class="wd-15p border-bottom-0">Project Name</th>
                                                 <th class="wd-15p border-bottom-0">Add Date</th>
                                                 <th class="wd-15p border-bottom-0">Delete Date</th>
                                             	<th class="border-bottom-0"></th>
 											</tr>
 										</thead>
 										<tbody>
-											@foreach($sections as $section)
+											@foreach($contracts as $contract)
 												<tr>
-													<td>{{ $section->id }}</td>
-													<td>{{ $section->name }}</td>
-													<td>{{ $section->description }}</td>
-													<td>{{ $section->created_at->format('d/m/Y') }}</td>
-													<td>{{ $section->deleted_at->format('d/m/Y') }}</td>
+													<td>{{ $contract->id }}</td>
+													<td>{{ $contract->project_name }}</td>
+													<td>{{ $contract->created_at->format('d/m/Y') }}</td>
+													<td>{{ $contract->deleted_at->format('d/m/Y') }}</td>
 													<td>
-														<form action="{{ route('sections.restore', $section->id) }}" method="POST">
+														<form action="{{ route('contracts.restore', $contract->id) }}" method="POST">
 															@csrf
 															<button type="submit" class="btn btn-success btn-with-icon btn-block">
 																<i class="typcn typcn-cloud-storage-outline "></i> Restore
@@ -112,7 +110,7 @@
     <script>
         $('#example10').DataTable({
             columnDefs:[{
-                orderable:false, targets:[5]
+                orderable:false, targets:[4,5]
             }]
         });
     </script>
