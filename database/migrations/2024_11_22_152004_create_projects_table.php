@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('independent_attachments')->nullable();
             $table->string('customer_attachments')->nullable();
             $table->dateTime('exp_delivery_date');
-            $table->dateTime('delivery_date');
-            $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->dateTime('delivery_date')->nullable();
+            $table->foreignId('client_id')->constrained('users');
+            $table->foreignId('freelancer_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('section_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

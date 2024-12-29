@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status',['accepted','denied']);
+            $table->enum('status',['pending','accepted','rejected'])->default('pending');
             $table->text('description');
             $table->float('price');
             $table->string('period');
-            $table->softDeletes();
+           $table->softDeletes();
             $table->timestamps();
         });
     }

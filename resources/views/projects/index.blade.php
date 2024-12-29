@@ -13,8 +13,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">Sections</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Sections
-                    List</span>
+                <h4 class="content-title mb-0 my-auto">Projects</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Prrojects List</span>
             </div>
         </div>
 
@@ -28,54 +27,71 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">SECTIONS TABLE</h4>
-                        <a href="{{ route('sections.create') }}"
-                            class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i
-                             class="typcn typcn-plus"></i> ADD SECTION</a> </td>
+                        <h4 class="card-title mg-b-0">Projects TABLE</h4>
+                        <a href="{{ route('projects.create') }}" class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i class="typcn typcn-plus"></i> ADD Project</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table">
-                        <table class="table text-md-nowrap" id="example10">
+                        <table class="table text-md-nowrap" id="example1">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
                                     <th class="wd-15p border-bottom-0">Name</th>
-                                    {{-- <th class="wd-15p border-bottom-0">Description</th> --}}
+                                    <th class="wd-15p border-bottom-0">Name Client</th>
+                                    <th class="wd-15p border-bottom-0">Name Freelancer</th>
+                                    <th class="wd-15p border-bottom-0">Status</th>
+                                    <th class="wd-15p border-bottom-0">Description</th>
+                                    <th class="wd-15p border-bottom-0">Section</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
                                     <th class="border-bottom-0"></th>
-                                    {{-- <th class="border-bottom-0"></th> --}}
+                                    <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sections as $section)
+                                @foreach ($projects as $project)
                                     <tr>
-                                        <td>{{ $section->id }}</td>
-                                        <td>{{ $section->name }}</td>
-                                        <td>{{ $section->description }}</td>
-                                        <td>{{ $section->created_at->format('d/m/Y') }}</td>
-                                        <td>
-                                            <a href="{{ route('sections.show', $section->id) }}"
-                                                 class="btn btn-primary btn-with-icon btn-block"><i
-                                                    class="typcn typcn-eye-outline"></i> Show</a>
-                                        </td>
+                                        <td>{{ $project->id }}</td>
+                                        <td>{{ $project->name }}</td>
 
+
+                                            <td>{{$project->client->name}}</td>
+                                            @if($project->freelancer)
+                                            <td>{{ $project->freelancer->name   }}</td>
+                                                @else
+                                            <td>There is no Freelancer</td>
+                                            @endif
+
+                                        <td>{{ $project->status }}</td>
+                                        <td>{{ $project->description }}</td>
+                                        <td>{{ $project->section->name }}</td>
+                                        <td>{{ $project->created_at->format('d/m/Y') }}</td>
+                                        @if($project->status == 'pending')
                                         <td>
-                                            <a href="{{ route('sections.edit', $section->id) }}"
-                                                class="btn btn-success btn-with-icon btn-block"><i
-                                                    class="typcn typcn-edit"></i> Edit</a>
+                                            <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-success btn-with-icon btn-block">
+                                                <i class="typcn typcn-edit"></i> Edit
+                                            </a>
                                         </td>
+                                        @endif
                                         <td>
-                                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST">
+                                            <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block"><i
-                                                        class="typcn typcn-delete"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block">
+                                                    <i class="typcn typcn-delete"></i> Delete
+                                                </button>
                                             </form>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('projects.show', $project->id) }}" class="btn btn-success btn-with-icon btn-block">
+                                                <i class="typcn typcn-edit"></i> Show
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
+
+
                                 @if (session('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         {{ session('success') }}
@@ -125,11 +141,4 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
-    <script>
-        $('#example10').DataTable({
-            columnDefs:[{
-                orderable:false, targets:[4,5]
-            }]
-        });
-    </script>
 @endsection

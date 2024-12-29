@@ -13,8 +13,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">Sections</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Sections
-                    List</span>
+                <h4 class="content-title mb-0 my-auto">Users</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Users List</span>
             </div>
         </div>
 
@@ -28,10 +27,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">SECTIONS TABLE</h4>
-                        <a href="{{ route('sections.create') }}"
+                        <h4 class="card-title mg-b-0">USERS TABLE</h4>
+                        <a href="{{ route('users.create') }}"
                             class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i
-                             class="typcn typcn-plus"></i> ADD SECTION</a> </td>
+                                class="typcn typcn-plus"></i> ADD ClIENT</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -41,37 +40,38 @@
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
                                     <th class="wd-15p border-bottom-0">Name</th>
-                                    {{-- <th class="wd-15p border-bottom-0">Description</th> --}}
-                                    <th class="wd-15p border-bottom-0">Add Date</th>
-                                    <th class="border-bottom-0"></th>
+                                    <th class="wd-15p border-bottom-0">Email</th>
+                                    <th class="wd-15p border-bottom-0">Country</th>
+                                    <th class="wd-15p border-bottom-0">Created At</th>
+                                    <th class="wd-15p border-bottom-0">Role</th>
                                     {{-- <th class="border-bottom-0"></th> --}}
+                                    <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sections as $section)
+                                @foreach ($users as $user)
                                     <tr>
-                                        <td>{{ $section->id }}</td>
-                                        <td>{{ $section->name }}</td>
-                                        <td>{{ $section->description }}</td>
-                                        <td>{{ $section->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->country }}</td>
+                                        <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                                        <td><h6>{{ $user->role }}</h6></td>
                                         <td>
-                                            <a href="{{ route('sections.show', $section->id) }}"
-                                                 class="btn btn-primary btn-with-icon btn-block"><i
-                                                    class="typcn typcn-eye-outline"></i> Show</a>
+                                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary btn-with-icon btn-block">
+                                                <i class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
-
-                                        <td>
-                                            <a href="{{ route('sections.edit', $section->id) }}"
+                                        {{-- <td>
+                                            <a href="{{ route('users.edit', $user->id) }}"
                                                 class="btn btn-success btn-with-icon btn-block"><i
                                                     class="typcn typcn-edit"></i> Edit</a>
-                                        </td>
+                                        </td> --}}
                                         <td>
-                                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST">
+                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block"><i
-                                                        class="typcn typcn-delete"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block"><i class="typcn typcn-delete"></i> Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -128,7 +128,7 @@
     <script>
         $('#example10').DataTable({
             columnDefs:[{
-                orderable:false, targets:[4,5]
+                orderable:false, targets:[6,7]
             }]
         });
     </script>

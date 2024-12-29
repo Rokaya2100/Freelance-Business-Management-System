@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SectionRequest;
-use Illuminate\Http\Request;
 use App\Models\Section;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Requests\StoreSectionRequest;
 
 class SectionController extends Controller
 {
@@ -93,7 +90,7 @@ class SectionController extends Controller
         $section->restore();
 
         return redirect()
-            ->route('sections.index')
+            ->route('sections.trashed')
             ->with('success', 'Section restored successfully');
     }
 

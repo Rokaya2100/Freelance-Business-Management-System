@@ -8,12 +8,14 @@ use App\Models\Contract;
 use App\Models\Portfolio;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -26,16 +28,18 @@ class User extends Authenticatable
         'country',
         'role',
         'image',
+        'last_seen',
         'password',
     ];
 
-    public function projects(){
+
+
+    public function project(){
         return $this->hasMany(Project::class);
     }
     public function contracts(){
         return $this->hasMany(Contract::class);
     }
-
     public function portfolio(){
         return $this->hasOne(Portfolio::class);
     }
