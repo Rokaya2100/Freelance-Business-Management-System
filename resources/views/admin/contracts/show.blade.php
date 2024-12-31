@@ -27,7 +27,7 @@
                     <div class="row">
                         <!-- Project Name -->
                         <div class="col-md-6 mb-3">
-                            <strong>Project Name:</strong> <span>{{ $contract->project_name }}</span>
+                            <strong>Project Name:</strong> <span>{{ $contract->project->name }}</span>
                         </div>
                         <!-- Client Name -->
                         <div class="col-md-6 mb-3">
@@ -82,8 +82,9 @@
                     </div>
                     <!-- Back Button -->
                     <div class="mt-3">
-                        <a href="{{ route('contracts.index') }}" class="btn btn-primary">Go to the Project</a>
-                        <a href="{{ route('contracts.index') }}" class="btn btn-secondary">Go to the Report</a>
+                        <a href="{{ route('projects.show', ['project' => $contract->project_id]) }}" class="btn btn-primary">Go to the Project</a>
+                        <a href="{{ route('reports.show', ['id' => $contract->project->report->id]) }}" class="btn btn-secondary">Go to Project Report</a>
+
                     </div>
                 </div>
             </div>

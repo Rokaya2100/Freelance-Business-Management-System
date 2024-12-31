@@ -27,7 +27,19 @@ Route::get('sections/trashed', [SectionController::class, 'trashed'])->name('sec
 Route::post('sections/{id}/restore', [SectionController::class, 'restore'])->name('sections.restore');
 Route::resource('sections', SectionController::class);
 
+<<<<<<< Updated upstream
 // Route::resource('contracts', ContractController::class);
+=======
+// reports
+ Route::get('reports/trashed', [ReportController::class, 'trashed'])->name('reports.trashed');
+Route::get('reports/excel', [ReportController::class,'exportAllReports'])->name('reports.excel');
+Route::get('reports/{id}/oneExcel', [ReportController::class,'exportOneReport'])->name('reports.oneExcel');
+Route::get('reports/{id}/restore', [ReportController::class, 'restore'])->name('reports.restore');
+Route::delete('reports/{id}/forceDelete', [ReportController::class, 'forceDelete'])->name('reports.forceDelete');
+Route::resource('reports', ReportController::class);
+
+
+>>>>>>> Stashed changes
 
 Route::get('contracts/show/{id}', [ContractController::class, 'show'])->name('contracts.show');
 Route::get('contracts', [ContractController::class, 'index'])->name('contracts.index');

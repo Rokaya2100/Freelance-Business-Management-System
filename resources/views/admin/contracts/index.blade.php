@@ -40,6 +40,7 @@
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
                                     <th class="wd-15p border-bottom-0">Project Name</th>
+                                    <th class="wd-15p border-bottom-0">Project Status</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
                                     <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
@@ -50,6 +51,7 @@
                                     <tr>
                                         <td>{{ $contract->id }}</td>
                                         <td>{{ $contract->project_name }}</td> <!-- Displaying the project name -->
+                                        <td>{{ $contract->project_status }}</td> <!-- Displaying the project name -->
                                         <td>{{ $contract->created_at ? $contract->created_at->format('d/m/Y') : 'N/A' }}
                                         </td>
                                         <td>
