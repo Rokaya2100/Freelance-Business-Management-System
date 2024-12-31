@@ -48,8 +48,5 @@ Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.tra
 Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
 Route::resource('users', UserController::class);
 
-
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/{page}', [AdminController::class,'index']);

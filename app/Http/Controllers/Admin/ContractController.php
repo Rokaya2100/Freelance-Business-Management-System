@@ -11,16 +11,16 @@ class ContractController extends Controller
     {
         $contracts = Contract::select('contracts.id', 'contracts.created_at')
             ->join('projects', 'contracts.project_id', '=', 'projects.id')
-            ->addSelect('projects.name as project_name')
+            ->addSelect('projects.name as project_name',  'projects.status as project_status')
             ->orderBy('contracts.created_at')
             ->paginate(10);
         return view('admin.contracts.index', compact('contracts'));
     }
 
+    
     public function show(string $id)
     {
-        $contract = Contract::findOrFail($id);
-        $contract->load('project.users', 'freelancer');
+        $contract = Contract::with(['client', 'freelancer', 'project'])->findOrFail($id);
 
         return view('admin.contracts.show', compact('contract'));
     }

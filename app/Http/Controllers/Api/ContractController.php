@@ -37,6 +37,12 @@ class ContractController extends Controller
                 ->paginate(10);
         }
 
+        if ($contracts->isEmpty()) {
+            return response()->json([
+                'message' => 'No contracts found.',
+            ], 200);
+        }
+
         return response()->json($contracts);
     }
 
@@ -45,7 +51,7 @@ class ContractController extends Controller
      */
     public function show(string $id)
     {
-        $contract = Contract::with(['project.user', 'freelancer'])
+        $contract = Contract::with(['client', 'freelancer'])
             ->findOrFail($id);
 
         // Authorization: Only the client or freelancer can view this contract
@@ -117,5 +123,6 @@ class ContractController extends Controller
             ],
         ]);
     }
+
 
 }

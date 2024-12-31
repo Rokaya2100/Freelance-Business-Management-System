@@ -55,8 +55,7 @@ Route::apiResource('/offers',OfferController::class)->except(['destroy','update'
 
 //contract api
 
-
-Route::get('contracts', [ApiContractController::class, 'index']);
+// these are temporary one until we handle the Roles thing
+Route::get('contracts', [ApiContractController::class, 'index'])->middleware('auth:sanctum');
 Route::get('contracts/{id}', [ApiContractController::class, 'show']);
 Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract']);
-
