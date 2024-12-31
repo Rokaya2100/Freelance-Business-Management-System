@@ -23,10 +23,10 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name'     => 'required|string|max:255',
-            'country'  => 'required|string|max:255',
-            'role'     => 'required|in:freelancer,client',,
-            'image'    => 'image|mimes:jpeg,png,jpg|max:2048',
             'email'    => 'required|string|email|max:255|unique:users',
+            'country'  => 'required|string|max:255',
+            'role'     => 'required|in:freelancer,client',
+            'image'    => 'image|mimes:jpeg,png,jpg|max:2048',
             'password' => 'required|string|min:8',
         ];
     }

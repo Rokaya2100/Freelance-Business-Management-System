@@ -31,7 +31,7 @@
                         <h4 class="card-title mg-b-0">SECTIONS TABLE</h4>
                         <a href="{{ route('sections.create') }}"
                             class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i
-                                class="typcn typcn-plus"></i> ADD SECTION</a>
+                             class="typcn typcn-plus"></i> ADD SECTION</a> </td>
                     </div>
                 </div>
                 <div class="card-body">
@@ -53,21 +53,21 @@
                                     <tr>
                                         <td>{{ $section->id }}</td>
                                         <td>{{ $section->name }}</td>
-                                        {{-- <td>{{ $section->description }}</td> --}}
+                                        <td>{{ $section->description }}</td>
                                         <td>{{ $section->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             <a href="{{ route('sections.show', $section->id) }}"
                                                  class="btn btn-primary btn-with-icon btn-block"><i
                                                     class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
+
                                         <td>
                                             <a href="{{ route('sections.edit', $section->id) }}"
                                                 class="btn btn-success btn-with-icon btn-block"><i
                                                     class="typcn typcn-edit"></i> Edit</a>
                                         </td>
                                         <td>
-                                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST"
-                                                style="display:inline;">
+                                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-with-icon btn-block"><i

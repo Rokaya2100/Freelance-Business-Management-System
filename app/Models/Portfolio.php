@@ -20,7 +20,5 @@ class Portfolio extends Model
     public function users(){
         return $this->belongsTo(User::class);
     }
-    public function projects(){
-        return $this->hasMany(Project::class);
-    }
+    
 }
