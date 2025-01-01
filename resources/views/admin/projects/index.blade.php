@@ -33,7 +33,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table">
-                        <table class="table text-md-nowrap" id="example1">
+                        <table class="table text-md-nowrap" id="example10">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
@@ -44,7 +44,6 @@
                                     <th class="wd-15p border-bottom-0">Description</th>
                                     <th class="wd-15p border-bottom-0">Section</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
-                                    <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
                                 </tr>
@@ -67,13 +66,10 @@
                                         <td>{{ $project->description }}</td>
                                         <td>{{ $project->section->name }}</td>
                                         <td>{{ $project->created_at->format('d/m/Y') }}</td>
-                                        @if($project->status == 'pending')
                                         <td>
-                                            <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-success btn-with-icon btn-block">
-                                                <i class="typcn typcn-edit"></i> Edit
-                                            </a>
+                                            <a href="{{ route('projects.show', $project->id) }}"class="btn btn-primary btn-with-icon btn-block">
+                                                <i class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
-                                        @endif
                                         <td>
                                             <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display:inline;">
                                                 @csrf
@@ -82,11 +78,6 @@
                                                     <i class="typcn typcn-delete"></i> Delete
                                                 </button>
                                             </form>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('projects.show', $project->id) }}" class="btn btn-success btn-with-icon btn-block">
-                                                <i class="typcn typcn-edit"></i> Show
-                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -141,4 +132,11 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script>
+        $('#example10').DataTable({
+            columnDefs:[{
+                orderable:false, targets:[8,9]
+            }]
+        });
+    </script>
 @endsection
