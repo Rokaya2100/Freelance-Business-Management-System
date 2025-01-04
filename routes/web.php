@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ContractController;
+use App\Http\Controllers\Admin\OfferController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ProjectController;
 
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\ContractController;
 
 
 Route::get('/', function () {
@@ -47,6 +48,8 @@ Route::get('contracts/trashed', [ContractController::class, 'trashed'])->name('c
 Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
 Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
 Route::resource('users', UserController::class);
+
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/{page}', [AdminController::class,'index']);

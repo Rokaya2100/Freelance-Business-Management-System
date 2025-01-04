@@ -50,57 +50,153 @@
 
     <div class="project-title"> {{ $project->name }}</div>
     <div class="project-details">
-        <div class="project-status">Status : {{ $project->status }}</div>
-        <div class="project-section">Section : {{ $project->section->name }}</div>
+        <div class="project-status mdi mdi-cloud "> Status : {{ $project->status }}</div>
+        <div class="project-section fas fa-file"> Section : {{ $project->section->name }}</div>
         <div class="client-info">
-            Client Name :{{$project->client->name}}
-            <br><br>
-            Freelancer Name :
-            @if($project->freelancer)
-            {{ $project->freelancer->name   }}
-            @else
-            There is no Freelancer
-        @endif
-
-
-
+    <span class="mdi mdi-account-outline"> Client Name: {{ $project->client->name }}</span>
+    <br><br>
+            <span class="mdi mdi-account-circle"> Freelancer Name:
+                @if($project->freelancer)
+                    {{ $project->freelancer->name }}
+                @else
+                    There is no Freelancer
+                @endif
+            </span>
                 @if($project->customer_attachments)
                 <div class="project-customer_attachments"> customer attachments :{{$project->customer_attachments}} <br><br>
                 @endif
             </div>
             </div>
             <div>
-                @if($project->independent_attachments)
-                <div class="project-independent_attachments"> independent attachments : {{$project->independent_attachments}} <br><br>
-                @endif
+                <div class="project-description mdi mdi-comment-text"> Description :{{$project->description }} .</div><br>
+                <div class="project-exp_delivery_date mdi mdi-calendar-clock "> Expected Delivery Date:{{ $project->exp_delivery_date}} .</div><br>
 
-
-
-
-        <div class="project-description">Description : <br>
-        {{$project->description }}
-    </div>
-
-
-                    <div class="project-exp_delivery_date">Expected Delivery Date: <br>
-                        {{ $project->exp_delivery_date}}
-                    </div>
-                    <br>
-                        @if($project->delivery_date)
-                        <div class="project-delivery_date">Delivery date: <br>
-                        {{ $project->delivery_date}}
-                        </div>
-                        @elseif($project->status !== 'pending' && !$project->delivery_date)
-                        <div class="project-delivery_date">Delivery date: <br>
-                        The project is under preparation and has not yet been delivered</div>
-                        @elseif($project->status == 'pending')
-                        <div class="project-delivery_date">Delivery date: The project is Pending</div>
-                        @endif
-                            <br>
-                        <a href="{{ url()->previous() }}" class="btn btn-secondary">Back</a>
-                        <div class="project-date">Add Date : {{ $project->created_at->format('d/m/Y') }}</div>
+                @if($project->delivery_date)
+                <div class="project-delivery_date mdi mdi-calendar-clock"> Delivery date: <br>
+                {{ $project->delivery_date}}
+            </div>
+            @elseif($project->status !== 'pending' && !$project->delivery_date)
+            <div class="project-delivery_date mdi mdi-calendar-clock"> Delivery date: <br>
+            The project is under preparation and has not yet been delivered .</div>
+            @elseif($project->status == 'pending')
+            <div class="project-delivery_date mdi mdi-calendar-clock"> Delivery date: The project is Pending .</div>
+            @endif
+            @if($project->independent_attachments)
+            <div class="project-independent_attachments"> independent attachments : {{$project->independent_attachments}} <br><br>
+            @endif
+                            <br><br>
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary ">Back</a>
+                        <div class="project-date">Add Date : {{ $project->created_at->format('d/m/Y') }} .</div>
                         </div><div></div></div>
+                        @if($project->offers->isEmpty())
+                        The Offers :
+                        <p>There are no offers available for this project.</p>
+                        @else
+                        @foreach($project->offers as $offer)
+                            <li class="offer-item {{ $offer->status == 'accepted' ? 'accepted' : '' }}  "style="display: flex; flex-direction: column;">
+                                <div class="offer-details">
+
+                                    <h5 class="mdi mdi-account-outline">  {{ $offer->user->name }}</h5>
+                                    <p>
+
+                                    </p>
+                                    <p><strong class="mdi mdi-comment-text"> {{ $offer->description }} </strong></p>
+                                    <p class="mdi mdi-cloud"> Status: {{ $offer->status }} .</p>
+
+                                    <p><strong class="mdi mdi-calendar-clock"> Project work period: {{ $offer->period }} .</strong>
+                                    </p>
+                                    <strong class="mdi mdi-currency-usd"> Price: {{ $offer->price }} $.</strong>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end;">
+                                    @if($offer->status == 'accepted')
+                                    <a href="{{ route('contracts.show', $project->contract->id) }}"
+                                        class="view-contract-button"> View contract </a>
+                                    @endif
+                                </div>
+                            </li>
+                        @endforeach
+@endif
+
+
+</ul> </ul>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.offer-item').click(function() {
+        $(this).toggleClass('highlight');
+    });
+});
+</script>
     <style>
+
+.view-contract-button {
+    background-color: #4CAF50; /* لون الخلفية */
+    color: white; /* لون النص */
+    padding: 8px 16px; /* حشوة الزر (تم تصغيرها) */
+    border: none; /* إزالة الحدود */
+    border-radius: 5px; /* زوايا دائرية */
+    cursor: pointer; /* تغيير شكل المؤشر عند المرور فوق الزر */
+    font-size: 14px; /* حجم الخط (تم تصغيره) */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* تأثير الانتقال عند تغيير اللون والحجم */
+    display: inline-block; /* جعل الزر كعنصر كتلي */
+
+}
+
+.view-contract-button:hover {
+    background-color: #45a049; /* تغيير اللون عند المرور فوق الزر */
+    transform: scale(1.05); /* تكبير الزر قليلاً عند المرور عليه */
+}
+
+
+        .offer-item {
+    border: 1px solid #ccc; /* يمكنك تعديل الحدود حسب الحاجة */
+    padding: 10px; /* تقليل الحواف */
+    margin: 5px; /* تقليل الهوامش */
+    border-radius: 5px; /* لجعل الزوايا دائرية */
+    font-size: 14px; /* تقليل حجم الخط */
+}
+
+.offer-details {
+    line-height: 1.2; /* تقليل ارتفاع السطر */
+}
+
+        .offer-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.offer-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.offer-item:hover {
+    background-color: #f9f9f9;
+}
+
+.offer-item.accepted {
+    border-color: #28a745; /* لون أخضر لحالة العرض المقبول */
+    background-color: #d4edda; /* خلفية خضراء فاتحة */
+}
+
+.offer-title {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+.offer-description {
+    font-size: 1rem;
+    color: #555;
+}
+
+.offer-user, .offer-price {
+    font-weight: bold;
+}
+
     .project-container {
         border: 1px solid #ddd;
         border-radius: 5px;
@@ -136,11 +232,13 @@
         font-size: 14px;
         color: gray;
     }
+
 </style>
 
 @endsection
 @section('js')
     <!-- Internal Data tables -->
+
     <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
