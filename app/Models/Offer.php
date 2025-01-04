@@ -21,7 +21,7 @@ class Offer extends Model
         'period'
     ];
     public function users(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
     public function projects(){
         return $this->belongsTo(Project::class);
