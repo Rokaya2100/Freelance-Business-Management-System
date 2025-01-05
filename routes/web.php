@@ -17,9 +17,17 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-// sections
+
+// reports
+Route::get('reports/trashed', [ReportController::class, 'trashed'])->name('reports.trashed');
+Route::get('reports/excel', [ReportController::class,'exportAllReports'])->name('reports.excel');
+Route::get('reports/{id}/oneExcel', [ReportController::class,'exportOneReport'])->name('reports.oneExcel');
+Route::get('reports/{id}/restore', [ReportController::class, 'restore'])->name('reports.restore');
+Route::delete('reports/{id}/forceDelete', [ReportController::class, 'forceDelete'])->name('reports.forceDelete');
+Route::resource('reports', ReportController::class);
 
 
+//projects
 Route::get('projects/trashed', [ProjectController::class, 'trashed'])->name('projects.trashed');
 Route::post('projects/{id}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
 Route::resource('projects', ProjectController::class);
@@ -29,13 +37,7 @@ Route::get('sections/trashed', [SectionController::class, 'trashed'])->name('sec
 Route::post('sections/{id}/restore', [SectionController::class, 'restore'])->name('sections.restore');
 Route::resource('sections', SectionController::class);
 
-// reports
- Route::get('reports/trashed', [ReportController::class, 'trashed'])->name('reports.trashed');
-Route::get('reports/excel', [ReportController::class,'exportAllReports'])->name('reports.excel');
-Route::get('reports/{id}/oneExcel', [ReportController::class,'exportOneReport'])->name('reports.oneExcel');
-Route::get('reports/{id}/restore', [ReportController::class, 'restore'])->name('reports.restore');
-Route::delete('reports/{id}/forceDelete', [ReportController::class, 'forceDelete'])->name('reports.forceDelete');
-Route::resource('reports', ReportController::class);
+
 
 // Route::resource('contracts', ContractController::class);
 

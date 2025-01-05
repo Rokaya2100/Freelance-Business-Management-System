@@ -24,7 +24,7 @@
 									<div class="col-6">
 										<div class="mt-1 text-center">
 											<span class="text-white tx-20">Users</span>
-											{{-- <h1 class="text-white mb-2">@php $users->count @endphp</h1> --}}
+											<h1 class="text-white mb-2">120</h1>
 										</div>
 									</div>
                                 </div>
@@ -32,13 +32,13 @@
                                 <div class="col-6">
                                     <div class="mt-3 text-center">
                                         <span class="text-white">Client</span>
-                                        <h3 class="text-white mb-0">200</h3>
+                                        <h3 class="text-white mb-0">40</h3>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mt-3 text-center">
                                         <span class="text-white">Freelancer</span>
-                                        <h3 class="text-white mb-0">400</h3>
+                                        <h3 class="text-white mb-0">80</h3>
                                     </div>
                                 </div>
                                  </div><hr>

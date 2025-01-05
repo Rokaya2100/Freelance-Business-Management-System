@@ -56,14 +56,14 @@ class OfferController extends Controller
             'price'       => $request->price,
             'description' => $request->description,
             'period'      => $request->period,
-            'user_id'     =>$user->id,
+            'user_id'     => $user->id,
             'project_id'  => $project_id,
             'status'      => 'pending'
         ]);
         return $this->jsonResponse(201, 'Offer Created Successfully');
     }
 
-    public function update(OfferRequest $request,  $id)//update offer details by freelanser
+    public function update(Request $request,  $id)//update offer details by freelanser
     {
         $offer=Offer::findOrfail($id);
 
@@ -75,7 +75,7 @@ class OfferController extends Controller
         return $this->jsonResponse(201, 'Offer Updated Successfully', );
     }
 
-    public function updateStatus(OfferRequest $request,  $id)//to update status by client
+    public function updateStatus(Request $request,  $id)//to update status by client
     {
         $offer=Offer::findOrfail($id);
 

@@ -84,7 +84,6 @@
                     <div class="mt-3">
                         <a href="{{ route('projects.show', ['project' => $contract->project_id]) }}" class="btn btn-primary">Go to the Project</a>
                         <a href="{{ url()->previous() }}" class="btn btn-secondary">Back</a>
-
                     </div>
                 </div>
             </div>
