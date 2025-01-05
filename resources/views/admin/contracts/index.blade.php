@@ -51,7 +51,7 @@
                                     <tr>
                                         <td>{{ $contract->id }}</td>
                                         <td>{{ $contract->project_name }}</td> <!-- Displaying the project name -->
-                                        <td>{{ $contract->project_status }}</td> <!-- Displaying the project name -->
+                                        <td>{{ $contract->project_status }}</td>
                                         <td>{{ $contract->created_at ? $contract->created_at->format('d/m/Y') : 'N/A' }}
                                         </td>
                                         <td>

@@ -25,15 +25,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Project Api
+Route::get('projects', [ProjectController::class, 'index']);
+Route::get('projects/{id}', [ProjectController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function(){
 Route::delete('projects/del/{id}',[ProjectController::class,'forceDelete']);
-Route::apiResource('projects',ProjectController::class);
-
+Route::put('projects/update/{id}',[ProjectController::class,'updateProjectFromFreelancer']);
+//Route::apiResource('projects',ProjectController::class);
+});
 //auth api
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
 //offer api
+
+Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
+Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
+
 Route::middleware('auth:sanctum')->group(function(){
 
  Route::post('/offers/{project}', [OfferController::class, 'store']);
@@ -43,14 +51,10 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::put('/offers/status/{id}', [OfferController::class, 'updateStatus']);
 Route::put('/offers/{id}', [OfferController::class, 'update'])->middleware(['CheckFreelancers']);
 
- Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
- Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
-
  Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware(['CheckFreelancers']);
  Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
 
 Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
-
 });
 
 //contract api

@@ -39,7 +39,7 @@
 
                 <div class="card-body">
                     <div class="table">
-                        <table class="table mg-b-0 text-md-nowrap" id="example1">
+                        <table class="table mg-b-0 text-md-nowrap" id="example10">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
@@ -59,8 +59,8 @@
                                         <td>{{ $report->description}}</td>
                                         <td>{{ $report->created_at}}</td>
                                          <td>
-                                            <a href="{{route('reports.show',$report->id)}}" class="btn btn-primary btn-with-icon btn-block"><i
-                                                    class="typcn typcn-eye-outline"></i> Show</a>
+                                            <a href="{{ route('reports.show', $report->id) }}"class="btn btn-primary btn-with-icon btn-block">
+                                                <i class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
                                         <td>
                                             <a href="{{route('reports.oneExcel',$report->id)}}"
@@ -128,4 +128,11 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script>
+        $('#example10').DataTable({
+            columnDefs:[{
+                orderable:false, targets:[4,5,6]
+            }]
+        });
+    </script>
 @endsection

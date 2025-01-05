@@ -83,7 +83,7 @@
                     <!-- Back Button -->
                     <div class="mt-3">
                         <a href="{{ route('projects.show', ['project' => $contract->project_id]) }}" class="btn btn-primary">Go to the Project</a>
-                        <a href="{{ route('reports.show', ['id' => $contract->project->report->id]) }}" class="btn btn-secondary">Go to Project Report</a>
+                        {{-- <a href="{{ route('reports.show', ['id' => $contract->project->report?->id]) }}" class="btn btn-secondary">Go to Project Report</a> --}}
 
                     </div>
                 </div>
