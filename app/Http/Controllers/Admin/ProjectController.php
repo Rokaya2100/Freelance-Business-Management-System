@@ -65,7 +65,7 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $project = Project::with(['client', 'freelancer'])->find($id);
+        $project = Project::with(['client', 'freelancer', 'offers'])->findOrFail($id);
         return view('admin.projects.show', compact('project'));
     }
 

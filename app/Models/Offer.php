@@ -20,7 +20,7 @@ class Offer extends Model
         'price',
         'period'
     ];
-    public function users(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
     public function projects(){
