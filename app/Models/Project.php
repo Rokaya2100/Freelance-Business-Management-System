@@ -41,7 +41,7 @@ class Project extends Model
     {
         return $this->hasOne(Contract::class);
     }
-    public function portfolios()
+    public function portfolio()
     {
         return $this->belongsTo(Portfolio::class);
     }
