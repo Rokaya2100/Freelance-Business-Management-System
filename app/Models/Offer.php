@@ -23,29 +23,29 @@ class Offer extends Model
     public function users(){
         return $this->belongsTo(User::class,'user_id');
     }
-    public function projects(){
+    public function project(){
         return $this->belongsTo(Project::class);
     }
 
-    protected static function booted()
-    {
-        static::updated(function ($offer) {
-            // Check if the status changed to "accepted"
-            if ($offer->isDirty('status') && $offer->status === 'accepted') {
-                // Check if a contract already exists for the project
-                if (!Contract::where('project_id', $offer->project_id)->exists()) {
-                    // Create the contract
-                    Contract::create([
-                        'project_id' => $offer->project_id,
-                        'freelancer_id' => $offer->user_id, // Freelancer's ID
-                        'client_id' => $offer->project->user_id, // Client's ID
-                        'price' => $offer->price,
-                        'is_paid' => false,
-                        'status' => 'in_progress',
-                    ]);
-                }
-            }
-        });
-    }
+    // protected static function booted()
+    // {
+    //     static::updated(function ($offer) {
+    //         // Check if the status changed to "accepted"
+    //         if ($offer->isDirty('status') && $offer->status === 'accepted') {
+    //             // Check if a contract already exists for the project
+    //             if (!Contract::where('project_id', $offer->project_id)->exists()) {
+    //                 // Create the contract
+    //                 Contract::create([
+    //                     'project_id' => $offer->project_id,
+    //                     'freelancer_id' => $offer->user_id, // Freelancer's ID
+    //                     'client_id' => $offer->project->user_id, // Client's ID
+    //                     'price' => $offer->price,
+    //                     'is_paid' => false,
+    //                     'status' => 'in_progress',
+    //                 ]);
+    //             }
+    //         }
+    //     });
+    // }
 
 }

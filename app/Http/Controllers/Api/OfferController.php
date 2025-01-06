@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OfferAccepted;
 use App\Http\Resources\OfferCollection;
 use App\Models\Offer;
 use App\Models\Project;
@@ -82,7 +83,15 @@ class OfferController extends Controller
 
         $offer->update([
             'status' => $request->status,
+            'price'       => $offer->price,
+            'description' => $offer->description,
+            'period'      => $offer->period,
+            'user_id'     => $offer->user_id,
+            'project_id'  => $offer->project_id,
+
         ]);
+        if($offer->status =='accepted')
+            event(new OfferAccepted($offer));
         return $this->jsonResponse(201, 'Offer Status Updated Successfully', );
     }
 

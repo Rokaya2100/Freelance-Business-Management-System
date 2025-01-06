@@ -67,7 +67,7 @@ class ResetPasswordController extends Controller
             $data['code'] = $code;
             $data['email'] = $user->email;
             $data['title'] = "Reset Password";
-            $data['body']  = "Welcom To X-community";
+            $data['body']  = "Welcom To Freelanser Business Managment Website";
 
             // send mail to user
             Mail::send('email_interface', ['data' => $data], function ($message) use ($data) {
@@ -95,7 +95,7 @@ class ResetPasswordController extends Controller
         $code = VerificationCode::where('code', $request->code)
             ->where('user_id', $user->id)->first();
         if ($code) {
-        
+
             $code->code = null;
             $code->is_verified = 1;
             $code->save();

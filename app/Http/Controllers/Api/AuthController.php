@@ -15,8 +15,8 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
     //for upload image
-        $image=uploadImage($request->image,'profile_images');
-        
+        $image=uploadImage('image','profile_images');
+
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,

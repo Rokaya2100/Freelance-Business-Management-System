@@ -33,7 +33,7 @@ class Project extends Model
 
     protected $casts = [
         'exp_delivery_date' => 'datetime',
-        'delivery_date' => 'datetime', // If needed for delivery_date        
+        'delivery_date' => 'datetime', // If needed for delivery_date
     ];
 
     public function client()
@@ -50,7 +50,7 @@ class Project extends Model
         return $this->belongsTo(Section::class);
     }
 
-    public function contracts()
+    public function contract()
     {
         return $this->hasOne(Contract::class);
     }
