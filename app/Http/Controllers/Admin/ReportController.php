@@ -6,9 +6,9 @@ use App\Models\User;
 use App\Models\Report;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Exports\ReportsExport;
 use App\Exports\OneReportExport;
-use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller

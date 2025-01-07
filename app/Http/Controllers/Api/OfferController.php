@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OfferAccepted;
 use App\Http\Resources\OfferCollection;
 use App\Models\Offer;
 use App\Models\Project;
-use Illuminate\Http\Request;
 use App\Http\Traits\jsonTrait;
 use App\Http\Requests\OfferRequest;
 use App\Http\Controllers\Controller;
@@ -15,7 +15,8 @@ class OfferController extends Controller
 {
     use jsonTrait;
 
-    public function index(){
+    public function index()//admin
+    {
 
         $offers = Offer::paginate(5);
         if($offers->isEmpty()){
@@ -24,6 +25,7 @@ class OfferController extends Controller
         return $this->jsonResponse(200, 'All Offers', new OfferCollection($offers));
     }
 
+    //admin+freelanser+client
     public function getProjectOffers(Project $project)//to get all offers that related to this project
     {
         if($project->offers->isEmpty()){
@@ -39,7 +41,7 @@ class OfferController extends Controller
         }
         return $this->jsonResponse(200, 'Offer Details', new OfferResource($offer));
     }
-
+//freelanser
     public function store(OfferRequest $request, Project $project){
 
         $project_id=$project->id;
@@ -62,8 +64,8 @@ class OfferController extends Controller
         ]);
         return $this->jsonResponse(201, 'Offer Created Successfully');
     }
-
-    public function update(Request $request,  $id)//update offer details by freelanser
+//freelanser (his offer)
+    public function update(OfferRequest $request,$id)//update offer details by freelanser
     {
         $offer=Offer::findOrfail($id);
 
@@ -74,20 +76,30 @@ class OfferController extends Controller
         ]);
         return $this->jsonResponse(201, 'Offer Updated Successfully', );
     }
-
-    public function updateStatus(Request $request,  $id)//to update status by client
+//client
+    public function updateStatus(OfferRequest $request,$id)//to update status by client
     {
         $offer=Offer::findOrfail($id);
 
         $offer->update([
             'status' => $request->status,
+            'price'       => $offer->price,
+            'description' => $offer->description,
+            'period'      => $offer->period,
+            'user_id'     => $offer->user_id,
+            'project_id'  => $offer->project_id,
+
         ]);
+        if($offer->status =='accepted')
+            event(new OfferAccepted($offer));
         return $this->jsonResponse(201, 'Offer Status Updated Successfully', );
     }
 
 
+//freelanser (his offer)
     public function restore($id){
-        $offer = Offer::withTrashed()->find($id);
+        $user_id=auth()->user()->id;
+        $offer = Offer::withTrashed()->where('user_id',$user_id)->find($id);
         if (!$offer->deleted_at) {
             return $this->jsonResponse(404, 'Offer Not deleted', null);
         }
@@ -95,13 +107,14 @@ class OfferController extends Controller
         $offer->restore();
         return $this->jsonResponse(200, 'Offer Restored Successfully', new OfferResource($offer));
     }
+    //admin
     public function forceDelete($id){
         $offer = Offer::withTrashed()->findOrFail($id);
         $offer->forceDelete();
         return $this->jsonResponse(204, 'Offer Deleted Permanently',);
     }
-
-    public function destroy( $id)//can delete offer that its status is not accepted
+//freelanser (his offer)+admin
+    public function destroy($id)//can delete offer that its status is not accepted
     {
          $offer=Offer::findOrfail($id);
         if ($offer && $offer->status !== 'accepted') {
@@ -111,4 +124,20 @@ class OfferController extends Controller
         }
         return $this->jsonResponse(204, 'Offer Deleted', null);
     }
+
+
+
+    //freelanser
+public function freeOffersDeleted(){
+    $user_id=auth()->user()->id;
+    $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
+    return $this->jsonResponse(204, ' my Offers were Deleted ',$offers);
+}
+//admin
+    public function offersDeleted($user_id){
+        $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
+        return $this->jsonResponse(204, 'Offers were Deleted by this freelanser',$offers);
+    }
+
+
 }
