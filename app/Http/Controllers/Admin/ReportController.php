@@ -31,14 +31,13 @@ class ReportController extends Controller
         return view('admin.reports.index', compact('reports'));
     }
 
-    public function show($id)
+    public function show(string$id)
     {
         $report = Report::findOrFail($id);
-        $section_id = $report->project->section_id;
-        $user_id = $report->project->user_id;
-        $section = Section::findOrFail($section_id);
-        $user = User::findOrFail($user_id);
-        return view('admin.reports.show',compact('report','section','user'));
+        $section = Section::findOrFail($report->project->section_id);
+        $client = User::findOrFail($report->project->client_id);
+        $freelancer = User::findOrFail($report->project->freelancer_id);
+        return view('admin.reports.show',compact('report','section','client','freelancer'));
     }
 
     public function destroy($id)

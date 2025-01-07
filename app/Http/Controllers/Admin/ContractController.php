@@ -17,7 +17,7 @@ class ContractController extends Controller
         return view('admin.contracts.index', compact('contracts'));
     }
 
-    
+
     public function show(string $id)
     {
         $contract = Contract::with(['client', 'freelancer', 'project'])->findOrFail($id);
@@ -48,6 +48,7 @@ class ContractController extends Controller
             ->route('contracts.trashed')
             ->with('success', 'contract restored successfully');
     }
+    
 
     public function trashed()
     {

@@ -30,7 +30,7 @@ Route::get('projects/{id}', [ProjectController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function(){
 Route::delete('projects/del/{id}',[ProjectController::class,'forceDelete']);
 Route::put('projects/update/{id}',[ProjectController::class,'updateProjectFromFreelancer']);
-//Route::apiResource('projects',ProjectController::class);
+Route::apiResource('projects',ProjectController::class);
 });
 //auth api
 Route::post('/register',[AuthController::class,'register']);
@@ -61,5 +61,5 @@ Route::apiResource('/offers',OfferController::class)->except(['destroy','update'
 
 // these are temporary one until we handle the Roles thing
 Route::get('contracts', [ApiContractController::class, 'index'])->middleware('auth:sanctum');
-Route::get('contracts/{id}', [ApiContractController::class, 'show']);
-Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract']);
+Route::get('contracts/{id}', [ApiContractController::class, 'show'])->middleware('auth:sanctum');
+Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract'])->middleware('auth:sanctum');
