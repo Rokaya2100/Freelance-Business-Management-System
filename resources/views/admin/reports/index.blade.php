@@ -33,7 +33,7 @@
                         <a href="{{ route('reports.excel') }}"
                             class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2">
                             <i class="far fa-arrow-alt-circle-down"></i>
-                            Export All Reports</a></td>
+                            Export All Reports</a>
                     </div>
                 </div>
 
@@ -59,8 +59,8 @@
                                         <td>{{ $report->description}}</td>
                                         <td>{{ $report->created_at}}</td>
                                          <td>
-                                            <a href="{{ route('reports.show', $report->id) }}"class="btn btn-primary btn-with-icon btn-block">
-                                                <i class="typcn typcn-eye-outline"></i> Show</a>
+                                            <a href="{{route('reports.show',$report->id)}}" class="btn btn-primary btn-with-icon btn-block"><i
+                                                    class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
                                         <td>
                                             <a href="{{route('reports.oneExcel',$report->id)}}"

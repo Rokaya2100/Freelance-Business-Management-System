@@ -30,7 +30,7 @@ Route::get('projects/{id}', [ProjectController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function(){
 Route::delete('projects/del/{id}',[ProjectController::class,'forceDelete']);
 Route::put('projects/update/{id}',[ProjectController::class,'updateProjectFromFreelancer']);
-//Route::apiResource('projects',ProjectController::class);
+Route::apiResource('projects',ProjectController::class);
 });
 //auth api
 Route::post('/register',[AuthController::class,'register']);

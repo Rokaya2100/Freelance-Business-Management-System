@@ -106,7 +106,7 @@ class ProjectController extends Controller
         }
         $project->customer_attachments =   $path_customer_attachments ;
         $project->save();
-        return $this->jsonResponse(204,'update project from freelancer successfully');
+        return $this->jsonResponse(204,'update project status from freelancer successfully');
 
     }
 }
