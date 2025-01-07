@@ -25,47 +25,44 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Project Api
+Route::get('projects', [ProjectController::class, 'index']);
+Route::get('projects/{id}', [ProjectController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function(){
 Route::delete('projects/del/{id}',[ProjectController::class,'forceDelete']);
+Route::put('projects/update/{id}',[ProjectController::class,'updateProjectFromFreelancer']);
 Route::apiResource('projects',ProjectController::class);
-
+});
 //auth api
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
 //offer api
+
+Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
+Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
+
 Route::middleware('auth:sanctum')->group(function(){
 
  Route::post('/offers/{project}', [OfferController::class, 'store']);
  Route::post('/offers/restore/{id}', [OfferController::class, 'restore'])->middleware(['CheckFreelancers']);
-
-
 Route::post('/offers/status/{id}', [OfferController::class, 'updateStatus']);
 Route::post('/updateOffers/{id}', [OfferController::class, 'update'])->middleware(['CheckFreelancers']);
-
- Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
- Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
-
  Route::get('/freeOffersDeleted', [OfferController::class, 'freeOffersDeleted'])->middleware('auth:sanctum');
-
  Route::get('/offers/offers-deleted/{user_id}', [OfferController::class, 'offersDeleted'])->middleware('auth:sanctum');
-
  Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware('auth:sanctum');
  Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
-
 Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
-
 });
 
 //contract api
 
-
-Route::get('contracts', [ApiContractController::class, 'index']);
-Route::get('contracts/{id}', [ApiContractController::class, 'show']);
-Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract']);
-
-
-
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
+
+// these are temporary one until we handle the Roles thing
+Route::get('contracts', [ApiContractController::class, 'index'])->middleware('auth:sanctum');
+Route::get('contracts/{id}', [ApiContractController::class, 'show'])->middleware('auth:sanctum');
+Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract'])->middleware('auth:sanctum');
+

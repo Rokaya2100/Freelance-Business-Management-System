@@ -13,72 +13,65 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">Reports</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Reports
-                    List</span>
+                <h4 class="content-title mb-0 my-auto">Project Archive</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">
+                    /Projects Archive List</span>
             </div>
         </div>
-
     </div>
-
+    <!-- breadcrumb -->
 @endsection
 @section('content')
     <!-- row -->
-
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title mg-b-0">REPORTS TABLE</h4>
-                        <a href="{{ route('reports.excel') }}"
-                            class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2">
-                            <i class="far fa-arrow-alt-circle-down"></i>
-                            Export All Reports</a>
+                        <h4 class="card-title mg-b-0">Projects Archive TABLE</h4>
                     </div>
                 </div>
-
                 <div class="card-body">
                     <div class="table">
-                        <table class="table mg-b-0 text-md-nowrap" id="example10">
+                        <table class="table text-md-nowrap" id="example10">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
-                                    <th class="wd-15p border-bottom-0">Project Name</th>
+                                    <th class="wd-15p border-bottom-0">Name</th>
+                                    <th class="wd-15p border-bottom-0">Name Client</th>
+                                    <th class="wd-15p border-bottom-0">Name Freelancer</th>
+                                    <th class="wd-15p border-bottom-0">Status</th>
                                     <th class="wd-15p border-bottom-0">Description</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
-                                    <th class="border-bottom-0"></th>
-                                    <th class="border-bottom-0"></th>
+                                    <th class="wd-15p border-bottom-0">Deleted Date</th>
                                     <th class="border-bottom-0"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reports as $report)
+                                @foreach ($projects as $project)
                                     <tr>
-                                        <td>{{ $report->id }}</td>
-                                        <td>{{ $report->project->name}}</td>
-                                        <td>{{ $report->description}}</td>
-                                        <td>{{ $report->created_at}}</td>
-                                         <td>
-                                            <a href="{{route('reports.show',$report->id)}}" class="btn btn-primary btn-with-icon btn-block"><i
-                                                    class="typcn typcn-eye-outline"></i> Show</a>
-                                        </td>
+                                        <td>{{ $project->id }}</td>
+                                        <td>{{ $project->name }}</td>
+                                        <td>{{ $project->client->name }}</td>
+                                        @if ($project->freelancer)
+                                            <td>{{ $project->freelancer->name }}</td>
+                                        @else
+                                            <td> There is no Freelancer </td>
+                                        @endif
+                                        <td>{{ $project->status }}</td>
+                                        <td>{{ $project->description }}</td>
+                                        <td>{{ $project->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ $project->deleted_at->format('d/m/Y') }}</td>
                                         <td>
-                                            <a href="{{route('reports.oneExcel',$report->id)}}"
-                                                class="btn btn-secondary btn-with-icon btn-block">
-                                                <i class="far fa-arrow-alt-circle-down"></i>
-                                                Export Report</a>
-                                        </td>
-                                        <td>
-                                            <form action="{{route('reports.destroy',$report->id)}}" method="POST"
-                                                style="display:inline;">
+                                            <form action="{{ route('projects.restore', $project->id) }}" method="POST">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block"><i
-                                                        class="typcn typcn-delete"></i> Delete</button>
+                                                <button type="submit" class="btn btn-success btn-with-icon btn-block">
+                                                    <i class="typcn typcn-cloud-storage-outline "></i> Restore
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
+
                                 @if (session('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         {{ session('success') }}
@@ -130,8 +123,9 @@
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
     <script>
         $('#example10').DataTable({
-            columnDefs:[{
-                orderable:false, targets:[4,5,6]
+            columnDefs: [{
+                orderable: false,
+                targets: [8]
             }]
         });
     </script>

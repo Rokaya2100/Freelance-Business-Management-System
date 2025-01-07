@@ -16,7 +16,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::with(['client', 'freelancer','section'])->get();
-        return view('projects.index', compact('projects'));
+        return view('admin.projects.index', compact('projects'));
     }
 
 
@@ -24,7 +24,7 @@ class ProjectController extends Controller
     public function create(){
 
     $sections = Section::all();
-    return view('projects.create',compact('sections'));
+    return view('admin.projects.create',compact('sections'));
     }
 
     public function store(Request $request)
@@ -65,8 +65,8 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $project = Project::with(['client', 'freelancer'])->find($id);
-        return view('projects.show', compact('project'));
+        $project = Project::with(['client', 'freelancer', 'offers'])->findOrFail($id);
+        return view('admin.projects.show', compact('project'));
     }
 
     public function destroy(Project $project)
@@ -88,7 +88,7 @@ class ProjectController extends Controller
     public function trashed()
     {
     $projects = Project::onlyTrashed()->paginate(10);
-    return view('projects.trashed', compact('projects'));
+    return view('admin.projects.trashed', compact('projects'));
     }
 
     public function restore($id)
