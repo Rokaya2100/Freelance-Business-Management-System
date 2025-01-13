@@ -15,15 +15,17 @@ class AuthController extends Controller
 {use jsonTrait;
     public function register(RegisterRequest $request)
     {
-//for upload image
-        $image = uploadImage($request->image, $request->role == 'client' ? 'clients' : 'freelancers');
+    //for upload image
+        $image=uploadImage('image','profile_images');
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'country' => $request->country,
-            'role' => $request->role,
-            'image' => $image,
-            'password' => Hash::make($request->password), //bcrypt
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'country'  => $request->country,
+            'role'     => $request->role,
+            'image'    => $image,
+            'password' => Hash::make($request->password),//bcrypt
+
         ]);
 
         // Automatically create a portfolio if the user is a freelancer
@@ -43,13 +45,11 @@ class AuthController extends Controller
     {
 
         $user = User::where('email', $request->email)->first();
-
         if ($user && Hash::check($request->password, $user->password)) {
             // Create and return token
             $token = $user->createToken('YourAppName')->plainTextToken;
             return $this->jsonResponse(200, 'success', ['token' => $token]);
         }
-
         return $this->jsonResponse(401, 'Unauthorized');
     }
 
@@ -59,6 +59,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
+        return $this->jsonResponse(200,'Logged out successfully');
+    }
 
-        return $this->jsonResponse(200, 'Logged out successfully');
-    }}
+}
+

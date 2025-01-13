@@ -4,17 +4,21 @@ namespace App\Models;
 
 use App\Models\Offer;
 use App\Models\Review;
+use App\Models\Comment;
 use App\Models\Contract;
 use App\Models\Portfolio;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -27,26 +31,35 @@ class User extends Authenticatable
         'country',
         'role',
         'image',
+        'last_seen',
         'password',
     ];
 
-    public function projects(){
-        return $this->hasMany(Project::class);
-    }
-    public function contracts(){
-        return $this->hasMany(Contract::class);
+
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class ,'reviewable');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function projects(){
+        return $this->hasMany(Project::class,'freelancer_id','id');
+    }
+
+    public function contracts(){
+        return $this->hasMany(Contract::class,'freelancer_id','id');
+    }
     public function portfolio(){
         return $this->hasOne(Portfolio::class);
     }
     public function offers(){
         return $this->hanMany(Offer::class);
     }
-    public function reviews(): MorphMany
-    {
-        return $this->morphMany(Review::class ,'reviewable');
-    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

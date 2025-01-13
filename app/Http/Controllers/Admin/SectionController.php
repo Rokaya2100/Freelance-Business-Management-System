@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SectionRequest;
-use Illuminate\Http\Request;
 use App\Models\Section;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Requests\StoreSectionRequest;
 
 class SectionController extends Controller
 {
@@ -16,7 +13,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = Section::latest()->paginate(10);
+        $sections = Section::latest()->paginate(20);
         return view('admin.sections.index', compact('sections'));
     }
 
@@ -101,5 +98,9 @@ class SectionController extends Controller
     {
         $sections = Section::onlyTrashed()->paginate(10);
         return view('admin.sections.trashed', compact('sections'));
+    }
+    public function forceDelete($id){
+        Section::withTrashed()->where('id',$id)->forceDelete();
+        return redirect()->back()->with('success','Section deleted successfully');
     }
 }

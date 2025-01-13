@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('status',['pending','accepted','rejected'])->default('pending');
             $table->text('description');
             $table->float('price');
             $table->string('period');
-            $table->softDeletes();
+           $table->softDeletes();
             $table->timestamps();
         });
     }

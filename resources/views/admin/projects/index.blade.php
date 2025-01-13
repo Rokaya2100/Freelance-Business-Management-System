@@ -28,50 +28,64 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title mg-b-0">Projects TABLE</h4>
-                        <a href="{{ route('sections.create') }}" class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i class="typcn typcn-plus"></i> ADD SECTION</a>
+                        <a href="{{ route('projects.create') }}" class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i class="typcn typcn-plus"></i> ADD Project</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table">
-                        <table class="table text-md-nowrap" id="example1">
+                        <table class="table text-md-nowrap" id="example10">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
                                     <th class="wd-15p border-bottom-0">Name</th>
+                                    <th class="wd-15p border-bottom-0">Name Client</th>
+                                    <th class="wd-15p border-bottom-0">Name Freelancer</th>
+                                    <th class="wd-15p border-bottom-0">Status</th>
                                     <th class="wd-15p border-bottom-0">Description</th>
+                                    <th class="wd-15p border-bottom-0">Section</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
-                                    <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sections as $section)
+                                @foreach ($projects as $project)
                                     <tr>
-                                        <td>{{ $section->id }}</td>
-                                        <td>{{ $section->name }}</td>
-                                        <td>{{ $section->description }}</td>
-                                        <td>{{ $section->created_at->format('d/m/Y') }}</td>
-                                        {{-- <td>
-                                            <button class="btn btn-primary btn-with-icon btn-block"><i
-                                                    class="typcn typcn-eye-outline"></i> Show</button>
-                                        </td> --}}
+                                        <td>{{ $project->id }}</td>
+                                        <td>{{ $project->name }}</td>
+
+
+                                        @if($project->client)
+                                        <td>{{ $project->client->name   }}</td>
+                                            @else
+                                        <td>Unknown</td>
+                                        @endif                                            @if($project->freelancer)
+                                            <td>{{ $project->freelancer->name   }}</td>
+                                                @else
+                                            <td>There is no Freelancer</td>
+                                            @endif
+
+                                        <td>{{ $project->status }}</td>
+                                        <td>{{ $project->description }}</td>
+                                        <td>{{ $project->section->name }}</td>
+                                        <td>{{ $project->created_at->format('d/m/Y') }}</td>
                                         <td>
-                                            <a href="{{ route('sections.edit', $section->id) }}"
-                                                class="btn btn-success btn-with-icon btn-block"><i
-                                                    class="typcn typcn-edit"></i> Edit</a>
+                                            <a href="{{ route('projects.show', $project->id) }}"class="btn btn-primary btn-with-icon btn-block">
+                                                <i class="typcn typcn-eye-outline"></i> Show</a>
                                         </td>
                                         <td>
-                                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST"
-                                                style="display:inline;">
+                                            <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block"><i
-                                                        class="typcn typcn-delete"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block">
+                                                    <i class="typcn typcn-delete"></i> Delete
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
+
+
                                 @if (session('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         {{ session('success') }}
@@ -121,4 +135,11 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script>
+        $('#example10').DataTable({
+            columnDefs:[{
+                orderable:false, targets:[8,9]
+            }]
+        });
+    </script>
 @endsection

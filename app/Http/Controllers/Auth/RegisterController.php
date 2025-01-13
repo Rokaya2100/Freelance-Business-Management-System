@@ -49,36 +49,29 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'country' => ['string', 'max:255'],
-            'role' =>['required','in:client,freelancer'],
-            'image' => ['mimes:jpg,jpeg,png', 'max:2048' ],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'country'  => ['string', 'max:255'],
+            'role'     => ['required','in:client,freelancer'],
+            'image'    => ['mimes:jpg,jpeg,png', 'max:2048' ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
-        $path = null;
+        $image = null;
         if(request()->hasFile('image')){
-            $file=request()->file('image');
-            $path=uploadImage($file,'profiles','public');
+            $file = request()->file('image');
+            $image = uploadImage($file,'profile_images','public');
         }
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'country' => $data['country'],
-            'role' => $data['role'],
-            'image' => $path ,
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'country'  => $data['country'],
+            'role'     => $data['role'],
+            'image'    => $image ,
             'password' => Hash::make($data['password']),
         ]);
-
    }
 }
