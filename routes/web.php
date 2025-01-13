@@ -39,7 +39,6 @@ Route::delete('sections/{id}/forceDelete', [SectionController::class, 'forceDele
 Route::resource('sections', SectionController::class);
 
 
-
 // Route::resource('contracts', ContractController::class);
 
 Route::get('contracts/show/{id}', [ContractController::class, 'show'])->name('contracts.show');
@@ -54,7 +53,6 @@ Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.tra
 Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
 Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 Route::resource('users', UserController::class);
-
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

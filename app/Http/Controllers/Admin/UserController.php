@@ -38,7 +38,9 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        return view('admin.users.show', compact('user'));
+        $reviews = $user->reviews()->where('reviewable_type', 'Freelancer')->get();
+
+        return view('admin.users.show', compact('user','reviews'));
     }
     public function destroy(User $user)
     {

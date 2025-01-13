@@ -69,7 +69,10 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = Project::with(['client', 'freelancer', 'offers'])->findOrFail($id);
-        return view('admin.projects.show', compact('project'));
+        $reviews = $project->reviews()->get();
+        $comments = $project->comments()->get();
+
+        return view('admin.projects.show', compact('project','reviews','comments'));
     }
 
     public function destroy(Project $project)

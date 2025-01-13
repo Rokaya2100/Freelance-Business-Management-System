@@ -28,8 +28,29 @@
 												<h4 class="main-profile-name">{{ $user->name }}</h4>
 												<h3 class="main-profile-name-text">{{ $user->email}}</h3>
 											</div>
-										</div>
-                                                                              
+                                            <div class="project-reviews">
+                                            @if($reviews->isEmpty())
+                                    <p>No reviews available yet.</p>
+                                @else
+                                    @foreach($reviews as $review)
+                                        <div class="review">
+                                            <strong>Client: {{ $review->client->name }}</strong><br>
+                                            <strong>Rating: </strong>
+                                            <span class="stars">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $review->rate)
+                                                        <span class="star-filled">★</span>  <!-- نجمة مملوءة -->
+                                                    @else
+                                                        <span class="star-empty">☆</span>  <!-- نجمة فارغة -->
+                                                    @endif
+                                                @endfor
+                                            </span>
+                                            <br>
+                                        </div>
+                                    @endforeach
+                                @endif </div>
+                                            </div>
+
 										<div class="main-profile-bio">
 										</div><!-- main-profile-bio -->
 										<div class="row">
@@ -72,7 +93,7 @@
 						</div>
 					</div>
 					<div class="col-lg-8">
-					
+
 						<div class="card">
 							<div class="card-body">
 								<div class="tabs-menu ">

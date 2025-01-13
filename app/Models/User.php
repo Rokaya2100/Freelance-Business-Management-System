@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Offer;
 use App\Models\Review;
+use App\Models\Comment;
 use App\Models\Contract;
 use App\Models\Portfolio;
 use Laravel\Sanctum\HasApiTokens;
@@ -35,6 +36,15 @@ class User extends Authenticatable implements CanResetPassword
     ];
 
 
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class ,'reviewable');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     public function projects(){
         return $this->hasMany(Project::class,'freelancer_id','id');
@@ -49,10 +59,7 @@ class User extends Authenticatable implements CanResetPassword
     public function offers(){
         return $this->hanMany(Offer::class);
     }
-    public function reviews(): MorphMany
-    {
-        return $this->morphMany(Review::class ,'reviewable');
-    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
