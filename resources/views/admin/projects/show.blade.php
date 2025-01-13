@@ -84,38 +84,97 @@
             @if($project->independent_attachments)
             <div class="project-independent_attachments"> independent attachments : {{$project->independent_attachments}} <br><br>
             @endif
-                            <br><br>
-                        <a href="{{ url()->previous() }}" class="btn btn-secondary ">Back</a>
-                        <div class="project-date">Add Date : {{ $project->created_at->format('d/m/Y') }} .</div>
-                        </div><div></div></div>
-                        @if($project->offers->isEmpty())
-                        The Offers :
-                        <p>There are no offers available for this project.</p>
-                        @else
-                        @foreach($project->offers as $offer)
-                            <li class="offer-item {{ $offer->status == 'accepted' ? 'accepted' : '' }}  "style="display: flex; flex-direction: column;">
-                                <div class="offer-details">
 
-                                    <h5 class="mdi mdi-account-outline">  {{ $offer->user->name }}</h5>
-                                    <p>
 
-                                    </p>
-                                    <p><strong class="mdi mdi-comment-text"> {{ $offer->description }} </strong></p>
-                                    <p class="mdi mdi-cloud"> Status: {{ $offer->status }} .</p>
 
-                                    <p><strong class="mdi mdi-calendar-clock"> Project work period: {{ $offer->period }} .</strong>
-                                    </p>
-                                    <strong class="mdi mdi-currency-usd"> Price: {{ $offer->price }} $.</strong>
-                                </div>
-                                <div style="display: flex; justify-content: flex-end;">
-                                    @if($offer->status == 'accepted')
-                                    <a href="{{ route('contracts.show', $project->contract->id) }}"
-                                        class="view-contract-button"> View contract </a>
+            <br><br>
+            <a href="{{ url()->previous() }}" class="btn btn-secondary ">Back</a>
+            <div class="project-date">Add Date : {{ $project->created_at->format('d/m/Y') }} .</div>
+        </div><div></div></div>
+        <!-- Display offers and comments -->
+        <!-- Display reviews -->
+
+        <div class="row mt-4">
+    <div class="col-lg-4">
+        <div class="card project-section">
+            <div class="card-body">
+                <h4>Comments</h4>
+                @if($comments->isEmpty())
+                    <p>No comments available yet.</p>
+                @else
+                    @foreach($comments as $comment)
+                        <div class="comment">
+                            <strong>{{ $comment->client->name  }}:</strong>
+                            <p>{{ $comment->content }}</p>
+                            <p class="project-date">{{ $comment->created_at->format('m/d/Y') }}</p>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card project-section">
+            <div class="card-body">
+                <h4>Project Ratings</h4>
+                @if($reviews->isEmpty())
+                    @if($project->status == 'pending')
+                        <p>The project does not have a rating because it is pending</p>
+                    @else
+                        <p>No reviews available yet.</p>
+                    @endif
+                @else
+                    @foreach($reviews as $review)
+                        <div class="review">
+                            <strong>Client: {{ $review->client->name }}</strong><br>
+                            <strong>Rating:</strong>
+                            <span class="stars">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $review->rate)
+                                        <span class="star-filled">★</span>
+                                    @else
+                                        <span class="star-empty">☆</span>
                                     @endif
-                                </div>
-                            </li>
-                        @endforeach
-@endif
+                                @endfor
+                                <p class="project-date">{{ $review->created_at->format('m/d/Y') }}</p>
+                            </span>
+                            <br>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card project-section">
+            <div class="card-body">
+                <h4>Project Offers</h4>
+                @if($project->offers->isEmpty())
+                    <p>There are no offers available for this project.</p>
+                @else
+                    @foreach($project->offers as $offer)
+                        <li class="offer-item {{ $offer->status == 'accepted' ? 'accepted' : '' }}" style="display: flex; flex-direction: column;">
+                            <div class="offer-details">
+                                <h5 class="mdi mdi-account-outline">{{ $offer->users->name }}</h5>
+                                <p><strong class="mdi mdi-comment-text">{{ $offer->description }}</strong></p>
+                                <p class="mdi mdi-cloud"> Status: {{ $offer->status }}.</p>
+                                <p><strong class="mdi mdi-calendar-clock"> Project work period: {{ $offer->period }}.</strong></p>
+                                <strong class="mdi mdi-currency-usd"> Price: {{ $offer->price }} $.</strong>
+                                @if($offer->status == 'accepted')
+                                <a href="{{ route('contracts.show', $project->contract->id) }}" class="view-contract-button"> View contract </a>
+                            @endif
+                            <p class="project-date">{{ $offer->created_at->format('m/d/Y') }}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 </ul> </ul>
@@ -129,6 +188,62 @@ $(document).ready(function() {
 });
 </script>
     <style>
+
+.project-section {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px; /* مسافة بين الأقسام */
+}
+
+.divider-line {
+    border-top: 1px solid #ddd; /* تغيير اللون والفاصلة */
+    margin: 20px 0; /* إضافة مسافة بين الفواصل */
+}
+
+.project-offers-comments {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.project-offers, .project-comments {
+    width: 48%; /* تحديد العرض لكل قسم ليكون 48% */
+}
+
+.project-offers {
+    border-right: 1px solid #ddd; /* فاصل بين العروض والتعليقات */
+    padding-right: 20px;
+}
+
+.project-comments {
+    padding-left: 20px;
+}
+
+/* تحسين مظهر الفاصل */
+.project-offers-comments::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: #ddd; /* يمكنك تعديل لون الفاصل حسب الرغبة */
+}
+
+.star-filled {
+    color: gold;  /* جعل النجمة المملوءة باللون الذهبي */
+    font-size: 20px; /* حجم النجمة */
+}
+
+.star-empty {
+    color: #ccc;  /* جعل النجمة الفارغة بلون رمادي */
+    font-size: 20px; /* نفس حجم النجمة */
+}
+
+.stars {
+    font-size: 1.2rem; /* ضبط حجم النجوم */
+}
 
 .view-contract-button {
     background-color: #4CAF50; /* لون الخلفية */

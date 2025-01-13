@@ -26,10 +26,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         OfferAccepted::class => [
          MakeContract::class,
+        ],
         ProjectCompleted::class => [
             GenerateProjectReport::class,
-        ]
-    ];
+        ],
+        ];
 
     /**
      * Register any events for your application.

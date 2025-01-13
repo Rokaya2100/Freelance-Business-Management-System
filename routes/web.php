@@ -38,7 +38,6 @@ Route::post('sections/{id}/restore', [SectionController::class, 'restore'])->nam
 Route::resource('sections', SectionController::class);
 
 
-
 // Route::resource('contracts', ContractController::class);
 
 Route::get('contracts/show/{id}', [ContractController::class, 'show'])->name('contracts.show');
@@ -50,7 +49,6 @@ Route::get('contracts/trashed', [ContractController::class, 'trashed'])->name('c
 Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
 Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
 Route::resource('users', UserController::class);
-
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
