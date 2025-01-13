@@ -55,7 +55,7 @@
                                 @foreach ($reports as $report)
                                     <tr>
                                         <td>{{ $report->id }}</td>
-                                        <td>{{ $report->project->name}}</td>
+                                        <td>{{ $report->project?->name}}</td>
                                         <td>{{ $report->description}}</td>
                                         <td>{{ $report->created_at}}</td>
                                          <td>

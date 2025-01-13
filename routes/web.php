@@ -17,7 +17,6 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-
 // reports
 Route::get('reports/trashed', [ReportController::class, 'trashed'])->name('reports.trashed');
 Route::get('reports/excel', [ReportController::class,'exportAllReports'])->name('reports.excel');
@@ -30,11 +29,13 @@ Route::resource('reports', ReportController::class);
 //projects
 Route::get('projects/trashed', [ProjectController::class, 'trashed'])->name('projects.trashed');
 Route::post('projects/{id}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+Route::delete('projects/{id}/forceDelete', [ProjectController::class, 'forceDelete'])->name('projects.forceDelete');
 Route::resource('projects', ProjectController::class);
 
 
 Route::get('sections/trashed', [SectionController::class, 'trashed'])->name('sections.trashed');
 Route::post('sections/{id}/restore', [SectionController::class, 'restore'])->name('sections.restore');
+Route::delete('sections/{id}/forceDelete', [SectionController::class, 'forceDelete'])->name('sections.forceDelete');
 Route::resource('sections', SectionController::class);
 
 
@@ -45,13 +46,18 @@ Route::get('contracts/show/{id}', [ContractController::class, 'show'])->name('co
 Route::get('contracts', [ContractController::class, 'index'])->name('contracts.index');
 Route::delete('/contracts/{contract}', [ContractController::class, 'destroy'])->name('contracts.destroy');
 Route::post('contracts/{id}/restore', [ContractController::class, 'restore'])->name('contracts.restore');
+Route::delete('contracts/{id}/forceDelete', [ContractController::class, 'forceDelete'])->name('contracts.forceDelete');
+
 Route::get('contracts/trashed', [ContractController::class, 'trashed'])->name('contracts.trashed');
 
 Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
 Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 Route::resource('users', UserController::class);
 
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/{page}', [AdminController::class,'index']);
+
+// Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');

@@ -51,7 +51,11 @@
                                     <tr>
                                         <td>{{ $project->id }}</td>
                                         <td>{{ $project->name }}</td>
-                                        <td>{{ $project->client->name }}</td>
+                                        @if($project->client)
+                                        <td>{{ $project->client->name   }}</td>
+                                            @else
+                                        <td>Unknown</td>
+                                        @endif
                                         @if ($project->freelancer)
                                             <td>{{ $project->freelancer->name }}</td>
                                         @else
@@ -66,6 +70,15 @@
                                                 @csrf
                                                 <button type="submit" class="btn btn-success btn-with-icon btn-block">
                                                     <i class="typcn typcn-cloud-storage-outline "></i> Restore
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('projects.forceDelete', $project->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block">
+                                                    <i class="typcn typcn-delete"></i> Delete
                                                 </button>
                                             </form>
                                         </td>
@@ -125,7 +138,7 @@
         $('#example10').DataTable({
             columnDefs: [{
                 orderable: false,
-                targets: [8]
+                targets: [8,9]
             }]
         });
     </script>

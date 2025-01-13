@@ -43,12 +43,12 @@ class ReportController extends Controller
     public function destroy($id)
     {
         Report::destroy($id);
-        return redirect()->back()->with('messege','Deleted');
+        return redirect()->back()->with('success','Report deleted successfully');
     }
 
     public function forceDelete($id){
         Report::withTrashed()->where('id',$id)->forceDelete();
-        return redirect()->back()->with('messege','Deleted');
+        return redirect()->back()->with('success','Report deleted successfully');
     }
 
     public function trashed()

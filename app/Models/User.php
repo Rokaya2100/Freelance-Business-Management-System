@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
+class User extends Authenticatable implements CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -36,11 +36,12 @@ class User extends Authenticatable implements MustVerifyEmail,CanResetPassword
 
 
 
-    public function project(){
-        return $this->hasMany(Project::class);
+    public function projects(){
+        return $this->hasMany(Project::class,'freelancer_id','id');
     }
+
     public function contracts(){
-        return $this->hasMany(Contract::class);
+        return $this->hasMany(Contract::class,'freelancer_id','id');
     }
     public function portfolio(){
         return $this->hasOne(Portfolio::class);

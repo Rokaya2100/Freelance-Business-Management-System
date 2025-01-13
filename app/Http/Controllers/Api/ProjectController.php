@@ -58,8 +58,8 @@ class ProjectController extends Controller
         }
 
         $project = Project::findOrFail($id);
-        $state =$project->status;
-        if($state == 'pending'){
+        $status =$project->status;
+        if(!$project->contract){
         $project->update([
             'name'        => $request->name,
             'description' => $request->description,
@@ -68,7 +68,7 @@ class ProjectController extends Controller
         ]);
         return $this->jsonResponse(200,'project updated successfully',new ProjectResource($project));
         }
-        return $this->errorResponse(404,"you  can't update,You can only update if the project is pending and this project is $state");
+        return $this->errorResponse(404,"you can't update,The project is reserved it is being prepared and its status $status");
     }
 
     public function destroy($id)
@@ -106,7 +106,7 @@ class ProjectController extends Controller
         }
         $project->customer_attachments =   $path_customer_attachments ;
         $project->save();
-        return $this->jsonResponse(204,'update project status from freelancer successfully');
+        return $this->jsonResponse(204,'Update project status successfully');
 
     }
 }

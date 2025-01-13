@@ -42,6 +42,7 @@
                                     <th class="wd-15p border-bottom-0">Created At</th>
                                     <th class="wd-15p border-bottom-0">Delete Date</th>
                                     <th class="border-bottom-0"></th>
+                                    <th class="border-bottom-0"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,6 +61,15 @@
                                                 @csrf
                                                 <button type="submit" class="btn btn-success btn-with-icon btn-block">
                                                     <i class="typcn typcn-cloud-storage-outline "></i> Restore
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('users.forceDelete', $user->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-with-icon btn-block">
+                                                    <i class="typcn typcn-delete"></i> Delete
                                                 </button>
                                             </form>
                                         </td>
