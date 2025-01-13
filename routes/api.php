@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\ContractController as ApiContractController;
+use App\Http\Controllers\PortfolioController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -83,4 +85,16 @@ Route::get('/email/verify', function () {
 Route::get('contracts', [ApiContractController::class, 'index'])->middleware('auth:sanctum');
 Route::get('contracts/{id}', [ApiContractController::class, 'show'])->middleware('auth:sanctum');
 Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract'])->middleware('auth:sanctum');
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/portfolio/add-project', [PortfolioController::class, 'addProjectToPortfolio']);
+    Route::get('/portfolio/projects', [PortfolioController::class, 'getFreelancerProjects']);
+    Route::post('/portfolio/remove-project', [PortfolioController::class, 'removeProjectFromPortfolio']);
+    Route::post('/portfolio/fill', [PortfolioController::class, 'fillPortfolio']);
+    Route::put('/portfolio/update', [PortfolioController::class, 'updatePortfolio']);
+});
+
+Route::get('/portfolios', [PortfolioController::class, 'index']);
+Route::get('/portfolio/{id}', [PortfolioController::class, 'show']);
 

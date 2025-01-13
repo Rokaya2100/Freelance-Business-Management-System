@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Traits\jsonTrait;
+use App\Models\Portfolio;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Traits\jsonTrait;
-use App\Http\Requests\LoginRequest;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
-{   use jsonTrait;
+{use jsonTrait;
     public function register(RegisterRequest $request)
     {
     //for upload image
@@ -24,9 +25,17 @@ class AuthController extends Controller
             'role'     => $request->role,
             'image'    => $image,
             'password' => Hash::make($request->password),//bcrypt
+
         ]);
+
+        // Automatically create a portfolio if the user is a freelancer
+        if ($user->role == 'freelancer') {
+            Portfolio::create([
+                'user_id' => $user->id,
+            ]);
+        }
         $token = $user->createToken('YourAppName')->plainTextToken;
-        return $this->jsonResponse(201,'success',['token'=>$token,'user'=>$user]);
+        return $this->jsonResponse(201, 'success', ['token' => $token, 'user' => $user]);
     }
 
     /**
@@ -34,13 +43,14 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
+
         $user = User::where('email', $request->email)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             // Create and return token
             $token = $user->createToken('YourAppName')->plainTextToken;
-            return $this->jsonResponse(200,'success',['token'=>$token]);
+            return $this->jsonResponse(200, 'success', ['token' => $token]);
         }
-        return $this->jsonResponse(401,'Unauthorized');
+        return $this->jsonResponse(401, 'Unauthorized');
     }
 
     /**
@@ -53,3 +63,4 @@ class AuthController extends Controller
     }
 
 }
+

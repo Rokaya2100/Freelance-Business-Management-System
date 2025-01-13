@@ -25,7 +25,6 @@ class Project extends Model
         'description',
         'Exp_delivery_date',
         'delivery_date',
-        'user_id',
         'client_id',
         'freelancer_id',
         'section_id',
@@ -50,7 +49,6 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'client_id');
     }
-
     public function freelancer()
     {
         return $this->belongsTo(User::class, 'freelancer_id');
