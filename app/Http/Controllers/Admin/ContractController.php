@@ -9,11 +9,7 @@ class ContractController extends Controller
 {
     public function index()
     {
-        $contracts = Contract::select('contracts.id', 'contracts.created_at')
-            ->join('projects', 'contracts.project_id', '=', 'projects.id')
-            ->addSelect('projects.name as project_name',  'projects.status as project_status')
-            ->orderBy('contracts.created_at')
-            ->paginate(10);
+        $contracts = Contract::latest()->paginate(20);
         return view('admin.contracts.index', compact('contracts'));
     }
 
@@ -48,11 +44,16 @@ class ContractController extends Controller
             ->route('contracts.trashed')
             ->with('success', 'contract restored successfully');
     }
-    
+
 
     public function trashed()
     {
         $contracts = Contract::onlyTrashed()->paginate(10);
         return view('admin.contracts.trashed', compact('contracts'));
+    }
+    
+    public function forceDelete($id){
+        Contract::withTrashed()->where('id',$id)->forceDelete();
+        return redirect()->back()->with('success','Contract deleted successfully');
     }
 }

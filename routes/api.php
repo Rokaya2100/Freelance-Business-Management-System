@@ -41,25 +41,26 @@ Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctu
 
 Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
 Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
-
 Route::middleware('auth:sanctum')->group(function(){
-
- Route::post('/offers/{project}', [OfferController::class, 'store']);
- Route::post('/offers/{id}/restore', [OfferController::class, 'restore'])->middleware(['CheckFreelancers']);
-
-
+Route::post('/offers/{project}', [OfferController::class, 'store']);
+Route::post('/offers/restore/{id}', [OfferController::class, 'restore'])->middleware(['CheckFreelancers']);
 Route::put('/offers/status/{id}', [OfferController::class, 'updateStatus']);
-Route::put('/offers/{id}', [OfferController::class, 'update'])->middleware(['CheckFreelancers']);
-
- Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware(['CheckFreelancers']);
- Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
-
+Route::put('/updateOffers/{id}', [OfferController::class, 'update'])->middleware(['CheckFreelancers']);
+Route::get('/freeOffersDeleted', [OfferController::class, 'freeOffersDeleted'])->middleware('auth:sanctum');
+Route::get('/offers/offers-deleted/{user_id}', [OfferController::class, 'offersDeleted'])->middleware('auth:sanctum');
+Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete']);
+Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
 Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
 });
 
 //contract api
 
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
 // these are temporary one until we handle the Roles thing
 Route::get('contracts', [ApiContractController::class, 'index'])->middleware('auth:sanctum');
 Route::get('contracts/{id}', [ApiContractController::class, 'show'])->middleware('auth:sanctum');
 Route::put('contracts/{offerId}/update', [ApiContractController::class, 'freelancerViewAndUpdateContract'])->middleware('auth:sanctum');
+

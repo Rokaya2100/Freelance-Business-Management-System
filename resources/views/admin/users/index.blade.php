@@ -29,8 +29,8 @@
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title mg-b-0">USERS TABLE</h4>
                         <a href="{{ route('users.create') }}"
-                            class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i
-                                class="typcn typcn-plus"></i> ADD ClIENT</a>
+                            class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-3"><i
+                                class="typcn typcn-plus"></i> ADD Admin Or Client </a>
                     </div>
                 </div>
                 <div class="card-body">

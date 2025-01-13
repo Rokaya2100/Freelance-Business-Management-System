@@ -40,7 +40,7 @@
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
                                     <th class="wd-15p border-bottom-0">Project Name</th>
-                                    <th class="wd-15p border-bottom-0">Project Status</th>
+                                    <th class="wd-15p border-bottom-0">Contract Status</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
                                     <th class="border-bottom-0"></th>
                                     <th class="border-bottom-0"></th>
@@ -50,14 +50,16 @@
                                 @foreach ($contracts as $contract)
                                     <tr>
                                         <td>{{ $contract->id }}</td>
-                                        <td>{{ $contract->project_name }}</td> <!-- Displaying the project name -->
-                                        <td>{{ $contract->project_status }}</td>
-                                        <td>{{ $contract->created_at ? $contract->created_at->format('d/m/Y') : 'N/A' }}
+                                        <td>{{ $contract->project?->name }}</td> <!-- Displaying the project name -->
+                                        <td>{{ $contract->status}}</td>
+                                        <td>{{ $contract->created_at?$contract->created_at->format('d/m/Y'):'N/A' }}
                                         </td>
                                         <td>
+                                            @if ($contract->project !== null)
                                             <a href="{{ route('contracts.show', $contract->id) }}"
                                                 class="btn btn-primary btn-with-icon btn-block"><i
                                                     class="typcn typcn-edit"></i> Show</a>
+                                                    @endif
                                         </td>
                                         <td>
                                             <form action="{{ route('contracts.destroy', $contract->id) }}" method="POST"
@@ -70,6 +72,14 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{ session('success') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                                 @if (session('error'))
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         {{ session('error') }}

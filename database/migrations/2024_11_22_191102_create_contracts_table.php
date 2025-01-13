@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->enum('status',['in_progress', 'expired'])->default('in_progress');
+            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
+            $table->enum('status',['in_progress', 'expired '])->default('in_progress');
             $table->float('price');
-            $table->boolean('is_paid');
+            $table->boolean('is_paid')->default(0);
+            $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
         });

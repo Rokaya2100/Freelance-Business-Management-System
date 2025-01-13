@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\OfferAccepted;
+use App\Listeners\MakeContract;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 use App\Events\ProjectCompleted;
 use App\Listeners\GenerateProjectReport;
@@ -20,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        OfferAccepted::class => [
+         MakeContract::class
         ],
         ProjectCompleted::class => [
             GenerateProjectReport::class,

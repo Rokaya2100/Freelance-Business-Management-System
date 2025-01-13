@@ -6,9 +6,9 @@ use App\Models\User;
 use App\Models\Report;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Exports\ReportsExport;
 use App\Exports\OneReportExport;
-use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -43,12 +43,12 @@ class ReportController extends Controller
     public function destroy($id)
     {
         Report::destroy($id);
-        return redirect()->back()->with('messege','Deleted');
+        return redirect()->back()->with('success','Report deleted successfully');
     }
 
     public function forceDelete($id){
         Report::withTrashed()->where('id',$id)->forceDelete();
-        return redirect()->back()->with('messege','Deleted');
+        return redirect()->back()->with('success','Report deleted successfully');
     }
 
     public function trashed()
