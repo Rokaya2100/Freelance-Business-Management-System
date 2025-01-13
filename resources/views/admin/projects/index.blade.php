@@ -55,8 +55,11 @@
                                         <td>{{ $project->name }}</td>
 
 
-                                            <td>{{$project->client->name}}</td>
-                                            @if($project->freelancer)
+                                        @if($project->client)
+                                        <td>{{ $project->client->name   }}</td>
+                                            @else
+                                        <td>Unknown</td>
+                                        @endif                                            @if($project->freelancer)
                                             <td>{{ $project->freelancer->name   }}</td>
                                                 @else
                                             <td>There is no Freelancer</td>

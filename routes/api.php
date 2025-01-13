@@ -47,8 +47,8 @@ Route::get('/portfolio/{id}', [PortfolioController::class, 'show']);
 
 Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
 Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
-
 Route::middleware('auth:sanctum')->group(function(){
+
 
 Route::post('/portfolio/add-project', [PortfolioController::class, 'addProjectToPortfolio']);
 Route::get('/portfolio/projects', [PortfolioController::class, 'getFreelancerProjects']);
@@ -67,6 +67,8 @@ Route::post('/updateOffers/{id}', [OfferController::class, 'update'])->middlewar
 Route::get('/freeOffersDeleted', [OfferController::class, 'freeOffersDeleted'])->middleware('auth:sanctum');
 Route::get('/offers/offers-deleted/{user_id}', [OfferController::class, 'offersDeleted'])->middleware('auth:sanctum');
 Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware('auth:sanctum');
+
+  
 Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
 Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
 });

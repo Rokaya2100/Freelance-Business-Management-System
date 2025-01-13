@@ -9,7 +9,7 @@
                 <a href="{{ route('sections.index') }}" class="text-dark content-title mb-0 my-auto">
                     <h4>Users</h4>
                 </a>
-                <span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Add New Client</span>
+                <span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Add New Admin Or Client</span>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-header text-primary p-0">Add New Client</h5>
+                    <h5 class="card-header text-primary p-0">Add New Admin Or Client</h5>
                 </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('users.store') }}">
@@ -64,6 +64,21 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="role" class="col-md-3 col-form-label text-md-end">{{ __('role') }}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-no-search" name="role" required>
+                                        <option disabled label="">
+                                        </option>
+                                        <option value="client">
+                                            client
+                                        </option>
+                                        <option value="admin">
+                                            admin
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-2">

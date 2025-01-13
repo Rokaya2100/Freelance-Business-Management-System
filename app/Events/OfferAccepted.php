@@ -20,7 +20,7 @@ public $offer;
      */
     public function __construct(Offer $offer)
     {
-        $this->offer=$offer;
+        $this->offer = $offer;
     }
 
     /**

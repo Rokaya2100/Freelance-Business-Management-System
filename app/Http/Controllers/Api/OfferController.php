@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\OfferAccepted;
-use App\Http\Resources\OfferCollection;
 use App\Models\Offer;
 use App\Models\Project;
+use Illuminate\Http\Request;
+use App\Events\OfferAccepted;
 use App\Http\Traits\jsonTrait;
 use App\Http\Requests\OfferRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
+use App\Http\Resources\OfferCollection;
 
 class OfferController extends Controller
 {
@@ -77,21 +78,19 @@ class OfferController extends Controller
         return $this->jsonResponse(201, 'Offer Updated Successfully', );
     }
 //client
-    public function updateStatus(OfferRequest $request,$id)//to update status by client
+    public function updateStatus(Request $request,$id)//to update status by client
     {
         $offer=Offer::findOrfail($id);
-
         $offer->update([
             'status' => $request->status,
-            'price'       => $offer->price,
-            'description' => $offer->description,
-            'period'      => $offer->period,
-            'user_id'     => $offer->user_id,
-            'project_id'  => $offer->project_id,
-
         ]);
-        if($offer->status =='accepted')
+        $offer_project = $offer->project;
+        if($offer->status =='accepted'){
+            $offer->project->update([
+                'freelancer_id' => $offer->user_id,
+            ]);
             event(new OfferAccepted($offer));
+        }
         return $this->jsonResponse(201, 'Offer Status Updated Successfully', );
     }
 

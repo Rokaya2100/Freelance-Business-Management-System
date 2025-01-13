@@ -13,7 +13,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Sections Archive</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0"> / Sections Archive List</span>
+							<h4 class="content-title mb-0 my-auto">Contracts Archive</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0"> / Contracts Archive List</span>
 						</div>
 					</div>
 				</div>
@@ -26,12 +26,12 @@
 						<div class="card">
 							<div class="card-header">
 								<div class="d-flex justify-content-between">
-									<h4 class="card-title mg-b-0">SECTIONS Archive TABLE</h4>
+									<h4 class="card-title mg-b-0">Contracts Archive TABLE</h4>
                                 </div>
 							</div>
 							<div class="card-body">
 								<div class="table">
-									<table class="table text-md-nowrap" id="example1">
+									<table class="table text-md-nowrap" id="example10">
 										<thead>
 											<tr>
 												<th class="wd-15p border-bottom-0">ID</th>
@@ -45,7 +45,7 @@
 											@foreach($contracts as $contract)
 												<tr>
 													<td>{{ $contract->id }}</td>
-													<td>{{ $contract->project_name }}</td>
+													<td>{{ $contract->project?->name }}</td>
 													<td>{{ $contract->created_at->format('d/m/Y') }}</td>
 													<td>{{ $contract->deleted_at->format('d/m/Y') }}</td>
 													<td>
@@ -56,6 +56,15 @@
 															</button>
 														</form>
 													</td>
+                                                    <td>
+                                                        <form action="{{ route('contracts.forceDelete', $contract->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-with-icon btn-block">
+                                                                <i class="typcn typcn-delete"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </td>
 												</tr>
 											@endforeach
                                             @if (session('success'))

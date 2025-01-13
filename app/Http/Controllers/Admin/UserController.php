@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::latest()->paginate(100);
+        $users = User::latest()->paginate(20);
         return view('admin.users.index', compact('users'));
     }
 
@@ -27,7 +27,7 @@ class UserController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'country'  => $request->country,
-            'role'     => 'client',
+            'role'     => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
@@ -44,7 +44,7 @@ class UserController extends Controller
     }
     public function destroy(User $user)
     {
-        if ($user->projects()->exists()) {
+        if ($user->projects()->exists()||$user->contracts()->exists()) {
             return redirect()
                 ->route('users.index')
                 ->with('error', 'Cannot delete user that has associated projects');
@@ -69,8 +69,12 @@ class UserController extends Controller
 
     public function trashed()
     {
-        $users = User::onlyTrashed()->paginate(100);
+        $users = User::onlyTrashed()->paginate(10);
         return view('admin.users.trashed', compact('users'));
+    }
+    public function forceDelete($id){
+        User::withTrashed()->where('id',$id)->forceDelete();
+        return redirect()->back()->with('success','User deleted successfully');
     }
 
 }

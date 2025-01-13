@@ -12,7 +12,11 @@ class Contract extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
+        'project_id',
+        'price',
         'is_paid',
+        'freelancer_id',
+        'client_id',
     ];
 
     // public function users(){
