@@ -4,16 +4,17 @@ namespace App\Models;
 
 
 use CarbonCarbon;
-use App\Models\Contract;
 use App\Models\User;
 use App\Models\Offer;
-use App\Models\Portfolio;
 use App\Models\Report;
 use App\Models\Review;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Comment;
+use App\Models\Contract;
+use App\Models\Portfolio;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Project extends Model
 {
@@ -36,7 +37,15 @@ class Project extends Model
         'exp_delivery_date' => 'datetime',
         'delivery_date' => 'datetime', // If needed for delivery_date
     ];
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
     public function client()
     {
         return $this->belongsTo(User::class, 'client_id');
@@ -64,10 +73,7 @@ class Project extends Model
     {
         return $this->hasOne(Report::class);
     }
-    public function reviews(): MorphMany
-    {
-        return $this->morphMany(Review::class, 'reviewable');
-    }
+
 
 
 

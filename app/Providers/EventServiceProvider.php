@@ -24,12 +24,12 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         OfferAccepted::class => [
-         MakeContract::class
+         MakeContract::class,
         ],
         ProjectCompleted::class => [
             GenerateProjectReport::class,
-        ]
-    ];
+        ],
+        ];
 
     /**
      * Register any events for your application.

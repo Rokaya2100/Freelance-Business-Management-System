@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePortfolioRequest;
 
 class PortfolioController extends Controller
 {
@@ -23,7 +24,7 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'skills' => 'required|string|max:255',
-        ]);
+]);
 
         // Check if the freelancer already has a portfolio
         $portfolio = $user->portfolio;
@@ -46,7 +47,7 @@ class PortfolioController extends Controller
     /**
      * Update the freelancer's portfolio (Skills & Description).
      */
-    public function updatePortfolio(Request $request)
+    public function updatePortfolio(StorePortfolioRequest $request)
     {
         $user = auth()->user();
 
@@ -57,8 +58,8 @@ class PortfolioController extends Controller
 
         // Validate the request
         $validated = $request->validate([
-            'description' => 'nullable|string|max:255',
-            'skills' => 'nullable|string|max:255',
+            // 'description' => 'nullable|string|max:255',
+            // 'skills' => 'nullable|string|max:255',
         ]);
 
         // Check if the freelancer already has a portfolio

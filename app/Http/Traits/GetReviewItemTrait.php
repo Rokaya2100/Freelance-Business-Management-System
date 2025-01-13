@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Traits;
+
+use App\Http\Resources\UserResource;
+use App\Http\Resources\ProjectResource;
+use App\Models\User;
+use App\Models\Project;
+
+trait GetReviewItemTrait
+{
+    public function getItem($reviewableType, $reviewableId)
+    {
+
+        switch ($reviewableType) {
+            case 'App\Models\Project':
+                $project = Project::findOrFail($reviewableId);
+                return ['item_type' => 'project',new ProjectResource($project)];
+                break;
+            case 'App\Models\User':
+                $user= User::findOrFail($reviewableId);
+                return ['item_type' => 'user',new UserResource($user)];
+                break;
+            default:
+                return 'Not Found!';
+                break;
+        }
+    }
+}
