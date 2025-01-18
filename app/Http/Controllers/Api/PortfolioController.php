@@ -6,7 +6,10 @@ use App\Models\Project;
 use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PortfolioResource;
 use App\Http\Requests\StorePortfolioRequest;
+use App\Http\Resources\ProjectWithCommRateCollection;
+use App\Http\Resources\ProjectWithCommRateResource;
 
 class PortfolioController extends Controller
 {
@@ -227,7 +230,9 @@ class PortfolioController extends Controller
         $projects = Project::where('freelancer_id', $user_id)->with(['reviews','comments'])->get();
 
         return response()->json([
-            'projects' => $projects,
+           new PortfolioResource($portfolio),
+           new ProjectWithCommRateCollection($projects),
+
         ]);
     }
 
