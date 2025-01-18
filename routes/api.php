@@ -6,11 +6,15 @@ use App\Http\Middleware\checkFreeLancer;
 use App\Http\Middleware\CheckFreelancers;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OfferController;
+// use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\PortfolioController;
 use App\Http\Controllers\Api\ContractController as ApiContractController;
-use App\Http\Controllers\PortfolioController;
+// use App\Http\Controllers\PortfolioController;
+// use App\Http\Controllers\Api\PortfolioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +61,8 @@ Route::get('/portfolio/projects', [PortfolioController::class, 'getFreelancerPro
 Route::post('/portfolio/remove-project', [PortfolioController::class, 'removeProjectFromPortfolio']);
 Route::post('/portfolio/fill', [PortfolioController::class, 'fillPortfolio']);
 Route::put('/portfolio/update', [PortfolioController::class, 'updatePortfolio']);
+
+
 Route::post('/freelancer/{user}/rate', [ReviewController::class, 'freelanceerrate']);
 Route::post('/project/{project}/rate', [ReviewController::class, 'projectStore']);
 Route::post('comments', [CommentController::class, 'store']);
@@ -70,7 +76,7 @@ Route::get('/freeOffersDeleted', [OfferController::class, 'freeOffersDeleted'])-
 Route::get('/offers/offers-deleted/{user_id}', [OfferController::class, 'offersDeleted'])->middleware('auth:sanctum');
 Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware('auth:sanctum');
 
-  
+
 Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
 Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
 });
@@ -97,4 +103,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('/portfolios', [PortfolioController::class, 'index']);
 Route::get('/portfolio/{id}', [PortfolioController::class, 'show']);
+
+//getFullPortfolio
+
+Route::get('/getFullPortfolio/{id}', [PortfolioController::class, 'getFullPortfolio']);
 

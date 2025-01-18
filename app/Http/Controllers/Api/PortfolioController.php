@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Portfolio;
 use App\Models\Project;
+use App\Models\Portfolio;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePortfolioRequest;
 
 class PortfolioController extends Controller
@@ -217,16 +218,18 @@ class PortfolioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+     //get all projects with comments and reviews
+    public function getFullPortfolio($id)
     {
-        //
+        $portfolio = Portfolio::where('id', $id)->firstOrFail();
+        $user_id = $portfolio->user_id;
+        $projects = Project::where('freelancer_id', $user_id)->with(['reviews','comments'])->get();
+
+        return response()->json([
+            'projects' => $projects,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 }
