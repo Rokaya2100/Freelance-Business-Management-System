@@ -6,11 +6,13 @@ use App\Http\Middleware\checkFreeLancer;
 use App\Http\Middleware\CheckFreelancers;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OfferController;
+
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\PortfolioController;
 use App\Http\Controllers\Api\ContractController as ApiContractController;
-use App\Http\Controllers\PortfolioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +24,16 @@ use App\Http\Controllers\PortfolioController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+////////////No authentication needed///////////////////
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Project Api
+////////////////////////////////////////////////////////// Project Api
 Route::get('projects', [ProjectController::class, 'index']);
 Route::get('projects/{id}', [ProjectController::class, 'show']);
+//////////////////////////////////////////////////////////Comment Api
 Route::get('comments/{projectId}', [CommentController::class, 'index']);
 Route::get('comments/{id}', [CommentController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function(){
@@ -38,30 +41,38 @@ Route::delete('projects/del/{id}',[ProjectController::class,'forceDelete']);
 Route::put('projects/update/{id}',[ProjectController::class,'updateProjectFromFreelancer']);
 Route::apiResource('projects',ProjectController::class);
 });
-//auth api
+//////////////////////////////////////////////////////////auth api
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
 Route::get('/portfolios', [PortfolioController::class, 'index']);
 Route::get('/portfolio/{id}', [PortfolioController::class, 'show']);
-//offer api
 
+///////////////////////////////////////////////////////////////////offer api
 Route::get('/offers/show/{offer}', [OfferController::class, 'show']);
 Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
 Route::middleware('auth:sanctum')->group(function(){
 
-
+////////////////////////////////////////////////////////////////////////////////////////////portfolio Api
 Route::post('/portfolio/add-project', [PortfolioController::class, 'addProjectToPortfolio']);
 Route::get('/portfolio/projects', [PortfolioController::class, 'getFreelancerProjects']);
 Route::post('/portfolio/remove-project', [PortfolioController::class, 'removeProjectFromPortfolio']);
 Route::post('/portfolio/fill', [PortfolioController::class, 'fillPortfolio']);
 Route::put('/portfolio/update', [PortfolioController::class, 'updatePortfolio']);
-Route::post('/freelancer/{user}/rate', [ReviewController::class, 'freelanceerrate']);
-Route::post('/project/{project}/rate', [ReviewController::class, 'projectStore']);
+
+//////////////////////////////////////////////////////////////////////Rewiew Api to Project ad Freelancer
+Route::get('project/{id}/reviews', [ReviewController::class, 'index']);
+Route::get('project/{project_id}/review/{review_id}', [ReviewController::class, 'showReview']);
+Route::post('/freelancer/{user}/rate', [ReviewController::class, 'freelancerRate']);
+Route::post('/project/{project}/rate', [ReviewController::class, 'projectRate']);
+
+////////////////////////////////////////////////////////////Comment Api
 Route::post('comments', [CommentController::class, 'store']);
 Route::put('comments/{id}', [CommentController::class, 'update']);
 Route::delete('comments/{id}', [CommentController::class, 'destroy']);
+
+//////////////////////////////////////////////////////////////////Offer Api
 Route::post('/offers/{project}', [OfferController::class, 'store']);
 Route::post('/offers/restore/{id}', [OfferController::class, 'restore'])->middleware(['CheckFreelancers']);
 Route::post('/offers/status/{id}', [OfferController::class, 'updateStatus']);
@@ -70,7 +81,7 @@ Route::get('/freeOffersDeleted', [OfferController::class, 'freeOffersDeleted'])-
 Route::get('/offers/offers-deleted/{user_id}', [OfferController::class, 'offersDeleted'])->middleware('auth:sanctum');
 Route::delete('/offers/{id}/force-delete', [OfferController::class, 'forceDelete'])->middleware('auth:sanctum');
 
-  
+
 Route::delete('/offers/{id}', [OfferController::class, 'destroy'])->middleware(['CheckFreelancers']);
 Route::apiResource('/offers',OfferController::class)->except(['destroy','update']);
 });

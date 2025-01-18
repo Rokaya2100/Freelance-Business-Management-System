@@ -46,8 +46,14 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(Comment::class);
     }
 
-    public function projects(){
-        return $this->hasMany(Project::class,'freelancer_id','id');
+    public function freelancerProjects()
+    {
+        return $this->hasMany(Project::class, 'freelancer_id', 'id');
+    }
+
+    public function clientProjects()
+    {
+        return $this->hasMany(Project::class, 'client_id', 'id');
     }
 
     public function contracts(){

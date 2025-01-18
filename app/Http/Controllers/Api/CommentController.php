@@ -54,13 +54,13 @@ public function update(Request $request, $id)
 {
 
     if (!auth()->check()) {
-        return $this->jsonResponse(null, 'You must be logged in to update a comment',401  );
+        return $this->jsonResponse(401 , 'You must be logged in to update a comment', null );
     }
 
     $comment = Comment::findOrFail($id);
 
     if ($comment->client_id !== auth()->user()->id) {
-        return $this->jsonResponse(null, 'You are not authorized to update this comment',403  );
+        return $this->jsonResponse( 403 , 'You are not authorized to update this comment',null  );
     }
 
     $comment->text = $request->text;
