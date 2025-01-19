@@ -6,6 +6,7 @@ use App\Http\Middleware\checkFreeLancer;
 use App\Http\Middleware\CheckFreelancers;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OfferController;
+// use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;
@@ -60,6 +61,10 @@ Route::post('/portfolio/remove-project', [PortfolioController::class, 'removePro
 Route::post('/portfolio/fill', [PortfolioController::class, 'fillPortfolio']);
 Route::put('/portfolio/update', [PortfolioController::class, 'updatePortfolio']);
 
+
+Route::post('/freelancer/{user}/rate', [ReviewController::class, 'freelanceerrate']);
+Route::post('/project/{project}/rate', [ReviewController::class, 'projectStore']);
+
 //////////////////////////////////////////////////////////////////////Rewiew Api to Project ad Freelancer
 Route::get('project/{id}/reviews', [ReviewController::class, 'index']);
 Route::get('project/{project_id}/review/{review_id}', [ReviewController::class, 'showReview']);
@@ -107,4 +112,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('/portfolios', [PortfolioController::class, 'index']);
 Route::get('/portfolio/{id}', [PortfolioController::class, 'show']);
+
+//getFullPortfolio
+
+Route::get('/getFullPortfolio/{id}', [PortfolioController::class, 'getFullPortfolio']);
 

@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Project;
 use App\Models\Portfolio;
 use Illuminate\Http\Request;
-use App\Http\Requests\StorePortfolioRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PortfolioResource;
+use App\Http\Requests\StorePortfolioRequest;
+use App\Http\Resources\ProjectWithCommRateCollection;
+use App\Http\Resources\ProjectWithCommRateResource;
+
 
 class PortfolioController extends Controller
 {
@@ -198,11 +202,7 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
-        //
-    }
-    
-=======
+
         // Retrieve all portfolios, including freelancer details (name), description, and skills
         $portfolios = Portfolio::with('user:id,name') // Load user (freelancer) and projects
             ->get(['id', 'description', 'skills']); // Retrieve specific fields for portfolios
@@ -212,7 +212,6 @@ class PortfolioController extends Controller
             'portfolios' => $portfolios,
         ]);
     }
->>>>>>> 2034a15dea1989b11c2a6d59e32ebe5f23a993bb
 
     /**
      * Display the specified resource.
@@ -229,4 +228,23 @@ class PortfolioController extends Controller
             'portfolio' => $portfolio,
         ]);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+
+     //get all projects with comments and reviews
+    public function getFullPortfolio($id)
+    {
+        $portfolio = Portfolio::where('id', $id)->firstOrFail();
+        $user_id = $portfolio->user_id;
+        $projects = Project::where('freelancer_id', $user_id)->with(['reviews','comments'])->get();
+
+        return response()->json([
+           new PortfolioResource($portfolio),
+           new ProjectWithCommRateCollection($projects),
+
+        ]);
+    }
+
 }
