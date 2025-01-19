@@ -17,12 +17,18 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class ReviewController extends Controller
 {
     use ApiResponseTrait ;
+      public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:review-project', ['only' => ['projectRate']]);
+        $this->middleware('permission:review-freelancer', ['only' => ['freelancerRate']]);
+
+    }
 
     public function index($project_id){
         $project = Project::find($project_id);
         $reviews = $project->reviews;
         return $this->RevResponse( $reviews, 'You have already reviewed this project', 200);
-
     }
 
 
@@ -42,15 +48,10 @@ class ReviewController extends Controller
 
         return $this->RevResponse($review, 'Review retrieved successfully', 200);
     }
-
     public function projectRate(ReviewRequest $request, Project $project)
     {
-
         $client = Auth::user();
-
         $validated = $request->validated();
-
-
         if ($project->status !== 'completed') {
             return $this->RevResponse(null, 'You cannot rate this project because it is not completed yet.', 400);
         }

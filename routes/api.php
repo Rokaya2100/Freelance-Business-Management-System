@@ -6,7 +6,6 @@ use App\Http\Middleware\checkFreeLancer;
 use App\Http\Middleware\CheckFreelancers;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OfferController;
-
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;

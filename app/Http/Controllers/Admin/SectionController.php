@@ -8,6 +8,13 @@ use App\Models\Section;
 
 class SectionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-section|edit-section|delete-section|sections-list', ['only' => ['index','show','trashed']]);
+        $this->middleware('permission:create-section', ['only' => ['create','store','restore']]);
+        $this->middleware('permission:delete-section', ['only' => ['destroy','forceDelete']]);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -11,6 +11,13 @@ use App\Http\Requests\RegisterRequest;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-user|delete-user|users-list', ['only' => ['index','show','trashed']]);
+        $this->middleware('permission:create-user', ['only' => ['create','store','restore']]);
+        $this->middleware('permission:delete-user', ['only' => ['destroy','forceDelete']]);
+    }
     public function index()
     {
         $users = User::latest()->paginate(20);
@@ -53,7 +60,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->projects()->exists()||$user->contracts()->exists()) {
+        if ($user->projects()->exists()||$user->clientProjects()->exists()||$user->contracts()->exists()) {
             return redirect()
                 ->route('users.index')
                 ->with('error', 'Cannot delete user that has associated projects');
@@ -78,7 +85,7 @@ class UserController extends Controller
 
     public function trashed()
     {
-        $users = User::onlyTrashed()->paginate(10);
+        $users = User::onlyTrashed()->paginate(20);
         return view('admin.users.trashed', compact('users'));
     }
     public function forceDelete($id){

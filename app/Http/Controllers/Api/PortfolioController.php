@@ -10,6 +10,15 @@ use App\Http\Controllers\Controller;
 
 class PortfolioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-portfolio|edit-portfolio', ['only' => ['index','show']]);
+        $this->middleware('permission:create-portfolio', ['only' => ['fillPortfolio']]);
+        $this->middleware('permission:edit-portfolio', ['only' => ['updatePortfolio']]);
+        $this->middleware('permission:add-project-to-portfolio', ['only' => ['addProjectToPortfolio']]);
+        $this->middleware('permission:delete-project-from-portfolio', ['only' => ['removeProjectFromPortfolio']]);
+    }
     /**
      * Fill in the freelancer's portfolio (Skills & Description).
      */
@@ -26,7 +35,7 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'skills' => 'required|string|max:255',
-]);
+        ]);
 
         // Check if the freelancer already has a portfolio
         $portfolio = $user->portfolio;
@@ -189,6 +198,11 @@ class PortfolioController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
+        //
+    }
+    
+=======
         // Retrieve all portfolios, including freelancer details (name), description, and skills
         $portfolios = Portfolio::with('user:id,name') // Load user (freelancer) and projects
             ->get(['id', 'description', 'skills']); // Retrieve specific fields for portfolios
@@ -198,6 +212,7 @@ class PortfolioController extends Controller
             'portfolios' => $portfolios,
         ]);
     }
+>>>>>>> 2034a15dea1989b11c2a6d59e32ebe5f23a993bb
 
     /**
      * Display the specified resource.
@@ -213,21 +228,5 @@ class PortfolioController extends Controller
         return response()->json([
             'portfolio' => $portfolio,
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

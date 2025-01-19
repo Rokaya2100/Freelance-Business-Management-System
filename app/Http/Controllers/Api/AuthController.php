@@ -12,7 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
+<<<<<<< HEAD
+{
+    use jsonTrait;
+=======
 {use jsonTrait;
+>>>>>>> 2034a15dea1989b11c2a6d59e32ebe5f23a993bb
     public function register(RegisterRequest $request)
     {
     //for upload image

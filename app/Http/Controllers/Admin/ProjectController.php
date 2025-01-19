@@ -16,6 +16,12 @@ use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:delete-project|projects-list', ['only' => ['index','show','trashed']]);
+        $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
+    }
     public function index()
     {
         $projects = Project::with(['client', 'freelancer','section'])->get();
@@ -24,47 +30,47 @@ class ProjectController extends Controller
 
 
 
-    public function create(){
+    // public function create(){
 
-    $sections = Section::all();
-    return view('admin.projects.create',compact('sections'));
-    }
+    // $sections = Section::all();
+    // return view('admin.projects.create',compact('sections'));
+    // }
 
-    public function store(Request $request)
-    {
+    // public function store(Request $request)
+    // {
 
-    $project = new Project();
-    $project->name = $request->name;
-    $project->description = $request->description;
-    $project->exp_delivery_date = $request->exp_delivery_date;
-    $project->client_id = auth()->id();
-    $project->section_id = $request->section_id;
-    $project->save();
+    // $project = new Project();
+    // $project->name = $request->name;
+    // $project->description = $request->description;
+    // $project->exp_delivery_date = $request->exp_delivery_date;
+    // $project->client_id = auth()->id();
+    // $project->section_id = $request->section_id;
+    // $project->save();
 
-    return redirect()->route('projects.index')->with('success', 'Project created successfully.');
-    }
-
-
-    public function edit(Project $project)
-    {
-    if ($project->status !== 'pending' ) {
-    return redirect()->route('projects.index')->with('error', 'You can not modify the project because it is Under implementation.');
-    }
-    $expectedDeliveryDate = Carbon::parse($project->exp_delivery_date);
-    return view('projects.edit', compact('project','expectedDeliveryDate'));
-    }
+    // return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+    // }
 
 
-    public function update(Request $request, Project $project)
-    {
-    $project->name = $request->name;
-    $project->description = $request->description;
-    $project->exp_delivery_date = $request->exp_delivery_date;
-    $project->client_id = auth()->id();
-    $project->save();
+    // public function edit(Project $project)
+    // {
+    // if ($project->status !== 'pending' ) {
+    // return redirect()->route('projects.index')->with('error', 'You can not modify the project because it is Under implementation.');
+    // }
+    // $expectedDeliveryDate = Carbon::parse($project->exp_delivery_date);
+    // return view('projects.edit', compact('project','expectedDeliveryDate'));
+    // }
 
-    return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
-    }
+
+    // public function update(Request $request, Project $project)
+    // {
+    // $project->name = $request->name;
+    // $project->description = $request->description;
+    // $project->exp_delivery_date = $request->exp_delivery_date;
+    // $project->client_id = auth()->id();
+    // $project->save();
+
+    // return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
+    // }
 
     public function show($id)
     {
@@ -114,7 +120,12 @@ class ProjectController extends Controller
 
 }
     public function forceDelete($id){
-        Project::withTrashed()->where('id',$id)->forceDelete();
+        $project=Project::withTrashed()->where('id',$id)->forceDelete();
+        if($project->contract()->exists()||$project->report()->exists()||$project->offers()->exists()){
+            $project->offers()?->delete();
+            $project->contract()?->delete();
+            $project->report()?->delete();
+            }
         return redirect()->back()->with('success','Project deleted successfully');
     }
 }
