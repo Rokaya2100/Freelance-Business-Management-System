@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Portfolio;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-user|delete-user|users-list', ['only' => ['index','show','trashed']]);
+        $this->middleware('permission:create-user', ['only' => ['create','store','restore']]);
+        $this->middleware('permission:delete-user', ['only' => ['destroy','forceDelete']]);
+    }
     public function index()
     {
         $users = User::latest()->paginate(20);
@@ -35,16 +43,24 @@ class UserController extends Controller
             ->route('users.index')
             ->with('success', 'Account created successfully');
     }
+
+
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        $reviews = $user->reviews()->where('reviewable_type', 'Freelancer')->get();
-
-        return view('admin.users.show', compact('user','reviews'));
+        $reviews = $user->reviews()->get();
+        $portfolio = $user->portfolio;
+        $project = $user->freelancerProjects()->get();
+        $projectCountfreelancer = $user->freelancerProjects()->count();
+        $projectCountclient = $user->clientProjects()->count();
+        $reviewscount = $user->reviews()->count();
+        return view('admin.users.show', compact('user','reviews','project','portfolio','projectCountfreelancer','projectCountclient','reviewscount'));
     }
+
+
     public function destroy(User $user)
     {
-        if ($user->projects()->exists()||$user->contracts()->exists()) {
+        if ($user->projects()->exists()||$user->clientProjects()->exists()||$user->contracts()->exists()) {
             return redirect()
                 ->route('users.index')
                 ->with('error', 'Cannot delete user that has associated projects');
@@ -69,7 +85,7 @@ class UserController extends Controller
 
     public function trashed()
     {
-        $users = User::onlyTrashed()->paginate(10);
+        $users = User::onlyTrashed()->paginate(20);
         return view('admin.users.trashed', compact('users'));
     }
     public function forceDelete($id){

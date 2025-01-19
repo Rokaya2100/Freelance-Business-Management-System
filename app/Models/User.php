@@ -15,10 +15,11 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements CanResetPassword
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -46,8 +47,17 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(Comment::class);
     }
 
-    public function projects(){
-        return $this->hasMany(Project::class,'freelancer_id','id');
+    public function freelancerProjects()
+    {
+        return $this->hasMany(Project::class, 'freelancer_id', 'id');
+    }
+
+    public function clientProjects()
+    {
+        return $this->hasMany(Project::class, 'client_id', 'id');
+    }
+    public function clientProjects(){
+        return $this->hasMany(Project::class,'client_id','id');
     }
 
     public function contracts(){

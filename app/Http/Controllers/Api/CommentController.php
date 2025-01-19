@@ -13,7 +13,14 @@ use App\Http\Requests\StoreCommentRequest;
 class CommentController extends Controller
 {
     use jsonTrait;
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-comment|edit-comment|delete-comment|comments-list', ['only' => ['index','show']]);
+        $this->middleware('permission:create-comment', ['only' => ['store']]);
+        $this->middleware('permission:edit-comment', ['only' => ['update']]);
+        $this->middleware('permission:delete-comment', ['only' => ['destroy']]);
+    }
 
    // show all comments for a specific project
     public function index($projectId)
@@ -52,15 +59,14 @@ class CommentController extends Controller
     //update comment
 public function update(Request $request, $id)
 {
-
     if (!auth()->check()) {
-        return $this->jsonResponse(null, 'You must be logged in to update a comment',401  );
+        return $this->jsonResponse(401, 'You must be logged in to update a comment',null  );
     }
 
     $comment = Comment::findOrFail($id);
 
     if ($comment->client_id !== auth()->user()->id) {
-        return $this->jsonResponse(null, 'You are not authorized to update this comment',403  );
+        return $this->jsonResponse(403, 'You are not authorized to update this comment',null);
     }
 
     $comment->text = $request->text;

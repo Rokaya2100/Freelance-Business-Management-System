@@ -11,8 +11,18 @@ use App\Http\Requests\StorePortfolioRequest;
 use App\Http\Resources\ProjectWithCommRateCollection;
 use App\Http\Resources\ProjectWithCommRateResource;
 
+
 class PortfolioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-portfolio|edit-portfolio', ['only' => ['index','show']]);
+        $this->middleware('permission:create-portfolio', ['only' => ['fillPortfolio']]);
+        $this->middleware('permission:edit-portfolio', ['only' => ['updatePortfolio']]);
+        $this->middleware('permission:add-project-to-portfolio', ['only' => ['addProjectToPortfolio']]);
+        $this->middleware('permission:delete-project-from-portfolio', ['only' => ['removeProjectFromPortfolio']]);
+    }
     /**
      * Fill in the freelancer's portfolio (Skills & Description).
      */
@@ -29,7 +39,7 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'skills' => 'required|string|max:255',
-]);
+        ]);
 
         // Check if the freelancer already has a portfolio
         $portfolio = $user->portfolio;
@@ -192,6 +202,7 @@ class PortfolioController extends Controller
      */
     public function index()
     {
+
         // Retrieve all portfolios, including freelancer details (name), description, and skills
         $portfolios = Portfolio::with('user:id,name') // Load user (freelancer) and projects
             ->get(['id', 'description', 'skills']); // Retrieve specific fields for portfolios
@@ -235,6 +246,5 @@ class PortfolioController extends Controller
 
         ]);
     }
-
 
 }
