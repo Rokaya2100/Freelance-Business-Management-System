@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('description');
-            $table->string('skills');
+            $table->text('description')->nullable();
+            $table->json('skills')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

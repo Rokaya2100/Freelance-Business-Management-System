@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Portfolio;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePortfolioRequest;
@@ -49,7 +50,7 @@ class PortfolioController extends Controller
 
         return response()->json([
             'message' => 'Portfolio filled successfully.',
-            'portfolio' => $portfolio
+            'portfolio' => $portfolio,
         ]);
     }
 
@@ -91,8 +92,26 @@ class PortfolioController extends Controller
 
         return response()->json([
             'message' => 'Portfolio updated successfully.',
-            'portfolio' => $portfolio
+            'portfolio' => $portfolio,
         ]);
+    }
+
+    public function getFreelancerProjects()
+    {
+        $user = auth()->user();
+
+        // Ensure the user is a freelancer
+        if ($user->role !== 'freelancer') {
+            return response()->json(['error' => 'Only freelancers can view their projects'], 403);
+        }
+
+        // Retrieve the freelancer's projects
+        $projects = Project::where('freelancer_id', $user->id)
+            ->whereNull('portfolio_id') // Exclude projects already in the portfolio
+            ->select('id', 'name')
+            ->get();
+
+        return response()->json($projects);
     }
 
     public function addProjectToPortfolio(Request $request)
@@ -130,10 +149,7 @@ class PortfolioController extends Controller
         $project->save();
 
         return response()->json([
-            'message' => 'Project added to portfolio successfully.',
-            // Added: Include portfolio projects in the response
-            'portfolio' => $portfolio->load('projects'),
-        ]);
+            'message' => 'Project added to portfolio successfully.']);
     }
 
     public function removeProjectFromPortfolio(Request $request)
@@ -181,15 +197,35 @@ class PortfolioController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         //
     }
     
+=======
+        // Retrieve all portfolios, including freelancer details (name), description, and skills
+        $portfolios = Portfolio::with('user:id,name') // Load user (freelancer) and projects
+            ->get(['id', 'description', 'skills']); // Retrieve specific fields for portfolios
+
+        // Return the portfolios along with their associated data
+        return response()->json([
+            'portfolios' => $portfolios,
+        ]);
+    }
+>>>>>>> 2034a15dea1989b11c2a6d59e32ebe5f23a993bb
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        // Retrieve the portfolio with the freelancer's name, description, skills, and the projects associated
+        $portfolio = Portfolio::with('user:id,name', 'projects:id,name') // Load user and projects
+            ->where('id', $id) //  Filter the portfolio by the provided $id
+            ->firstOrFail(); // If portfolio doesn't exist, it will throw a 404
+
+        // Return the portfolio with the freelancer details and projects
+        return response()->json([
+            'portfolio' => $portfolio,
+        ]);
     }
 }
