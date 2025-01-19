@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'role'    => 'admin',
             'password'=>  Hash::make('12345678'),
         ]);
-        $admin->assignRole('Admin');
+        $admin->assignRole('admin');
 
         $user1 = User::create([
             'name'    => 'Ali ali',
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'role'    => 'freelancer',
             'password'=>  Hash::make('12345678'),
         ]);
-        $user1->assignRole('Freelancer');
+        $user1->assignRole('freelancer');
 
         $user2 = User::create([
             'name'    => 'Sana sana',
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             'role'    => 'freelancer',
             'password'=>  Hash::make('12345678'),
         ]);
-        $user2->assignRole('Freelancer');
+        $user2->assignRole('freelancer');
 
         $user3 = User::create([
             'name'    => 'Ahmad ali',
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
             'role'    => 'client',
             'password'=>  Hash::make('12345678'),
         ]);
-        $user3->assignRole('Client');
+        $user3->assignRole('client');
 
         $user4 = User::create([
             'name'    => 'Fatima ali',
@@ -57,7 +57,6 @@ class UserSeeder extends Seeder
             'role'    => 'client',
             'password'=>  Hash::make('12345678'),
         ]);
-        $user4->assignRole('Client');
-
+        $user4->assignRole('client');
     }
 }

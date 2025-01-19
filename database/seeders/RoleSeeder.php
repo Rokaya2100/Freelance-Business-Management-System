@@ -13,9 +13,9 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Role::create(['name' => 'Admin']);
-        $client = Role::create(['name' => 'Client']);
-        $freelancer = Role::create(['name' => 'Freelancer']);
+        $admin = Role::create(['name' => 'admin']);
+        $client = Role::create(['name' => 'client']);
+        $freelancer = Role::create(['name' => 'freelancer']);
 
          $admin->givePermissionTo([
             'create-role',

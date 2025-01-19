@@ -249,22 +249,17 @@
 							</div>
 							<div class="dropdown main-profile-menu nav nav-item nav-link">
 								<a class="profile-user" href="">
-                                   <img alt="" style="z-index: 9999; object-fit:cover; border-redius:50%" src="{{asset('storage/'.Auth::user()->image)}}" class="">
+                                    <h4 style="padding-top: 10px;"> {{Auth::user()->name}} </h4>
                                 </a>
 								<div class="dropdown-menu">
 									<div class="main-header-profile bg-primary p-3">
 										<div class="d-flex wd-100p">
-											<div class="main-img-user"><img alt="" src="{{URL::asset('storage/'.Auth::user()->image)}}" class=""></div>
 											<div class="mr-3 my-auto">
-												<h6> {{Auth::user()->name}} </h6><span>{{Auth::user()->email}}</span>
+												<h6> {{Auth::user()->name}} </h6>
+                                                <span>{{Auth::user()->email}}</span>
 											</div>
 										</div>
 									</div>
-									<a class="dropdown-item" href=""><i class="bx bx-user-circle"></i>Profile</a>
-									<a class="dropdown-item" href=""><i class="bx bx-cog"></i> Edit Profile</a>
-									<a class="dropdown-item" href=""><i class="bx bxs-inbox"></i>Inbox</a>
-									<a class="dropdown-item" href=""><i class="bx bx-envelope"></i>Messages</a>
-									<a class="dropdown-item" href=""><i class="bx bx-slider-alt"></i> Account Settings</a>
 									<a class="dropdown-item" href="{{ route('logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="bx bx-log-out"></i> Logout</a>
                                     <form id="logout-form" action="{{ route('logout')}}" method="POST" style="display: none;">
                                         @csrf

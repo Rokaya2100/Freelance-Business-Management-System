@@ -16,12 +16,12 @@ use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:delete-project|projects-list', ['only' => ['index','show','trashed']]);
-        $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('permission:delete-project|projects-list', ['only' => ['index','show','trashed']]);
+    //     // $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
+    // }
     public function index()
     {
         $projects = Project::with(['client', 'freelancer','section'])->get();

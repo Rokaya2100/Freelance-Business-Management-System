@@ -15,28 +15,18 @@ use App\Http\Resources\OfferCollection;
 class OfferController extends Controller
 {
     use jsonTrait;
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:create-offer|edit-offer|delete-offer|offers-list', ['only' => ['index','show','getProjectOffers']]);
-        $this->middleware('permission:create-offer', ['only' => ['store','restore']]);
-        $this->middleware('permission:edit-offer', ['only' => ['update']]);
-        $this->middleware('permission:edit-offer-status', ['only' => ['updateStatus']]);
-        $this->middleware('permission:delete-offer', ['only' => ['destroy','forceDelete']]);
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('permission:create-offer|edit-offer|delete-offer|offers-list', ['except' => ['index','show','getProjectOffers']]);
+    //     // $this->middleware('permission:create-offer', ['only' => ['store','restore']]);
+    //     $this->middleware('permission:edit-offer', ['only' => ['update']]);
+    //     $this->middleware('permission:edit-offer-status', ['only' => ['updateStatus']]);
+    //     $this->middleware('permission:delete-offer', ['only' => ['destroy','forceDelete']]);
 
-    }
+    // }
 
-    public function index()//admin
-    {
-
-        $offers = Offer::paginate(5);
-        if($offers->isEmpty()){
-            return $this->jsonResponse(404, 'No Offers Found', null);
-        }
-        return $this->jsonResponse(200, 'All Offers', new OfferCollection($offers));
-    }
-
-    //admin+freelanser+client
+    //freelancer+client
     public function getProjectOffers(Project $project)//to get all offers that related to this project
     {
         if($project->offers->isEmpty()){
@@ -52,7 +42,7 @@ class OfferController extends Controller
         }
         return $this->jsonResponse(200, 'Offer Details', new OfferResource($offer));
     }
-//freelanser
+    //freelancer
     public function store(OfferRequest $request, Project $project){
 
         $project_id=$project->id;

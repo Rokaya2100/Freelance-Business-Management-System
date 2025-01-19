@@ -22,7 +22,7 @@ class Offer extends Model
     ];
   
     public function users(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class);
     }
     public function project(){
         return $this->belongsTo(Project::class);

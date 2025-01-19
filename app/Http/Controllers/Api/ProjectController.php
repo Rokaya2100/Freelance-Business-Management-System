@@ -14,18 +14,16 @@ use App\Http\Controllers\Api\AuthController;
 
 class ProjectController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:create-project|edit-project|delete-project|projects-list', ['only' => ['index','show']]);
-        $this->middleware('permission:create-project', ['only' => ['store']]);
-        $this->middleware('permission:edit-project', ['only' => ['update']]);
-        $this->middleware('permission:edit-project-from-freelancer', ['only' => ['updateProjectFromFreelancer']]);
-        $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
-
-    }
     use jsonTrait;
+    // public function __construct()
+    // {
+    //     $this->middleware('auth',['except' => ['index','show']]);
+    //     $this->middleware('permission:create-project', ['only' => ['store']]);
+    //     $this->middleware('permission:edit-project', ['only' => ['update']]);
+    //     $this->middleware('permission:edit-project-from-freelancer', ['only' => ['updateProjectFromFreelancer']]);
+    //     $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
+
+    // }
     public function index()
     {
         $projects = Project::paginate(5);

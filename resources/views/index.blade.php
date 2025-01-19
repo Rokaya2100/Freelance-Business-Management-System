@@ -131,22 +131,22 @@
 									</div>
                                     <div class="col-6">
 										<div class="mt-1 text-center">
-											<span class="text-white tx-20">Reviews</span>
-											<h1 class="text-white mb-2">320</h1>
+											<span class="text-white tx-20">Rate</span>
+											<h1 class="text-white mb-2">{{DB::table('reviews')->count()}}</h1>
 										</div>
 									</div>
                                 </div>
                                 <div class="row">
                                 <div class="col-6">
                                     <div class="mt-3 text-center">
-                                        <span class="text-white">Rates</span>
-                                        <h3 class="text-white mb-0">120</h3>
+                                        <span class="text-white">comments</span>
+                                        <h3 class="text-white mb-0">{{DB::table('comments')->count()}}</h3>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mt-3 text-center">
                                         <span class="text-white">Reviews</span>
-                                        <h3 class="text-white mb-0">200</h3>
+                                        <h3 class="text-white mb-0">{{DB::table('reviews')->count()}}</h3>
                                     </div>
                                 </div>
                                  </div><hr>
@@ -180,7 +180,7 @@
 								<div class="plan-card text-center">
 									<i class="fas fa-comments plan-icon text-primary"></i>
 									<h6 class="text-drak text-uppercase mt-2">Total Reviews</h6>
-									<h2 class="mb-2">493</h2>
+									<h2 class="mb-2">{{DB::table('reviews')->count() + DB::table('comments')->count()}}</h2>
 									<div class="tx-20 ml-3">
                                         <a href="{{-- {{ route('orders.index')}} --}}" class="small-box-footer text-center">Show <i class="typcn typcn-arrow-right-outline"></i></a>
                                     </div>
@@ -194,7 +194,7 @@
 								<div class="plan-card text-center">
 									<i class="fas fa-envelope-open-text plan-icon text-primary"></i>
 									<h6 class="text-drak text-uppercase mt-2">Total Portfolio</h6>
-									<h2 class="mb-2">279</h2>
+									<h2 class="mb-2">{{DB::table('portfolios')->count()}}</h2>
 									<div class="tx-20 ml-3">
                                         <a href="{{-- {{ route('orders.index')}} --}}" class="small-box-footer text-center">Show <i class="typcn typcn-arrow-right-outline"></i></a>
                                     </div>
