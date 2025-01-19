@@ -18,16 +18,19 @@ class ReviewController extends Controller
 {
     use ApiResponseTrait ;
 
-
-
-    public function projectStore(ReviewRequest $request, Project $project)
+    public function __construct()
     {
+        $this->middleware('auth');
+        $this->middleware('permission:review-project', ['only' => ['projectRate']]);
+        $this->middleware('permission:review-freelancer', ['only' => ['freelancerRate']]);
 
+    }
+
+
+    public function projectRate(ReviewRequest $request, Project $project)
+    {
         $client = Auth::user();
-
         $validated = $request->validated();
-
-
         if ($project->status !== 'completed') {
             return $this->RevResponse(null, 'You cannot rate this project because it is not completed yet.', 400);
         }
@@ -48,7 +51,7 @@ class ReviewController extends Controller
 
 //
 
-        public function freelanceerrate(ReviewRequest $request, User $user)
+        public function freelancerRate(ReviewRequest $request, User $user)
         {
             $client = Auth::user();
 

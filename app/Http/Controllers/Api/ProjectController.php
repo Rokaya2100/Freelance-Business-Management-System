@@ -14,6 +14,17 @@ use App\Http\Controllers\Api\AuthController;
 
 class ProjectController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-project|edit-project|delete-project|projects-list', ['only' => ['index','show']]);
+        $this->middleware('permission:create-project', ['only' => ['store']]);
+        $this->middleware('permission:edit-project', ['only' => ['update']]);
+        $this->middleware('permission:edit-project-from-freelancer', ['only' => ['updateProjectFromFreelancer']]);
+        $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
+
+    }
     use jsonTrait;
     public function index()
     {
@@ -22,7 +33,7 @@ class ProjectController extends Controller
             return $this->jsonResponse(404, 'No projects Found', null);
         }
         return $this->jsonResponse(200, 'All projects', new OfferCollection($projects));
- 
+
     }
     public function store(ProjectRequest $request)
     {
@@ -58,6 +69,9 @@ class ProjectController extends Controller
         }
 
         $project = Project::findOrFail($id);
+        if ($project->client_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to update this project',null);
+        }
         $status =$project->status;
         if(!$project->contract){
         $project->update([
@@ -81,16 +95,7 @@ class ProjectController extends Controller
         }
         return $this->errorResponse(404,"you  can't delete,You can only delete if the project is pending and this project is $state");
     }
-    public function forceDelete($id){
-        $project=Project::findOrFail($id);
-        $state =$project->status;
-        if($state == 'pending'){
-        Project::withTrashed()->where('id',$id)->forceDelete();
-        return $this->jsonResponse(204,'project deleted successfully');
-        }
-        return $this->errorResponse(404,"you  can't delete,You can only delete if the project is pending and this project is $state");
 
-    }
     public function updateProjectFromFreelancer(Request $request, $id)
     {
         $path_customer_attachments = null;
@@ -99,6 +104,9 @@ class ProjectController extends Controller
             $path_customer_attachments=uploadImage($file,'customer_attachments','public');
         }
         $project = Project::findOrFail($id);
+        if ($project->freelancer_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to update this project',null);
+        }
         $project->status = $request->status;
         if($request->status == 'completed'){
             $project->delivery_date = now();

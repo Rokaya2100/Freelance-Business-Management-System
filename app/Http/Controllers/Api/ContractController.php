@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class ContractController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:show-contract|contracts-list', ['only' => ['index','show']]);
+        $this->middleware('permission:edit-contract', ['only' => ['freelancerViewAndUpdateContract']]);
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -88,12 +95,14 @@ class ContractController extends Controller
         //     ->where('user_id', auth()->id()) // Check if the freelancer owns this offer
         //     ->with('project.contract') // Load the project and its contract
         //     ->first();
-            $offer=Offer::findOrfail($offerId);
+        $offer=Offer::findOrfail($offerId);
+        $contract = $offer->project->contract;
+        if ($contract->freelancer_id !== auth()->user()->id){
+            return response()->json(['error' => 'You are not authorized to update this contract'], 403);
+        }
         if (!$offer || $offer->status !== 'accepted') {
             return response()->json(['error' => 'No accepted offer found or unauthorized'], 403);
         }
-
-        $contract = $offer->project->contract;
 
         if (!$contract) {
             return response()->json(['error' => 'No contract found for this offer'], 404);

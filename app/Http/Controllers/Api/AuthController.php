@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
-{   use jsonTrait;
+{
+    use jsonTrait;
     public function register(RegisterRequest $request)
     {
     //for upload image

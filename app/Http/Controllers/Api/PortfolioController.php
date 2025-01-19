@@ -8,6 +8,15 @@ use App\Http\Requests\StorePortfolioRequest;
 
 class PortfolioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-portfolio|edit-portfolio', ['only' => ['index','show']]);
+        $this->middleware('permission:create-portfolio', ['only' => ['fillPortfolio']]);
+        $this->middleware('permission:edit-portfolio', ['only' => ['updatePortfolio']]);
+        $this->middleware('permission:add-project-to-portfolio', ['only' => ['addProjectToPortfolio']]);
+        $this->middleware('permission:delete-project-from-portfolio', ['only' => ['removeProjectFromPortfolio']]);
+    }
     /**
      * Fill in the freelancer's portfolio (Skills & Description).
      */
@@ -24,7 +33,7 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'skills' => 'required|string|max:255',
-]);
+        ]);
 
         // Check if the freelancer already has a portfolio
         $portfolio = $user->portfolio;
@@ -174,35 +183,12 @@ class PortfolioController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
     {
         //
     }
