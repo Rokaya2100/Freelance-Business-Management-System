@@ -11,11 +11,6 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        // تحديد الـ morphMap هنا
-        Relation::morphMap([
-            'Freelancer' => User::class,
-            'Project' => Project::class,
-        ]);
 
     }
     /**

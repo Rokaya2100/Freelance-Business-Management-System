@@ -29,9 +29,9 @@ class Review extends Model
     {
         return $this->belongsTo(User::class, 'freelancer_id');
     }
-    public function client(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client_id');
+        return $this->belongsTo(User::class,);
     }
     public function project(): BelongsTo
     {

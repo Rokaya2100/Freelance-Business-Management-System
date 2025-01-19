@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Portfolio;
 use App\Models\Project;
+use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePortfolioRequest;
+use App\Http\Controllers\Controller;
 
 class PortfolioController extends Controller
 {

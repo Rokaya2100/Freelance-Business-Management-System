@@ -66,7 +66,7 @@ public function update(Request $request, $id)
     $comment = Comment::findOrFail($id);
 
     if ($comment->client_id !== auth()->user()->id) {
-        return $this->jsonResponse(403, 'You are not authorized to update this comment',null  );
+        return $this->jsonResponse(403, 'You are not authorized to update this comment',null);
     }
 
     $comment->text = $request->text;

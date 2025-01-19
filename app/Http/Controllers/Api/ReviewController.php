@@ -17,8 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class ReviewController extends Controller
 {
     use ApiResponseTrait ;
-
-    public function __construct()
+      public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('permission:review-project', ['only' => ['projectRate']]);
@@ -26,7 +25,29 @@ class ReviewController extends Controller
 
     }
 
+    public function index($project_id){
+        $project = Project::find($project_id);
+        $reviews = $project->reviews;
+        return $this->RevResponse( $reviews, 'You have already reviewed this project', 200);
+    }
 
+
+    public function showReview($project_id, $review_id)
+    {
+        $project = Project::find($project_id);
+
+        if (!$project) {
+            return $this->RevResponse(null, 'Project not found', 404);
+        }
+
+        $review = $project->reviews()->find($review_id);
+
+        if (!$review) {
+            return $this->RevResponse(null, 'Review not found', 404);
+        }
+
+        return $this->RevResponse($review, 'Review retrieved successfully', 200);
+    }
     public function projectRate(ReviewRequest $request, Project $project)
     {
         $client = Auth::user();
@@ -53,18 +74,18 @@ class ReviewController extends Controller
 
         public function freelancerRate(ReviewRequest $request, User $user)
         {
-            $client = Auth::user();
 
+            $client = Auth::user();
             $validated = $request->validated();
-            $existingReview = $client->reviews()->where('user_id', $client->id)->first();
+            $existingReview = $client->reviews()->where('user_id', $user->id)->first();
             if ($existingReview) {
                 return $this->RevResponse(null, 'You have already reviewed this freelancer', 400);
             }
 
 
-            $review = $client->reviews()->create([
+            $review = $user->reviews()->create([
                 'user_id' => $client->id,
-
+                // 'reviewable_id' =>$user->id ,
                 'rate' => $validated['rate'],
             ]);
 
