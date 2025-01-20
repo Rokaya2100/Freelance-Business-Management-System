@@ -28,50 +28,6 @@ class ProjectController extends Controller
         return view('admin.projects.index',  compact('projects'));
     }
 
-
-
-    // public function create(){
-
-    // $sections = Section::all();
-    // return view('admin.projects.create',compact('sections'));
-    // }
-
-    // public function store(Request $request)
-    // {
-
-    // $project = new Project();
-    // $project->name = $request->name;
-    // $project->description = $request->description;
-    // $project->exp_delivery_date = $request->exp_delivery_date;
-    // $project->client_id = auth()->id();
-    // $project->section_id = $request->section_id;
-    // $project->save();
-
-    // return redirect()->route('projects.index')->with('success', 'Project created successfully.');
-    // }
-
-
-    // public function edit(Project $project)
-    // {
-    // if ($project->status !== 'pending' ) {
-    // return redirect()->route('projects.index')->with('error', 'You can not modify the project because it is Under implementation.');
-    // }
-    // $expectedDeliveryDate = Carbon::parse($project->exp_delivery_date);
-    // return view('projects.edit', compact('project','expectedDeliveryDate'));
-    // }
-
-
-    // public function update(Request $request, Project $project)
-    // {
-    // $project->name = $request->name;
-    // $project->description = $request->description;
-    // $project->exp_delivery_date = $request->exp_delivery_date;
-    // $project->client_id = auth()->id();
-    // $project->save();
-
-    // return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
-    // }
-
     public function show($id)
     {
         $project = Project::with(['client', 'freelancer', 'offers'])->findOrFail($id);

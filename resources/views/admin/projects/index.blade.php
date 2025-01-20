@@ -28,7 +28,6 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <h4 class="card-title mg-b-0">Projects TABLE</h4>
-                        <a href="{{ route('projects.create') }}" class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2"><i class="typcn typcn-plus"></i> ADD Project</a>
                     </div>
                 </div>
                 <div class="card-body">

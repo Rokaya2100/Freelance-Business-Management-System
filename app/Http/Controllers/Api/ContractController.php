@@ -58,8 +58,7 @@ class ContractController extends Controller
      */
     public function show(string $id)
     {
-        $contract = Contract::with(['client', 'freelancer'])
-            ->findOrFail($id);
+        $contract = Contract::with(['client', 'freelancer'])->findOrFail($id);
 
         // Authorization: Only the client or freelancer can view this contract
         if (!in_array(auth()->id(), [$contract->freelancer_id, $contract->client_id])) {

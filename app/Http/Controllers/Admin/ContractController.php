@@ -7,13 +7,13 @@ use App\Models\Contract;
 
 class ContractController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:delete-contract|contracts-list', ['only' => ['index','show','trashed']]);
-        $this->middleware('permission:restore-contract', ['only' => ['restore']]);
-        $this->middleware('permission:delete-contract', ['only' => ['destroy','forceDelete']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('permission:delete-contract|contracts-list', ['only' => ['index','show','trashed']]);
+    //     $this->middleware('permission:restore-contract', ['only' => ['restore']]);
+    //     $this->middleware('permission:delete-contract', ['only' => ['destroy','forceDelete']]);
+    // }
     public function index()
     {
         $contracts = Contract::latest()->paginate(20);

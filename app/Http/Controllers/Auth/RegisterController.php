@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Portfolio;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -73,5 +74,12 @@ class RegisterController extends Controller
             'image'    => $image ,
             'password' => Hash::make($data['password']),
         ]);
+        if($user->role =='freelancer'){
+            Portfolio::create([
+                'user_id'=>$user_id,
+                'description'=>'no description yet',
+                'skills'=>'no skills yet'
+            ]);
+        }
    }
 }

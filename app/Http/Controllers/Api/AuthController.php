@@ -36,6 +36,8 @@ class AuthController extends Controller
         if ($user->role == 'freelancer') {
             Portfolio::create([
                 'user_id' => $user->id,
+                'description'=>'no description yet',
+                'skills'=>'no skills yet'
             ]);
         }
         $token = $user->createToken('YourAppName')->plainTextToken;

@@ -69,7 +69,7 @@ class OfferController extends Controller
     public function update(OfferRequest $request,$id)//update offer details by freelanser
     {
         $offer=Offer::findOrfail($id);
-        if ($offer->freelancer_id !== auth()->user()->id){
+        if ($offer->user_id !== auth()->user()->id){
             return $this->jsonResponse(403, 'You are not authorized to update this offer',null);
         }
         $offer->update([
@@ -116,7 +116,7 @@ class OfferController extends Controller
     public function forceDelete($id)
     {
         $offer = Offer::withTrashed()->findOrFail($id);
-        if ($offer->freelancer_id !== auth()->user()->id){
+        if ($offer->user_id !== auth()->user()->id){
             return $this->jsonResponse(403, 'You are not authorized to delete this offer',null);
         }
         $offer->forceDelete();
@@ -126,7 +126,7 @@ class OfferController extends Controller
     public function destroy($id)//can delete offer that its status is not accepted
     {
          $offer=Offer::findOrfail($id);
-         if ($offer->freelancer_id !== auth()->user()->id){
+         if ($offer->user_id !== auth()->user()->id){
             return $this->jsonResponse(403, 'You are not authorized to delete this offer',null);
         }
         if ($offer && $offer->status !== 'accepted') {
@@ -136,20 +136,5 @@ class OfferController extends Controller
         }
         return $this->jsonResponse(204, 'Offer Deleted', null);
     }
-
-
-
-//     //freelancer
-// public function freeOffersDeleted(){
-//     $user_id=auth()->user()->id;
-//     $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
-//     return $this->jsonResponse(204, ' my Offers were Deleted ',$offers);
-// }
-// //admin
-//     public function offersDeleted($user_id){
-//         $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
-//         return $this->jsonResponse(204, 'Offers were Deleted by this freelancer',$offers);
-//     }
-
 
 }
