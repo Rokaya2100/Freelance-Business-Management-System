@@ -10,8 +10,19 @@ use Illuminate\Http\Request;
 
 class ContractController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:show-contract|contracts-list', ['only' => ['index','show']]);
+        $this->middleware('permission:edit-contract', ['only' => ['freelancerViewAndUpdateContract']]);
+
+    }
     /**
      * Display a listing of the resource.
+     */
+    /**
+     * Summary of index
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -37,16 +48,26 @@ class ContractController extends Controller
                 ->paginate(10);
         }
 
+        if ($contracts->isEmpty()) {
+            return response()->json([
+                'message' => 'No contracts found.',
+            ], 200);
+        }
+
         return response()->json($contracts);
     }
 
     /**
      * Display the specified resource.
      */
+    /**
+     * Summary of show
+     * @param string $id
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function show(string $id)
     {
-        $contract = Contract::with(['project.user', 'freelancer'])
-            ->findOrFail($id);
+        $contract = Contract::with(['client', 'freelancer'])->findOrFail($id);
 
         // Authorization: Only the client or freelancer can view this contract
         if (!in_array(auth()->id(), [$contract->freelancer_id, $contract->client_id])) {
@@ -74,20 +95,23 @@ class ContractController extends Controller
             ],
         ]);
     }
-
+    /**
+     * Summary of freelancerViewAndUpdateContract
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $offerId
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function freelancerViewAndUpdateContract(Request $request, $offerId)
     {
-        // Step 1: Find the offer and ensure it exists and belongs to the authenticated freelancer
-        $offer = Offer::where('id', $offerId)
-            ->where('user_id', auth()->id()) // Check if the freelancer owns this offer
-            ->with('project.contract') // Load the project and its contract
-            ->first();
-
+       
+        $offer=Offer::findOrfail($offerId);
+        $contract = $offer->project->contract;
+        if ($contract->freelancer_id !== auth()->user()->id){
+            return response()->json(['error' => 'You are not authorized to update this contract'], 403);
+        }
         if (!$offer || $offer->status !== 'accepted') {
             return response()->json(['error' => 'No accepted offer found or unauthorized'], 403);
         }
-
-        $contract = $offer->project->contract;
 
         if (!$contract) {
             return response()->json(['error' => 'No contract found for this offer'], 404);
@@ -117,5 +141,6 @@ class ContractController extends Controller
             ],
         ]);
     }
+
 
 }

@@ -33,13 +33,13 @@
                         <a href="{{ route('reports.excel') }}"
                             class="btn btn-primary btn-with-icon btn-block col-sm-6 col-md-2">
                             <i class="far fa-arrow-alt-circle-down"></i>
-                            Export All Reports</a></td>
+                            Export All Reports</a>
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="table">
-                        <table class="table mg-b-0 text-md-nowrap" id="example1">
+                        <table class="table mg-b-0 text-md-nowrap" id="example10">
                             <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
@@ -55,7 +55,7 @@
                                 @foreach ($reports as $report)
                                     <tr>
                                         <td>{{ $report->id }}</td>
-                                        <td>{{ $report->project->name}}</td>
+                                        <td>{{ $report->project?->name}}</td>
                                         <td>{{ $report->description}}</td>
                                         <td>{{ $report->created_at}}</td>
                                          <td>
@@ -128,4 +128,11 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <script>
+        $('#example10').DataTable({
+            columnDefs:[{
+                orderable:false, targets:[4,5,6]
+            }]
+        });
+    </script>
 @endsection

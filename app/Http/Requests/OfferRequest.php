@@ -24,10 +24,10 @@ class OfferRequest extends FormRequest
         return [
             'description'     => 'required|string|max:255',
             'price'           => 'required|numeric',
-            'status'          => 'required|in:pending,accepted,rejected',
+            'status'          => 'nullable|in:pending,accepted,rejected',
             'period'          =>'required|string',
-            'user_id'         => 'required|exists:users,id',
-            'project_id'      => 'required|exists:projects,id',
+            'user_id'         => 'exists:users,id',
+            'project_id'      => 'exists:projects,id',
         ];
     }
 }

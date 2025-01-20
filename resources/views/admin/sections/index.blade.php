@@ -41,7 +41,7 @@
                                 <tr>
                                     <th class="wd-15p border-bottom-0">ID</th>
                                     <th class="wd-15p border-bottom-0">Name</th>
-                                    {{-- <th class="wd-15p border-bottom-0">Description</th> --}}
+                                    <th class="wd-15p border-bottom-0">Description</th>
                                     <th class="wd-15p border-bottom-0">Add Date</th>
                                     <th class="border-bottom-0"></th>
                                     {{-- <th class="border-bottom-0"></th> --}}
@@ -128,7 +128,7 @@
     <script>
         $('#example10').DataTable({
             columnDefs:[{
-                orderable:false, targets:[4,5]
+                orderable:false, targets:[4,5,6]
             }]
         });
     </script>

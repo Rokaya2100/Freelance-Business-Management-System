@@ -40,6 +40,7 @@
                                                 <th class="wd-15p border-bottom-0">Add Date</th>
                                                 <th class="wd-15p border-bottom-0">Delete Date</th>
                                             	<th class="border-bottom-0"></th>
+                                                <th></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -58,6 +59,15 @@
 															</button>
 														</form>
 													</td>
+                                                    <td>
+                                                        <form action="{{ route('sections.forceDelete', $section->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-with-icon btn-block">
+                                                                <i class="typcn typcn-delete"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </td>
 												</tr>
 											@endforeach
                                             @if (session('success'))
@@ -112,7 +122,7 @@
     <script>
         $('#example10').DataTable({
             columnDefs:[{
-                orderable:false, targets:[5]
+                orderable:false, targets:[5,6]
             }]
         });
     </script>
