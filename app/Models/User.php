@@ -12,6 +12,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,22 +43,22 @@ class User extends Authenticatable implements CanResetPassword
         return $this->morphMany(Review::class ,'reviewable');
     }
 
-    public function comments()
+    public function comments():HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function projects(){
+    public function projects(): HasMany {
         return $this->hasMany(Project::class,'freelancer_id','id');
     }
 
-    public function contracts(){
+    public function contracts(): HasMany{
         return $this->hasMany(Contract::class,'freelancer_id','id');
     }
-    public function portfolio(){
+    public function portfolio(): HasOne{
         return $this->hasOne(Portfolio::class);
     }
-    public function offers(){
+    public function offers():HasMany{
         return $this->hanMany(Offer::class);
     }
 

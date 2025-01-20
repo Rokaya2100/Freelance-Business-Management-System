@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {use jsonTrait;
+
+    /**
+     * Summary of register
+     * @param \App\Http\Requests\RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
     //for upload image
@@ -41,6 +47,11 @@ class AuthController extends Controller
     /**
      * Login user and create a token.
      */
+    /**
+     * Summary of login
+     * @param \App\Http\Requests\LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
 
@@ -56,7 +67,12 @@ class AuthController extends Controller
     /**
      * Logout user and revoke the token.
      */
-    public function logout(Request $request)
+     /**
+      * Summary of logout
+      * @param \Illuminate\Http\Request $request
+      * @return \Illuminate\Http\JsonResponse
+      */
+     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
         return $this->jsonResponse(200,'Logged out successfully');

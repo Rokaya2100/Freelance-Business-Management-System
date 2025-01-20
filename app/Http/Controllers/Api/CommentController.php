@@ -16,6 +16,11 @@ class CommentController extends Controller
 
 
    // show all comments for a specific project
+    /**
+     * show all comments for a specific project
+     * @param mixed $projectId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index($projectId)
     {
 
@@ -25,6 +30,11 @@ class CommentController extends Controller
     }
 
     //show one comment
+    /**
+     * show one comment
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $comment = Comment::with('project')->findOrFail($id);
@@ -32,6 +42,11 @@ class CommentController extends Controller
     }
 
     //create comment
+    /**
+     * create comment
+     * @param \App\Http\Requests\StoreCommentRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreCommentRequest $request)
 {
     $validated = $request->validated();
@@ -50,17 +65,23 @@ class CommentController extends Controller
 }
 
     //update comment
-public function update(Request $request, $id)
+/**
+ * update comment
+ * @param \Illuminate\Http\Request $request
+ * @param mixed $id
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function update(Request $request,$id)
 {
 
     if (!auth()->check()) {
-        return $this->jsonResponse(null, 'You must be logged in to update a comment',401  );
+        return $this->jsonResponse( 401,'You must be logged in to update a comment',401  );
     }
 
     $comment = Comment::findOrFail($id);
 
     if ($comment->client_id !== auth()->user()->id) {
-        return $this->jsonResponse(null, 'You are not authorized to update this comment',403  );
+        return $this->jsonResponse(403,'You are not authorized to update this comment',403  );
     }
 
     $comment->text = $request->text;
@@ -71,6 +92,11 @@ public function update(Request $request, $id)
 }
 
     //delete comment
+/**
+ * delete comment
+ * @param mixed $id
+ * @return \Illuminate\Http\JsonResponse
+ */
 public function destroy($id)
 {
 

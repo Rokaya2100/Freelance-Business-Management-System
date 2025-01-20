@@ -15,6 +15,10 @@ use App\Http\Controllers\Api\AuthController;
 class ProjectController extends Controller
 {
     use jsonTrait;
+    /**
+     * Summary of index
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $projects = Project::paginate(5);
@@ -24,6 +28,11 @@ class ProjectController extends Controller
         return $this->jsonResponse(200, 'All projects', new OfferCollection($projects));
  
     }
+    /**
+     * Summary of store
+     * @param \App\Http\Requests\ProjectRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(ProjectRequest $request)
     {
         $user = auth()->user();
@@ -44,11 +53,22 @@ class ProjectController extends Controller
         return $this->jsonResponse(201,"project created successfully",new ProjectResource($project));
 
     }
+    /**
+     * Summary of show
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $project = Project::findOrFail($id);
         return $this->jsonResponse(200,"project returned successfully",new ProjectResource($project));
     }
+    /**
+     * Summary of update
+     * @param \App\Http\Requests\ProjectRequest $request
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(ProjectRequest $request, $id)
     {
         $path_independent_attachments = null;
@@ -70,7 +90,13 @@ class ProjectController extends Controller
         }
         return $this->errorResponse(404,"you can't update,The project is reserved it is being prepared and its status $status");
     }
-
+     
+ 
+    /**
+     * Summary of destroy
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)
     {
         $project=Project::findOrFail($id);
@@ -81,6 +107,11 @@ class ProjectController extends Controller
         }
         return $this->errorResponse(404,"you  can't delete,You can only delete if the project is pending and this project is $state");
     }
+    /**
+     * Summary of forceDelete
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function forceDelete($id){
         $project=Project::findOrFail($id);
         $state =$project->status;
@@ -91,6 +122,12 @@ class ProjectController extends Controller
         return $this->errorResponse(404,"you  can't delete,You can only delete if the project is pending and this project is $state");
 
     }
+    /**
+     * Summary of updateProjectFromFreelancer
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateProjectFromFreelancer(Request $request, $id)
     {
         $path_customer_attachments = null;

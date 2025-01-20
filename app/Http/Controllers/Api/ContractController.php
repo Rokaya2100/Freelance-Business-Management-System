@@ -13,6 +13,10 @@ class ContractController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Summary of index
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $user = auth()->user();
@@ -49,6 +53,11 @@ class ContractController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * Summary of show
+     * @param string $id
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function show(string $id)
     {
         $contract = Contract::with(['client', 'freelancer'])
@@ -80,14 +89,15 @@ class ContractController extends Controller
             ],
         ]);
     }
-
+    /**
+     * Summary of freelancerViewAndUpdateContract
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $offerId
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function freelancerViewAndUpdateContract(Request $request, $offerId)
     {
-        // Step 1: Find the offer and ensure it exists and belongs to the authenticated freelancer
-        // $offer = Offer::where('id', $offerId)
-        //     ->where('user_id', auth()->id()) // Check if the freelancer owns this offer
-        //     ->with('project.contract') // Load the project and its contract
-        //     ->first();
+        
             $offer=Offer::findOrfail($offerId);
         if (!$offer || $offer->status !== 'accepted') {
             return response()->json(['error' => 'No accepted offer found or unauthorized'], 403);

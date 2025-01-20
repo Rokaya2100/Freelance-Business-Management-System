@@ -16,6 +16,11 @@ class PortfolioController extends Controller
     /**
      * Fill in the freelancer's portfolio (Skills & Description).
      */
+    /**
+     * Summary of fillPortfolio
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function fillPortfolio(Request $request)
     {
         $user = auth()->user();
@@ -51,6 +56,11 @@ class PortfolioController extends Controller
 
     /**
      * Update the freelancer's portfolio (Skills & Description).
+     */
+    /**
+     * Summary of updatePortfolio
+     * @param \App\Http\Requests\StorePortfolioRequest $request
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function updatePortfolio(StorePortfolioRequest $request)
     {
@@ -90,7 +100,10 @@ class PortfolioController extends Controller
             'portfolio' => $portfolio,
         ]);
     }
-
+    /**
+     * Summary of getFreelancerProjects
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function getFreelancerProjects()
     {
         $user = auth()->user();
@@ -108,7 +121,11 @@ class PortfolioController extends Controller
 
         return response()->json($projects);
     }
-
+    /**
+     * Summary of addProjectToPortfolio
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function addProjectToPortfolio(Request $request)
     {
         $user = auth()->user();
@@ -146,7 +163,11 @@ class PortfolioController extends Controller
         return response()->json([
             'message' => 'Project added to portfolio successfully.']);
     }
-
+    /**
+     * Summary of removeProjectFromPortfolio
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function removeProjectFromPortfolio(Request $request)
     {
         $user = auth()->user();
@@ -190,6 +211,10 @@ class PortfolioController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Summary of index
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         // Retrieve all portfolios, including freelancer details (name), description, and skills
@@ -204,6 +229,11 @@ class PortfolioController extends Controller
 
     /**
      * Display the specified resource.
+     */
+    /**
+     * Summary of show
+     * @param string $id
+     * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function show(string $id)
     {
@@ -223,6 +253,11 @@ class PortfolioController extends Controller
      */
 
      //get all projects with comments and reviews
+    /**
+     * Summary of getFullPortfolio
+     * @param mixed $id
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function getFullPortfolio($id)
     {
         $portfolio = Portfolio::where('id', $id)->firstOrFail();

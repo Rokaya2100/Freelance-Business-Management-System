@@ -15,7 +15,10 @@ use App\Http\Resources\OfferCollection;
 class OfferController extends Controller
 {
     use jsonTrait;
-
+    /**
+     * Summary of index
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()//admin
     {
 
@@ -27,6 +30,11 @@ class OfferController extends Controller
     }
 
     //admin+freelanser+client
+    /**
+     * Summary of getProjectOffers
+     * @param \App\Models\Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getProjectOffers(Project $project)//to get all offers that related to this project
     {
         if($project->offers->isEmpty()){
@@ -35,7 +43,11 @@ class OfferController extends Controller
         $projectOffers = $project->offers()->paginate(3);
         return $this->jsonResponse(200, 'All Offers that Related to this Project', new OfferCollection($projectOffers));
     }
-
+    /**
+     * Summary of show
+     * @param \App\Models\Offer $offer
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(Offer $offer){
         if (!$offer) {
             return $this->jsonResponse(404, 'Offer Not Found', null);
@@ -43,6 +55,12 @@ class OfferController extends Controller
         return $this->jsonResponse(200, 'Offer Details', new OfferResource($offer));
     }
 //freelanser
+    /**
+     * Summary of store
+     * @param \App\Http\Requests\OfferRequest $request
+     * @param \App\Models\Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(OfferRequest $request, Project $project){
 
         $project_id=$project->id;
@@ -66,6 +84,12 @@ class OfferController extends Controller
         return $this->jsonResponse(201, 'Offer Created Successfully');
     }
 //freelanser (his offer)
+    /**
+     * Summary of update
+     * @param \App\Http\Requests\OfferRequest $request
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(OfferRequest $request,$id)//update offer details by freelanser
     {
         $offer=Offer::findOrfail($id);
@@ -78,6 +102,12 @@ class OfferController extends Controller
         return $this->jsonResponse(201, 'Offer Updated Successfully', );
     }
 //client
+    /**
+     * Summary of updateStatus
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateStatus(Request $request,$id)//to update status by client
     {
         $offer=Offer::findOrfail($id);
@@ -96,6 +126,11 @@ class OfferController extends Controller
 
 
 //freelanser (his offer)
+    /**
+     * Summary of restore
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restore($id){
         $user_id=auth()->user()->id;
         $offer = Offer::withTrashed()->where('user_id',$user_id)->find($id);
@@ -107,12 +142,22 @@ class OfferController extends Controller
         return $this->jsonResponse(200, 'Offer Restored Successfully', new OfferResource($offer));
     }
     //admin
+    /**
+     * Summary of forceDelete
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function forceDelete($id){
         $offer = Offer::withTrashed()->findOrFail($id);
         $offer->forceDelete();
         return $this->jsonResponse(204, 'Offer Deleted Permanently',);
     }
 //freelanser (his offer)+admin
+    /**
+     * Summary of destroy
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)//can delete offer that its status is not accepted
     {
          $offer=Offer::findOrfail($id);
@@ -127,12 +172,21 @@ class OfferController extends Controller
 
 
     //freelanser
+/**
+ * Summary of freeOffersDeleted
+ * @return \Illuminate\Http\JsonResponse
+ */
 public function freeOffersDeleted(){
     $user_id=auth()->user()->id;
     $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
     return $this->jsonResponse(204, ' my Offers were Deleted ',$offers);
 }
 //admin
+    /**
+     * Summary of offersDeleted
+     * @param mixed $user_id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function offersDeleted($user_id){
         $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
         return $this->jsonResponse(204, 'Offers were Deleted by this freelanser',$offers);

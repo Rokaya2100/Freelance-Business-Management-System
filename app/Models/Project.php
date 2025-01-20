@@ -13,6 +13,9 @@ use App\Models\Contract;
 use App\Models\Portfolio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -41,33 +44,33 @@ class Project extends Model
         return $this->morphMany(Review::class, 'reviewable');
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
-    public function client()
+    public function client(): BelongsTo
     {
         return $this->belongsTo(User::class, 'client_id');
     }
-    public function freelancer()
+    public function freelancer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'freelancer_id');
     }
-      public function section()
+      public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class);
     }
 
-    public function contract()
+    public function contract(): HasOne
     {
         return $this->hasOne(Contract::class);
     }
 
-    public function offers()
+    public function offers(): HasMany
     {
         return $this->hasMany(Offer::class);
     }
-    public function report()
+    public function report(): HasOne
     {
         return $this->hasOne(Report::class);
     }

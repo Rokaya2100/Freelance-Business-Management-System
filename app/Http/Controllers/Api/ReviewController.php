@@ -19,7 +19,12 @@ class ReviewController extends Controller
     use ApiResponseTrait ;
 
 
-
+    /**
+     * Summary of projectStore
+     * @param \App\Http\Requests\ReviewRequest $request
+     * @param \App\Models\Project $project
+     * @return JsonResponse|mixed
+     */
     public function projectStore(ReviewRequest $request, Project $project)
     {
 
@@ -47,7 +52,12 @@ class ReviewController extends Controller
     }
 
 //
-
+        /**
+         * Summary of freelanceerrate
+         * @param \App\Http\Requests\ReviewRequest $request
+         * @param \App\Models\User $user
+         * @return JsonResponse|mixed
+         */
         public function freelanceerrate(ReviewRequest $request, User $user)
         {
             $client = Auth::user();
