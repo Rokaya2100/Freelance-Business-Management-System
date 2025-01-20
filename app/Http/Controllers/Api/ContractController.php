@@ -103,11 +103,7 @@ class ContractController extends Controller
      */
     public function freelancerViewAndUpdateContract(Request $request, $offerId)
     {
-        // Step 1: Find the offer and ensure it exists and belongs to the authenticated freelancer
-        // $offer = Offer::where('id', $offerId)
-        //     ->where('user_id', auth()->id()) // Check if the freelancer owns this offer
-        //     ->with('project.contract') // Load the project and its contract
-        //     ->first();
+       
         $offer=Offer::findOrfail($offerId);
         $contract = $offer->project->contract;
         if ($contract->freelancer_id !== auth()->user()->id){

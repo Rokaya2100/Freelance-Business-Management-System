@@ -20,6 +20,11 @@ class GenerateProjectReport
     /**
      * Handle the event.
      */
+    /**
+     * Summary of handle
+     * @param \App\Events\ProjectCompleted $event
+     * @return void
+     */
     public function handle(ProjectCompleted $event): void
     {
         $project = $event->project;

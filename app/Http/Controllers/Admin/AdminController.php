@@ -12,6 +12,11 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Summary of index
+     * @param mixed $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index($id)
     {
         if(view()->exists($id)){

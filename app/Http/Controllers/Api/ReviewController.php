@@ -17,21 +17,24 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class ReviewController extends Controller
 {
     use ApiResponseTrait ;
-      public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:review-project', ['only' => ['projectRate']]);
-        $this->middleware('permission:review-freelancer', ['only' => ['freelancerRate']]);
 
-    }
-
+    /**
+     * Summary of index
+     * @param mixed $project_id
+     * @return JsonResponse|mixed
+     */
     public function index($project_id){
         $project = Project::find($project_id);
         $reviews = $project->reviews;
         return $this->RevResponse( $reviews, 'You have already reviewed this project', 200);
     }
 
-
+    /**
+     * Summary of showReview
+     * @param mixed $project_id
+     * @param mixed $review_id
+     * @return JsonResponse|mixed
+     */
     public function showReview($project_id, $review_id)
     {
         $project = Project::find($project_id);
@@ -48,6 +51,12 @@ class ReviewController extends Controller
 
         return $this->RevResponse($review, 'Review retrieved successfully', 200);
     }
+    /**
+     * Summary of projectRate
+     * @param \App\Http\Requests\ReviewRequest $request
+     * @param \App\Models\Project $project
+     * @return JsonResponse|mixed
+     */
     public function projectRate(ReviewRequest $request, Project $project)
     {
         $client = Auth::user();
@@ -70,8 +79,13 @@ class ReviewController extends Controller
         return $this->RevResponse($data, 'Project rated successfully', 201);
     }
 
-//
 
+        /**
+         * Summary of freelancerRate
+         * @param \App\Http\Requests\ReviewRequest $request
+         * @param \App\Models\User $user
+         * @return JsonResponse|mixed
+         */
         public function freelancerRate(ReviewRequest $request, User $user)
         {
 
@@ -85,7 +99,6 @@ class ReviewController extends Controller
 
             $review = $user->reviews()->create([
                 'user_id' => $client->id,
-                // 'reviewable_id' =>$user->id ,
                 'rate' => $validated['rate'],
             ]);
 

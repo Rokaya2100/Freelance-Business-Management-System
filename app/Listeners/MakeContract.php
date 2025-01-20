@@ -21,6 +21,12 @@ class MakeContract
     /**
      * Handle the event.
      */
+    /**
+     * Summary of handle
+     * @param \App\Events\OfferAccepted $event
+     * @throws \Exception
+     * @return void
+     */
     public function handle(OfferAccepted $event): void
     {
         $acceptedOffer = $event->offer;

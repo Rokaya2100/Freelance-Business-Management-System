@@ -43,6 +43,7 @@ Route::get('/offers/{project}', [OfferController::class, 'getProjectOffers']);
 //portfolio
 Route::get('/portfolios', [PortfolioController::class, 'index']);
 Route::get('/portfolio/{id}', [PortfolioController::class, 'show']);
+
 //reviews
 Route::get('project/{id}/reviews', [ReviewController::class, 'index']);
 Route::get('project/{project_id}/review/{review_id}', [ReviewController::class, 'showReview']);

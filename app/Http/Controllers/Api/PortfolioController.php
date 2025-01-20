@@ -14,71 +14,17 @@ use App\Http\Resources\ProjectWithCommRateResource;
 
 class PortfolioController extends Controller
 {
-    /**
-     * Fill in the freelancer's portfolio (Skills & Description).
-     */
-    // public function fillPortfolio(Request $request)
-    // {
-    //     $user = auth()->user();
-    //     // Validate the request
-    //     $validated = $request->validate([
-    //         'description' => 'string|max:255',
-    //         'skills' => 'required|string|max:255',
-    //     ]);
-
-    //     // // Check if the freelancer already has a portfolio
-    //     // $portfolio = $user->portfolio;
-
-    //     // if ($portfolio->description || $portfolio->skills) {
-    //     //     return response()->json(['error' => 'Portfolio already filled. Use the update method to change details.'], 400);
-    //     // }
-
-    //     // Fill the portfolio fields
-    //     $portfolio->description = $validated['description'];
-    //     $portfolio->skills = $validated['skills'];
-    //     $portfolio->save();
-
-    //     return response()->json([
-    //         'message' => 'Portfolio filled successfully.',
-    //         'portfolio' => $portfolio,
-    //     ]);
-    // }
 
     /**
-     * Update the freelancer's portfolio (Skills & Description).
+     * Summary of updatePortfolio
+     * @param \App\Http\Requests\StorePortfolioRequest $request
+     * @param mixed $id
+     * @return mixed
      */
     public function updatePortfolio(StorePortfolioRequest $request,$id)
     {
         $user = auth()->user();
 
-        // // // Ensure the user is a freelancer
-        // // if ($user->role !== 'freelancer') {
-        // //     return response()->json(['error' => 'Only freelancers can update their portfolio'], 403);
-        // // }
-
-        // // Validate the request
-        // $validated = $request->validate([
-        //     'description' => 'nullable|string|max:255',
-        //     'skills' => 'nullable|string|max:255',
-        // ]);
-
-        // // Check if the freelancer already has a portfolio
-        // $portfolio = $user->portfolio;
-
-        // if (!$portfolio) {
-        //     return response()->json(['error' => 'Portfolio not found'], 404);
-        // }
-
-        // // Update the portfolio fields if provided
-        // if ($validated['description']) {
-        //     $portfolio->description = $validated['description'];
-        // }
-
-        // if ($validated['skills']) {
-        //     $portfolio->skills = $validated['skills'];
-        // }
-
-        // $portfolio->save();\
 
         $portfolio=Portfolio::findOrfail($id);
         if ($portfolio->user_id !== auth()->user()->id){
@@ -93,7 +39,11 @@ class PortfolioController extends Controller
             'portfolio' => $portfolio,
         ]);
     }
-
+    /**
+     * Summary of addProjectToPortfolio
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function addProjectToPortfolio(Request $request)
     {
         $user = auth()->user();

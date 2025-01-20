@@ -7,27 +7,32 @@ use App\Models\Contract;
 
 class ContractController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    //     $this->middleware('permission:delete-contract|contracts-list', ['only' => ['index','show','trashed']]);
-    //     $this->middleware('permission:restore-contract', ['only' => ['restore']]);
-    //     $this->middleware('permission:delete-contract', ['only' => ['destroy','forceDelete']]);
-    // }
+    /**
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $contracts = Contract::latest()->paginate(20);
         return view('admin.contracts.index', compact('contracts'));
     }
 
-
+    /**
+     * Summary of show
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function show(string $id)
     {
         $contract = Contract::with(['client', 'freelancer', 'project'])->findOrFail($id);
 
         return view('admin.contracts.show', compact('contract'));
     }
-
+    /**
+     * Summary of destroy
+     * @param \App\Models\Contract $contract
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Contract $contract)
     {
         if ($contract->status !== 'expired') {
@@ -41,7 +46,11 @@ class ContractController extends Controller
             ->route('contracts.index')
             ->with('success', 'Contract deleted successfully');
     }
-
+    /**
+     * Summary of restore
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function restore($id)
     {
         $contract = Contract::withTrashed()->findOrFail($id);
@@ -52,13 +61,20 @@ class ContractController extends Controller
             ->with('success', 'contract restored successfully');
     }
 
-
+    /**
+     * Summary of trashed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function trashed()
     {
         $contracts = Contract::onlyTrashed()->paginate(10);
         return view('admin.contracts.trashed', compact('contracts'));
     }
-
+    /**
+     * Summary of forceDelete
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function forceDelete($id){
         Contract::withTrashed()->where('id',$id)->forceDelete();
         return redirect()->back()->with('success','Contract deleted successfully');

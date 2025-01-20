@@ -49,7 +49,7 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(Comment::class);
     }
 
-    public function freelancerProjects()
+    public function freelancerProjects(): HasMany
     {
         return $this->hasMany(Project::class, 'freelancer_id', 'id');
     }
@@ -64,7 +64,8 @@ class User extends Authenticatable implements CanResetPassword
     public function portfolio(): HasOne{
         return $this->hasOne(Portfolio::class);
     }
-    public function offers(){
+    public function offers():HasMany
+    {
         return $this->hanMany(Offer::class,'user_id','id');
     }
 

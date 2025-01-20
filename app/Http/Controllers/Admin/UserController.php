@@ -11,24 +11,28 @@ use App\Http\Requests\RegisterRequest;
 
 class UserController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    //     $this->middleware('permission:create-user|delete-user|users-list', ['only' => ['index','show','trashed']]);
-    //     $this->middleware('permission:create-user', ['only' => ['create','store','restore']]);
-    //     $this->middleware('permission:delete-user', ['only' => ['destroy','forceDelete']]);
-    // }
+    /**
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $users = User::latest()->paginate(20);
         return view('admin.users.index', compact('users'));
     }
-
+    /**
+     * Summary of create
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function create()
     {
         return view('admin.users.create');
     }
-
+    /**
+     * Summary of store
+     * @param \App\Http\Requests\RegisterRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(RegisterRequest $request)
     {
         User::create([
@@ -44,7 +48,11 @@ class UserController extends Controller
             ->with('success', 'Account created successfully');
     }
 
-
+    /**
+     * Summary of show
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function show(string $id)
     {
         $user = User::findOrFail($id);
@@ -57,7 +65,11 @@ class UserController extends Controller
         return view('admin.users.show', compact('user','reviews','project','portfolio','projectCountfreelancer','projectCountclient','reviewscount'));
     }
 
-
+    /**
+     * Summary of destroy
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(User $user)
     {
         if ($user->projects()->exists()||$user->clientProjects()->exists()||$user->contracts()->exists()) {
@@ -72,7 +84,11 @@ class UserController extends Controller
             ->route('users.index')
             ->with('success', 'user deleted successfully');
     }
-
+    /**
+     * Summary of restore
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function restore($id)
     {
         $user = User::withTrashed()->findOrFail($id);
@@ -82,7 +98,10 @@ class UserController extends Controller
             ->route('users.trashed')
             ->with('success', 'user restored successfully');
     }
-
+    /**
+     * Summary of trashed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function trashed()
     {
         $users = User::onlyTrashed()->paginate(20);

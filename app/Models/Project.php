@@ -75,7 +75,7 @@ class Project extends Model
         return $this->hasOne(Report::class);
     }
 
-    public function portfolio()
+    public function portfolio(): BelongsTo
     {
         return $this->belongsTo(Portfolio::class);
     }

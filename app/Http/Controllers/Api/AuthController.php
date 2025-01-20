@@ -15,7 +15,11 @@ class AuthController extends Controller
 
 {
     use jsonTrait;
-
+    /**
+     * Summary of register
+     * @param \App\Http\Requests\RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
     //for upload image

@@ -43,6 +43,11 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Summary of store
+     * @param \App\Http\Requests\StoreRoleRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(StoreRoleRequest $request): RedirectResponse
     {
         $role = Role::create(['name' => $request->name]);
@@ -58,6 +63,11 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * Summary of show
+     * @param \Spatie\Permission\Models\Role $role
+     * @return \Illuminate\View\View
+     */
     public function show(Role $role): View
     {
         $rolePermissions = Permission::join("role_has_permissions","permission_id","=","id")
@@ -72,6 +82,11 @@ class RoleController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     */
+    /**
+     * Summary of edit
+     * @param \Spatie\Permission\Models\Role $role
+     * @return \Illuminate\View\View
      */
     public function edit(Role $role): View
     {
@@ -93,6 +108,12 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Summary of update
+     * @param \App\Http\Requests\UpdateRoleRequest $request
+     * @param \Spatie\Permission\Models\Role $role
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
         $input = $request->only('name');
@@ -109,6 +130,11 @@ class RoleController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+    /**
+     * Summary of destroy
+     * @param \Spatie\Permission\Models\Role $role
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Role $role): RedirectResponse
     {

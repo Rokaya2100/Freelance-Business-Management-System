@@ -20,9 +20,7 @@ class Contract extends Model
         'client_id',
     ];
 
-    // public function users(){
-    //     return $this->belongsTo(User::class);
-    // }
+    
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class,);
@@ -37,6 +35,6 @@ class Contract extends Model
     {
         return $this->belongsTo(User::class, 'client_id');
     }
-    
+
 
 }

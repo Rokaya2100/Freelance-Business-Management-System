@@ -13,14 +13,7 @@ use App\Http\Requests\StoreCommentRequest;
 class CommentController extends Controller
 {
     use jsonTrait;
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('permission:create-comment|edit-comment|delete-comment|comments-list', ['only' => ['index','show']]);
-        $this->middleware('permission:create-comment', ['only' => ['store']]);
-        $this->middleware('permission:edit-comment', ['only' => ['update']]);
-        $this->middleware('permission:delete-comment', ['only' => ['destroy']]);
-    }
+  
 
    // show all comments for a specific project
     /**

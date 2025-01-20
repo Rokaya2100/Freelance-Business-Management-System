@@ -9,6 +9,12 @@ use App\Models\Project;
 
 trait GetReviewItemTrait
 {
+    /**
+     * Summary of getItem
+     * @param mixed $reviewableType
+     * @param mixed $reviewableId
+     * @return array|string
+     */
     public function getItem($reviewableType, $reviewableId)
     {
 

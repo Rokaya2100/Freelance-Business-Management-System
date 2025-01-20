@@ -16,7 +16,10 @@ class OneReportExport implements FromCollection, WithStyles
     {
         $this->reportId = $reportId;
     }
-
+    /**
+     * Summary of collection
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     public function collection()
     {
         $report = Report::with('project')->where('id', $this->reportId)->get();
@@ -58,7 +61,11 @@ class OneReportExport implements FromCollection, WithStyles
     }
 
 
-
+    /**
+     * Summary of styles
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet
+     * @return void
+     */
     public function styles(Worksheet $sheet)
     {
         $sheet->getStyle('A1:N1')->applyFromArray([

@@ -15,18 +15,14 @@ use App\Http\Resources\OfferCollection;
 class OfferController extends Controller
 {
     use jsonTrait;
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    //     $this->middleware('permission:create-offer|edit-offer|delete-offer|offers-list', ['except' => ['index','show','getProjectOffers']]);
-    //     // $this->middleware('permission:create-offer', ['only' => ['store','restore']]);
-    //     $this->middleware('permission:edit-offer', ['only' => ['update']]);
-    //     $this->middleware('permission:edit-offer-status', ['only' => ['updateStatus']]);
-    //     $this->middleware('permission:delete-offer', ['only' => ['destroy','forceDelete']]);
 
-    // }
 
     //freelancer+client
+    /**
+     * Summary of getProjectOffers
+     * @param \App\Models\Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getProjectOffers(Project $project)//to get all offers that related to this project
     {
         if($project->offers->isEmpty()){
@@ -117,6 +113,11 @@ class OfferController extends Controller
 
 
 //freelanser (his offer)
+    /**
+     * Summary of restore
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restore($id)
     {
         $user_id=auth()->user()->id;
@@ -129,6 +130,11 @@ class OfferController extends Controller
         return $this->jsonResponse(200, 'Offer Restored Successfully', new OfferResource($offer));
     }
     //admin
+    /**
+     * Summary of forceDelete
+     * @param mixed $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function forceDelete($id)
     {
         $offer = Offer::withTrashed()->findOrFail($id);

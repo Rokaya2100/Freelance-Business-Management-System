@@ -56,4 +56,3 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/{page}', [AdminController::class,'index']);
 });
 
-// Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');

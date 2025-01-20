@@ -16,18 +16,20 @@ use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    //     $this->middleware('permission:delete-project|projects-list', ['only' => ['index','show','trashed']]);
-    //     // $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
-    // }
+    /**
+     * Summary of index
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $projects = Project::with(['client', 'freelancer','section'])->get();
         return view('admin.projects.index',  compact('projects'));
     }
-
+    /**
+     * Summary of show
+     * @param mixed $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function show($id)
     {
         $project = Project::with(['client', 'freelancer', 'offers'])->findOrFail($id);
@@ -36,7 +38,11 @@ class ProjectController extends Controller
 
         return view('admin.projects.show', compact('project','reviews','comments'));
     }
-
+    /**
+     * Summary of destroy
+     * @param \App\Models\Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Project $project)
 {
     if ($project->status !=='pending' && $project->status !== 'completed') {
@@ -55,13 +61,20 @@ class ProjectController extends Controller
         ->with('success', 'Project deleted successfully');
 }
 
-
+    /**
+     * Summary of trashed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function trashed()
     {
     $projects = Project::onlyTrashed()->paginate(10);
     return view('admin.projects.trashed', compact('projects'));
     }
-
+    /**
+     * Summary of restore
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function restore($id)
     {
         $project = Project::withTrashed()->findOrFail($id);
@@ -75,6 +88,11 @@ class ProjectController extends Controller
         return redirect()->route('projects.trashed')->with('success', 'Project restored successfully.');
 
 }
+    /**
+     * Summary of forceDelete
+     * @param mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function forceDelete($id){
         $project=Project::withTrashed()->where('id',$id)->forceDelete();
         if($project->contract()->exists()||$project->report()->exists()||$project->offers()->exists()){

@@ -11,7 +11,10 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ReportsExport implements FromCollection, WithStyles
 {
-
+        /**
+         * Summary of collection
+         * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+         */
         public function collection()
         {
                 $reports = Report::all();
@@ -53,7 +56,11 @@ class ReportsExport implements FromCollection, WithStyles
         }
 
 
-
+    /**
+     * Summary of styles
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet
+     * @return void
+     */
     public function styles(Worksheet $sheet)
     {
         $sheet->getStyle('A1:N1')->applyFromArray([
