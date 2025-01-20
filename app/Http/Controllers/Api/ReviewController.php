@@ -17,22 +17,41 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class ReviewController extends Controller
 {
     use ApiResponseTrait ;
-
-
-    /**
-     * Summary of projectStore
-     * @param \App\Http\Requests\ReviewRequest $request
-     * @param \App\Models\Project $project
-     * @return JsonResponse|mixed
-     */
-    public function projectStore(ReviewRequest $request, Project $project)
+      public function __construct()
     {
+        $this->middleware('auth');
+        $this->middleware('permission:review-project', ['only' => ['projectRate']]);
+        $this->middleware('permission:review-freelancer', ['only' => ['freelancerRate']]);
 
+    }
+
+    public function index($project_id){
+        $project = Project::find($project_id);
+        $reviews = $project->reviews;
+        return $this->RevResponse( $reviews, 'You have already reviewed this project', 200);
+    }
+
+
+    public function showReview($project_id, $review_id)
+    {
+        $project = Project::find($project_id);
+
+        if (!$project) {
+            return $this->RevResponse(null, 'Project not found', 404);
+        }
+
+        $review = $project->reviews()->find($review_id);
+
+        if (!$review) {
+            return $this->RevResponse(null, 'Review not found', 404);
+        }
+
+        return $this->RevResponse($review, 'Review retrieved successfully', 200);
+    }
+    public function projectRate(ReviewRequest $request, Project $project)
+    {
         $client = Auth::user();
-
         $validated = $request->validated();
-
-
         if ($project->status !== 'completed') {
             return $this->RevResponse(null, 'You cannot rate this project because it is not completed yet.', 400);
         }
@@ -52,26 +71,21 @@ class ReviewController extends Controller
     }
 
 //
-        /**
-         * Summary of freelanceerrate
-         * @param \App\Http\Requests\ReviewRequest $request
-         * @param \App\Models\User $user
-         * @return JsonResponse|mixed
-         */
-        public function freelanceerrate(ReviewRequest $request, User $user)
-        {
-            $client = Auth::user();
 
+        public function freelancerRate(ReviewRequest $request, User $user)
+        {
+
+            $client = Auth::user();
             $validated = $request->validated();
-            $existingReview = $client->reviews()->where('user_id', $client->id)->first();
+            $existingReview = $client->reviews()->where('user_id', $user->id)->first();
             if ($existingReview) {
                 return $this->RevResponse(null, 'You have already reviewed this freelancer', 400);
             }
 
 
-            $review = $client->reviews()->create([
+            $review = $user->reviews()->create([
                 'user_id' => $client->id,
-
+                // 'reviewable_id' =>$user->id ,
                 'rate' => $validated['rate'],
             ]);
 

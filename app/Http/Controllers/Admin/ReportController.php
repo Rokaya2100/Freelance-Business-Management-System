@@ -13,6 +13,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('permission:delete-report|reports-list', ['only' => ['index','show','trashed']]);
+    //     $this->middleware('permission:export-report', ['only' => ['exportAllReports','exportOneReport']]);
+    //     $this->middleware('permission:restore-report', ['only' => ['restore']]);
+    //     $this->middleware('permission:delete-report', ['only' => ['destroy','forceDelete']]);
+    // }
 
     public function exportAllReports()
     {

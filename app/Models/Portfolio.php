@@ -18,8 +18,12 @@ class Portfolio extends Model
         'skills'
     ];
 
-    public function users(): BelongsTo{
+    public function user(){
         return $this->belongsTo(User::class);
     }
-    
+
+    public function projects(){
+        return $this->hasMany(Project::class);
+    }
+
 }

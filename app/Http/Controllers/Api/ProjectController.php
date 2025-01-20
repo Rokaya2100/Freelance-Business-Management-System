@@ -15,10 +15,15 @@ use App\Http\Controllers\Api\AuthController;
 class ProjectController extends Controller
 {
     use jsonTrait;
-    /**
-     * Summary of index
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // public function __construct()
+    // {
+    //     $this->middleware('auth',['except' => ['index','show']]);
+    //     $this->middleware('permission:create-project', ['only' => ['store']]);
+    //     $this->middleware('permission:edit-project', ['only' => ['update']]);
+    //     $this->middleware('permission:edit-project-from-freelancer', ['only' => ['updateProjectFromFreelancer']]);
+    //     $this->middleware('permission:delete-project', ['only' => ['destroy','forceDelete']]);
+
+    // }
     public function index()
     {
         $projects = Project::paginate(5);
@@ -26,7 +31,7 @@ class ProjectController extends Controller
             return $this->jsonResponse(404, 'No projects Found', null);
         }
         return $this->jsonResponse(200, 'All projects', new OfferCollection($projects));
- 
+
     }
     /**
      * Summary of store
@@ -78,6 +83,9 @@ class ProjectController extends Controller
         }
 
         $project = Project::findOrFail($id);
+        if ($project->client_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to update this project',null);
+        }
         $status =$project->status;
         if(!$project->contract){
         $project->update([
@@ -90,13 +98,7 @@ class ProjectController extends Controller
         }
         return $this->errorResponse(404,"you can't update,The project is reserved it is being prepared and its status $status");
     }
-     
- 
-    /**
-     * Summary of destroy
-     * @param mixed $id
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function destroy($id)
     {
         $project=Project::findOrFail($id);
@@ -107,27 +109,7 @@ class ProjectController extends Controller
         }
         return $this->errorResponse(404,"you  can't delete,You can only delete if the project is pending and this project is $state");
     }
-    /**
-     * Summary of forceDelete
-     * @param mixed $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function forceDelete($id){
-        $project=Project::findOrFail($id);
-        $state =$project->status;
-        if($state == 'pending'){
-        Project::withTrashed()->where('id',$id)->forceDelete();
-        return $this->jsonResponse(204,'project deleted successfully');
-        }
-        return $this->errorResponse(404,"you  can't delete,You can only delete if the project is pending and this project is $state");
 
-    }
-    /**
-     * Summary of updateProjectFromFreelancer
-     * @param \Illuminate\Http\Request $request
-     * @param mixed $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function updateProjectFromFreelancer(Request $request, $id)
     {
         $path_customer_attachments = null;
@@ -136,6 +118,9 @@ class ProjectController extends Controller
             $path_customer_attachments=uploadImage($file,'customer_attachments','public');
         }
         $project = Project::findOrFail($id);
+        if ($project->freelancer_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to update this project',null);
+        }
         $project->status = $request->status;
         if($request->status == 'completed'){
             $project->delivery_date = now();

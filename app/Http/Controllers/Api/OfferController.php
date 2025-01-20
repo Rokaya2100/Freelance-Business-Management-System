@@ -15,26 +15,18 @@ use App\Http\Resources\OfferCollection;
 class OfferController extends Controller
 {
     use jsonTrait;
-    /**
-     * Summary of index
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()//admin
-    {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('permission:create-offer|edit-offer|delete-offer|offers-list', ['except' => ['index','show','getProjectOffers']]);
+    //     // $this->middleware('permission:create-offer', ['only' => ['store','restore']]);
+    //     $this->middleware('permission:edit-offer', ['only' => ['update']]);
+    //     $this->middleware('permission:edit-offer-status', ['only' => ['updateStatus']]);
+    //     $this->middleware('permission:delete-offer', ['only' => ['destroy','forceDelete']]);
 
-        $offers = Offer::paginate(5);
-        if($offers->isEmpty()){
-            return $this->jsonResponse(404, 'No Offers Found', null);
-        }
-        return $this->jsonResponse(200, 'All Offers', new OfferCollection($offers));
-    }
+    // }
 
-    //admin+freelanser+client
-    /**
-     * Summary of getProjectOffers
-     * @param \App\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
-     */
+    //freelancer+client
     public function getProjectOffers(Project $project)//to get all offers that related to this project
     {
         if($project->offers->isEmpty()){
@@ -54,13 +46,7 @@ class OfferController extends Controller
         }
         return $this->jsonResponse(200, 'Offer Details', new OfferResource($offer));
     }
-//freelanser
-    /**
-     * Summary of store
-     * @param \App\Http\Requests\OfferRequest $request
-     * @param \App\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
-     */
+    //freelancer
     public function store(OfferRequest $request, Project $project){
 
         $project_id=$project->id;
@@ -93,13 +79,15 @@ class OfferController extends Controller
     public function update(OfferRequest $request,$id)//update offer details by freelanser
     {
         $offer=Offer::findOrfail($id);
-
+        if ($offer->user_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to update this offer',null);
+        }
         $offer->update([
             'price'       => $request->price,
             'description' => $request->description,
             'period'      => $request->period,
         ]);
-        return $this->jsonResponse(201, 'Offer Updated Successfully', );
+        return $this->jsonResponse(201, 'Offer Updated Successfully');
     }
 //client
     /**
@@ -115,6 +103,9 @@ class OfferController extends Controller
             'status' => $request->status,
         ]);
         $offer_project = $offer->project;
+        if ($offer_project->client_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to update status this offer',null);
+        }
         if($offer->status =='accepted'){
             $offer->project->update([
                 'freelancer_id' => $offer->user_id,
@@ -126,12 +117,8 @@ class OfferController extends Controller
 
 
 //freelanser (his offer)
-    /**
-     * Summary of restore
-     * @param mixed $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function restore($id){
+    public function restore($id)
+    {
         $user_id=auth()->user()->id;
         $offer = Offer::withTrashed()->where('user_id',$user_id)->find($id);
         if (!$offer->deleted_at) {
@@ -142,13 +129,12 @@ class OfferController extends Controller
         return $this->jsonResponse(200, 'Offer Restored Successfully', new OfferResource($offer));
     }
     //admin
-    /**
-     * Summary of forceDelete
-     * @param mixed $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function forceDelete($id){
+    public function forceDelete($id)
+    {
         $offer = Offer::withTrashed()->findOrFail($id);
+        if ($offer->user_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to delete this offer',null);
+        }
         $offer->forceDelete();
         return $this->jsonResponse(204, 'Offer Deleted Permanently',);
     }
@@ -161,6 +147,9 @@ class OfferController extends Controller
     public function destroy($id)//can delete offer that its status is not accepted
     {
          $offer=Offer::findOrfail($id);
+         if ($offer->user_id !== auth()->user()->id){
+            return $this->jsonResponse(403, 'You are not authorized to delete this offer',null);
+        }
         if ($offer && $offer->status !== 'accepted') {
             $offer->delete();
         }else{
@@ -168,29 +157,5 @@ class OfferController extends Controller
         }
         return $this->jsonResponse(204, 'Offer Deleted', null);
     }
-
-
-
-    //freelanser
-/**
- * Summary of freeOffersDeleted
- * @return \Illuminate\Http\JsonResponse
- */
-public function freeOffersDeleted(){
-    $user_id=auth()->user()->id;
-    $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
-    return $this->jsonResponse(204, ' my Offers were Deleted ',$offers);
-}
-//admin
-    /**
-     * Summary of offersDeleted
-     * @param mixed $user_id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function offersDeleted($user_id){
-        $offers = Offer::onlyTrashed()->where('user_id',$user_id)->get();
-        return $this->jsonResponse(204, 'Offers were Deleted by this freelanser',$offers);
-    }
-
 
 }

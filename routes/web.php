@@ -7,15 +7,14 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ProjectController;
-
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\ContractController;
-
 
 Route::get('/', function () {
     return view('auth.login');
 });
 Auth::routes();
+Route::middleware('role:admin')->group(function (){
 
 // reports
 Route::get('reports/trashed', [ReportController::class, 'trashed'])->name('reports.trashed');
@@ -53,9 +52,8 @@ Route::get('users/trashed', [UserController::class, 'trashed'])->name('users.tra
 Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
 Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 Route::resource('users', UserController::class);
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/{page}', [AdminController::class,'index']);
+});
 
 // Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');

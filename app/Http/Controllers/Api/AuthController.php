@@ -12,18 +12,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
-{use jsonTrait;
 
-    /**
-     * Summary of register
-     * @param \App\Http\Requests\RegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+{
+    use jsonTrait;
+
     public function register(RegisterRequest $request)
     {
     //for upload image
         $image=uploadImage('image','profile_images');
-
+        if($request->role=='admin'){
+            return $this->jsonResponse(403, 'You cannot register as admin just freelancer or client', null);
+        }
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
@@ -31,13 +30,14 @@ class AuthController extends Controller
             'role'     => $request->role,
             'image'    => $image,
             'password' => Hash::make($request->password),//bcrypt
-
         ]);
 
         // Automatically create a portfolio if the user is a freelancer
         if ($user->role == 'freelancer') {
             Portfolio::create([
                 'user_id' => $user->id,
+                'description'=>'no description yet',
+                'skills'=>'no skills yet'
             ]);
         }
         $token = $user->createToken('YourAppName')->plainTextToken;

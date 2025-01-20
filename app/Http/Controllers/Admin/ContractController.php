@@ -7,6 +7,13 @@ use App\Models\Contract;
 
 class ContractController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('permission:delete-contract|contracts-list', ['only' => ['index','show','trashed']]);
+    //     $this->middleware('permission:restore-contract', ['only' => ['restore']]);
+    //     $this->middleware('permission:delete-contract', ['only' => ['destroy','forceDelete']]);
+    // }
     public function index()
     {
         $contracts = Contract::latest()->paginate(20);
@@ -51,7 +58,7 @@ class ContractController extends Controller
         $contracts = Contract::onlyTrashed()->paginate(10);
         return view('admin.contracts.trashed', compact('contracts'));
     }
-    
+
     public function forceDelete($id){
         Contract::withTrashed()->where('id',$id)->forceDelete();
         return redirect()->back()->with('success','Contract deleted successfully');
